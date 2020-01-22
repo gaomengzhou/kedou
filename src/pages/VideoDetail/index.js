@@ -103,7 +103,7 @@ class VideoDetail extends Component {
       container: document.getElementById('dplayer'),
       lang: 'zh-cn',
       mutex: true,
-      // autoplay: true,
+      autoplay: true,
       loop: false,
       hotkey: true,
       preload: 'auto',

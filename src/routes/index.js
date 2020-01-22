@@ -1,7 +1,6 @@
 import NotFound from '../pages/404'
 import Book from '../pages/Book'
 import Collect from '../pages/Collect'
-import Detail from '../pages/Detail'
 import UserFeedBack from '../pages/Feedback'
 import Search from '../pages/search'
 import Test from '../pages/test'
@@ -42,10 +41,6 @@ const routes = [
         path: '/collect',
         key: 'collect',
         component: Collect
-    },
-    {
-        path: '/detail?:id',
-        component: Detail
     },
     {
         path: '',
