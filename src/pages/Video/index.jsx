@@ -1,10 +1,10 @@
+import { getHomeLabelList, getHomeVideoList } from '@/store/action/video';
 import React, { Component } from 'react';
-import Header from '../../components/header'
-import Tabs from '../../components/tabs'
-import { connect } from 'react-redux'
-import { getHomeVideoList, getHomeLabelList } from '@/store/action/video'
-import Login from '../../components/login'
-import './index.less'
+import { connect } from 'react-redux';
+import Header from '../../components/header';
+import Login from '../../components/login';
+import Tabs from '../../components/tabs';
+import './index.less';
 const stateToProps = (state) => {
 	return {
 		video: state.video,
@@ -27,7 +27,7 @@ class Video extends Component {
 		this.state = {
 			headerShow: true,
 			loginShow: false,
-			my:false
+			my: false
 		}
 	}
 	getHomeLabelList = async (num) => {
@@ -52,29 +52,29 @@ class Video extends Component {
 	testRightCallBack = () => {
 
 
-		if(this.state.loginShow&&sessionStorage.getItem('user_id')){
+		if (this.state.loginShow && sessionStorage.getItem('user_id')) {
 			this.setState({
 				loginShow: !this.state.loginShow
 			})
-		}else if(!this.state.loginShow&&sessionStorage.getItem('user_id')){
+		} else if (!this.state.loginShow && sessionStorage.getItem('user_id')) {
 			this.setState({
-				my:!this.state.my
+				my: !this.state.my
 			})
-		}else{
+		} else {
 			this.setState({
 				loginShow: !this.state.loginShow
 			})
 		}
-		
-	
+
+
 	}
 	goToVideoDetail = (obj) => {
 		const {
 			video_id
 		} = obj
-		if(!sessionStorage.getItem('user_id')){
+		if (!sessionStorage.getItem('user_id')) {
 			this.setState({
-				loginShow:!this.state.loginShow
+				loginShow: !this.state.loginShow
 			})
 			return false
 		}
@@ -99,16 +99,14 @@ class Video extends Component {
 		]
 		return (
 			arr.map(e => {
-				console.log(e);
-
 				return (
-					<div key={e.goto} onClick={()=>{
-						if(e.title==='退出登录'){
-                            sessionStorage.removeItem('user_id')
-                            this.setState({
-                                my:false
-                            })
-                            return false
+					<div key={e.goto} onClick={() => {
+						if (e.title === '退出登录') {
+							sessionStorage.removeItem('user_id')
+							this.setState({
+								my: false
+							})
+							return false
 						}
 						this.props.history.push(e.goto)
 					}}>
@@ -124,7 +122,7 @@ class Video extends Component {
 						</div>
 						<p style={{
 							textAlign: 'center',
-							padding:'0 0 .1rem 0'
+							padding: '0 0 .1rem 0'
 						}}>{e.title}</p>
 
 					</div>
@@ -137,7 +135,7 @@ class Video extends Component {
 		const {
 			video
 		} = this.props
-		const { loginShow,my } = this.state
+		const { loginShow, my } = this.state
 		const tabsParameter = {
 			newVideoList: video.newVideoList,
 			hotVideoList: video.hotVideoList,
@@ -151,7 +149,7 @@ class Video extends Component {
 		const videoHeader = {
 			leftCallBack: this.testCallBack,
 			rightCallBack: this.testRightCallBack,
-            type:'video'
+			type: 'video'
 		}
 		return (
 			< div id='home-video'>
@@ -159,7 +157,7 @@ class Video extends Component {
 				<Tabs {...tabsParameter} />
 				{loginShow && <Login rightCallBack={this.testRightCallBack} />}
 				{
-					my&&<div style={{
+					my && <div style={{
 						position: 'fixed',
 						top: '1rem',
 						left: '.1rem',

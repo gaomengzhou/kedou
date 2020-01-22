@@ -43,8 +43,11 @@ class ImagePickerExample extends React.Component {
     const userFeedBack = this.props.userFeedBack ? this.props.userFeedBack : null
     const { files } = this.state;
     const imgs = files.map((item, i) => item.url).join(',')
-    console.log(imgs)
-    this.props.userFeedBacks({ user_id: '9633', role: 'user', message: userFeedBack, images: imgs })//做完登入再来修改动态userid
+    if (userFeedBack === null) {
+      return
+    } else {
+      this.props.userFeedBacks({ user_id: sessionStorage.getItem('user_id'), role: 'user', message: userFeedBack, images: imgs })
+    }
     this.props.form.setFieldsValue({ 'userFeedBack': '' })
   }
 

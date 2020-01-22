@@ -6,8 +6,6 @@ export const getHomeVideoList = ({
     return video.getHomeVideoList({
         rows
     }).then(res => {
-        console.log(res);
-        
         const newVideoList=res.new
         const hotVideoList=res.most
         dispatch({
@@ -85,6 +83,6 @@ export const search_video=({
             type:actionType.TAB_LIST,
             tabList:res
         })
-        
+
     })
 }

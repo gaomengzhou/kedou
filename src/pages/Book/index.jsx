@@ -1,12 +1,12 @@
 import Header from '@/components/header';
+import { category } from '@/store/action/book';
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { category } from '@/store/action/book'
-import Tabs from '../../components/tabs'
-import Login from '../../components/login'
-import { detail } from '../../services/book'
-import Audio from '../../components/Audio'
-import './index.less'
+import { connect } from 'react-redux';
+import Audio from '../../components/Audio';
+import Login from '../../components/login';
+import Tabs from '../../components/tabs';
+import { detail } from '../../services/book';
+import './index.less';
 const stateToProps = (state) => {
 	return {
 		tabList: state.book.tabList,
@@ -36,7 +36,7 @@ class Book extends Component {
 			page: 1
 		})
 	}
-	componentWillUnmount(){
+	componentWillUnmount() {
 	}
 	testRightCallBack = () => {
 		if (this.state.loginShow && sessionStorage.getItem('user_id')) {
@@ -75,8 +75,6 @@ class Book extends Component {
 		]
 		return (
 			arr.map(e => {
-				console.log(e);
-
 				return (
 					<div key={e.goto} onClick={() => {
 						if (e.title === '退出登录') {

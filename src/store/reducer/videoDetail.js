@@ -11,7 +11,8 @@ const videoDetailReducer = (state = {}, action) => {
     case actionType.GET_HOT_VIDEO: {
       return {
         ...state,
-        HotVideoList: action.data
+        HotVideoList: action.data,
+        comment: action.comment
       }
     }
 

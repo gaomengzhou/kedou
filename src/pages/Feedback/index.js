@@ -24,10 +24,6 @@ class UserFeedBack extends Component {
 
   onLeftClick = () => this.props.history.go(-1);
 
-  subFeedBack = () => {
-    console.log(this.props.form.getFieldProps('userFeedBack'))
-  }
-
   render() {
     const { getFieldProps } = this.props.form;
     const NavBarProps = {

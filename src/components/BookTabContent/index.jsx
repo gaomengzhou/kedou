@@ -31,6 +31,16 @@ class index extends Component {
 			})
 
 		})
+		await bannel_list({
+			type: 3
+		}).then(res => {
+			console.log(res);
+			
+			// this.setState({
+			// 	bannel: res
+			// })
+
+		})
 		await this.onRefresh()
 	}
 
@@ -71,6 +81,7 @@ class index extends Component {
 			}
 			case this.props.tabList[1].title: {
 				await getBookList({
+					user_id:sessionStorage.getItem('user_id')||'',
 					page: 1,
 					rows: 20,
 					order: "created_date",
@@ -297,6 +308,7 @@ class index extends Component {
 						dataSource={dataSource}
 						renderHeader={() => listHeader()}
 						renderRow={(rowData, sectionID, rowID) => {
+							console.log(rowData);
 							return (
 								<>
 									{rowID === 'newList' &&
@@ -373,6 +385,8 @@ class index extends Component {
 						<ListView
 							dataSource={dataSource}
 							renderRow={(rowData, sectionID, rowID) => {
+								console.log(rowData);
+								
 								const info = {
 									rowData,
 									rowID,

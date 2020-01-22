@@ -5,6 +5,12 @@ import MyListView from './ViewList';
 
 
 const ModalPlayer = (props) => {
+  const viewProps = {
+    cb: props.cb,
+    isReload: props.isReload,
+    dataSource: props.dataSource,
+    getChat: props.getChat
+  }
   return (
     <div className='playerModals'>
       <Modal
@@ -17,9 +23,9 @@ const ModalPlayer = (props) => {
         maskClosable={false}
         onClose={props.onClose}
         animationType="slide-up"
-        title={`全部评论 (${300})`}
+        title={`全部评论 (${props.commentNum ? props.commentNum : 0})`}
       >
-      <MyListView />
+        <MyListView {...viewProps} />
       </Modal>
     </div>
   )

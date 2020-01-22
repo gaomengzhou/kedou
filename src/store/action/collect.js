@@ -1,7 +1,6 @@
 // import { Toast } from 'antd-mobile';
-import { BookCollectApi, delBoolCollectApi } from '../../services/collect';
+import { BookCollectApi, delBoolCollectApi, videoCollectApi } from '../../services/collect';
 // import { GET_BOOL_COLLECT } from '../actionType';
-
 
 //用户收藏听书记录
 export const getBookCollect = (params) => (dispatch) => {
@@ -15,10 +14,22 @@ export const getBookCollect = (params) => (dispatch) => {
         }
       });
       resolve(data)
-      // dispatch({
-      //   type: GET_BOOL_COLLECT,
-      //   bookCollectList:res
-      // })
+    }
+  })
+}
+
+//视频收藏记录
+export const getVideoCollect = (params) => (dispatch) => {
+  const { resolve } = params;
+  return videoCollectApi(params).then(res => {
+    if (res) {
+      const data = res.map(item => {
+        return {
+          ...item,
+          isCheck: false
+        }
+      });
+      resolve(data)
     }
   })
 }
@@ -27,7 +38,7 @@ export const getBookCollect = (params) => (dispatch) => {
 export const delBoolCollect = (params) => (dispatch) => {
   const { resolve } = params;
   return delBoolCollectApi(params).then(res => {
-    if(res.suc){
+    if (res.suc) {
       resolve(res)
     }
   })

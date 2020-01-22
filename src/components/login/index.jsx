@@ -147,8 +147,6 @@ class index extends Component {
 	changePSWSubMit = () => {
 		const { telNumber, passWord, rePassWord } = this.state
 		if (telNumber.length !== 11 || passWord !== rePassWord) {
-			console.log(telNumber, passWord, rePassWord);
-
 			Toast.info('请检查参数')
 			return false
 		}
@@ -476,7 +474,7 @@ class index extends Component {
 									})
 								}} />
 								<div className="iconBox">
-									<img src={this.state.rePswIptFocus ? require('@/assets/images/password_pressed_ico.png') : require('@/assets/images/password_nomal_ico.png')} alt="" className="icont" />
+									<img src={this.state.rePswIptFocus ? require('@/assets/images/ico3.png') : require('@/assets/images/ico2.png')} alt="" className="icont" />
 								</div>
 
 							</div>

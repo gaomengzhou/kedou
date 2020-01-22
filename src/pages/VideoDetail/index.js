@@ -8,12 +8,13 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import IsLogin from '../../components/login/index';
 import PublicNavBar from '../../components/PublicNavBar';
-import { getHotVideo, getVideoOnePatch } from '../../store/action/videoDetail';
+import { commentLikeApi } from '../../services/videoDetail';
+import { getChat, getVideoOnePatch } from '../../store/action/videoDetail';
 import Content from './components/content';
 import ModalPlayer from './components/ModalPlayer';
 import './player.less';
 const mapDispatchToProps = {
-  getVideoOnePatch, getHotVideo
+  getVideoOnePatch, getChat
 };
 
 @connect(({ videoDetailReducer }) => ({
@@ -25,26 +26,22 @@ class VideoDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isCollect: false,//是否收藏了
+      isReload: false,//判断是否应该刷新
+      message: '',//留言的内容
       noLogin: false,
       detailData: {},
       navBarTitle: '',
       isLoading: false,
       visible: false,
       display: false,
-      url: null,
-      data: [
-        { id: 1, title: '好看的视频,好看的视频', isCheck: false },
-        { id: 2, title: '好看的视频,好看的视频', isCheck: false },
-        { id: 3, title: '好看的视频,好看的视频', isCheck: false },
-        { id: 4, title: '好看的视频,好看的视频', isCheck: false },
-        { id: 5, title: '好看的视频,好看的视频', isCheck: false },
-      ],
+      isLiked: false
     }
   }
 
   componentDidMount() {
     this.getVideo()
-    this.props.getHotVideo({ rows: '' })
+    this.getChat()
     this.isLeave = false;
   }
 
@@ -53,10 +50,20 @@ class VideoDetail extends Component {
     this.isLeave = true;
   }
 
+  getChat = (vId = '') => {
+    const { id } = this.props.match.params
+    this.props.getChat({
+      user_id: sessionStorage.getItem('user_id'),
+      video_id: vId === '' ? id.split('&')[0] : String(vId),
+      page: '1',
+      rows: '10'
+    })
+  }
+
   getVideo = (videoId = '') => {
     const { id } = this.props.match.params
     const user_id = sessionStorage.getItem('user_id')  //万能ID '9652'  sessionStorage.getItem('user_id')
-    const video_id = id
+    const video_id = id.split('&')[0]
     if (user_id === null) {
       this.setState({ noLogin: true })
     } else {
@@ -64,6 +71,15 @@ class VideoDetail extends Component {
       new Promise((resolve) => {
         this.props.getVideoOnePatch({ user_id, video_id: videoId === '' ? video_id : videoId, resolve })
       }).then(res => {
+        if (res.user_fabulous === 0) {
+          this.setState({
+            isCollect: false
+          })
+        } else {
+          this.setState({
+            isCollect: true
+          })
+        }
         if (res.video_url) {
           this.setState({
             navBarTitle: res.title.length >= 20 ? res.title.substring(0, 14).concat('...') : res.title,
@@ -73,8 +89,8 @@ class VideoDetail extends Component {
         }
         if (res.code === '-6') {
           Toast.fail(res.err)
-           this.InitDPlayer('www.baidu.com')
-           document.querySelector('.dplayer-full-icon').style.display='none'
+          this.InitDPlayer('www.baidu.com')
+          document.querySelector('.dplayer-full-icon').style.display = 'none'
         }
 
       })
@@ -87,7 +103,7 @@ class VideoDetail extends Component {
       container: document.getElementById('dplayer'),
       lang: 'zh-cn',
       mutex: true,
-      autoplay: true,
+      // autoplay: true,
       loop: false,
       hotkey: true,
       preload: 'auto',
@@ -100,7 +116,11 @@ class VideoDetail extends Component {
   }
 
   onLeftClick = () => {
-    this.props.history.push('/video')
+    if (sessionStorage.getItem('goBack')) {
+      this.props.history.go(-1)
+    } else {
+      this.props.history.push('/video')
+    }
   }
   showComment = () => {
     this.setState({
@@ -113,6 +133,89 @@ class VideoDetail extends Component {
     window.location.reload()
   }
 
+  likedClick = () => {
+    const detailData2 = this.state.detailData
+    const { id } = this.props.match.params
+    const video_id = id.split('&')[0]
+    commentLikeApi({
+      user_id: sessionStorage.getItem('user_id'),
+      video_id,
+      type: '4'
+    }).then(res => {
+      if (res.err) {
+        Toast.info('请勿重复点赞', 1)
+        return
+      } else {
+        detailData2.fabulous_video = 1
+        detailData2.liked_num++
+        this.setState({
+          detailData: detailData2,
+        })
+      }
+    })
+  }
+
+  sendMsg = (e) => {
+    const { id } = this.props.match.params
+    const user_id = sessionStorage.getItem('user_id')  //万能ID '9652'  sessionStorage.getItem('user_id')
+    const video_id = id.split('&')[0]
+    if (e.keyCode === 13) {
+      if (this.state.message !== '') {
+        commentLikeApi({
+          user_id,
+          type: '2',
+          video_id,
+          message: this.state.message
+        }).then(res => {
+          if (res.suc) {
+            Toast.success(res.suc)
+            this.setState({
+              message: '',
+              isReload: true
+            })
+          }
+        })
+      } else {
+        return
+      }
+    }
+  }
+
+  cb = () => { // 提交评论后停止重复请求,以及在前台页面模拟数据变化减少数据请求,实际上后台以更新.
+    const detailData = this.state.detailData
+    detailData.comment_num++
+    this.setState({
+      isReload: false,
+      detailData
+    })
+  }
+
+  saveMsg = (e) => {
+    this.setState({ message: e.target.value })
+  }
+
+  collectBtn = () => {
+    const { id } = this.props.match.params
+    commentLikeApi({
+      user_id: sessionStorage.getItem('user_id'),
+      video_id: id.split('&')[0],
+      type: '1'
+    }).then(res => {
+      switch (res.suc) {
+        case '收藏成功':
+          this.setState({ isCollect: true })
+          Toast.success(res.suc, 1, false)
+          break;
+        case '取消成功':
+          this.setState({ isCollect: false })
+          Toast.success(res.suc, 1, false)
+          break;
+        default:
+          Toast.success('网络延迟,稍后在试')
+          return
+      }
+    })
+  }
   render() {
     const { videoDetailReducer } = this.props;
     const { HotVideoList } = videoDetailReducer
@@ -122,24 +225,43 @@ class VideoDetail extends Component {
       onLeftClick: this.onLeftClick,
       display: this.state.display
     }
+    const contentProps = {
+      likedClick: this.likedClick,
+      isLiked: this.state.isLiked,
+      isCollect: this.state.isCollect,
+      dataList: HotVideoList,
+      router: this.props,
+      getVideo: this.getVideo,
+      getChat: this.getChat,
+      detailData: this.state.detailData,
+      showComment: this.showComment,
+      collectBtn: this.collectBtn,
+    }
     const modalProps = {
+      cb: this.cb,
+      commentNum: this.state.detailData.comment_num,
       visible: this.state.visible,
       onClose: () => this.setState({ visible: false }),
+      dataSource: this.props.videoDetailReducer.comment,
+      getChat: this.getChat,
+      detailData: this.state.detailData,
+      isReload: this.state.isReload
     }
     return (
       <div className='playerIndex'>
         <PublicNavBar  {...navBarProps} />
         <div onClick={() => this.setState({ display: !this.state.display })} id='dplayer' />
-        <Content
-          dataList={HotVideoList}
-          router={this.props}
-          getVideo={this.getVideo}
-          detailData={this.state.detailData}
-          showComment={this.showComment}
-        />
+        <Content {...contentProps} />
         <div className='InpBottomSay'>
           <i className='iconPhoto' />
-          <input onFocus={() => this.setState({ visible: true })} placeholder='我来说两句...' type="text" />
+          <input
+            onChange={this.saveMsg}
+            onKeyDown={this.sendMsg}
+            onFocus={() => this.setState({ visible: true })}
+            placeholder='我来说两句...'
+            type="text"
+            value={this.state.message}
+          />
         </div>
         <ModalPlayer {...modalProps} />
         {this.state.noLogin ? <IsLogin rightCallBack={this.closeLogin} /> : null}
