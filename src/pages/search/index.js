@@ -99,7 +99,7 @@ class SearchBarExample extends React.Component {
         <div>
           <div className='searchHeader'>
             <input
-              type="text"
+              type="search"
               autoFocus="autofocus"
               placeholder='输入搜索关键词'
               onChange={this.onChange}

@@ -254,7 +254,15 @@ class VideoDetail extends Component {
         <Content {...contentProps} />
         <div className='InpBottomSay'>
           <i className='iconPhoto' />
-          <input
+          {/* <input
+            onChange={this.saveMsg}
+            onKeyDown={this.sendMsg}
+            onFocus={() => this.setState({ visible: true })}
+            placeholder='我来说两句...'
+            type="text"
+            value={this.state.message}
+          /> */}
+          <textarea
             onChange={this.saveMsg}
             onKeyDown={this.sendMsg}
             onFocus={() => this.setState({ visible: true })}
