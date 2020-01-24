@@ -20,21 +20,14 @@ const ListContent = (props) => {
     })
   }
   return (
-    <div key={props.rowID} style={{ padding: '0 15px' }}>
+    <div className='msg-body' key={props.rowID} style={{ padding: '0 15px' }}>
       <div className='messageBoard'>
         <div style={{ display: 'flex', height: '1rem', alignContent: 'center', justifyItems: 'center' }}>
           <div style={{ display: 'flex', width: '90%', alignContent: 'center', justifyItems: 'center' }}>
             <img src={props.rowData.avatar_url} alt="" />
             <p style={{ flex: 1 }}>{props.rowData.nickname}</p>
           </div>
-          <div style={{
-            width: '10%',
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
+          <div>
             <i
               onClick={clickLike}
               className={props.rowData.user_fabulous !== 0 ? 'lovePress' : 'love'}
@@ -43,8 +36,8 @@ const ListContent = (props) => {
           </div>
         </div>
       </div>
-      <div style={{ display: 'flex', paddingBottom: '15px' }} className='messageBoard'>
-        <p style={{ backgroundColor: '#e6e3e3', borderRadius: '.15rem', padding: '.1rem' }}>{props.rowData.message}</p>
+      <div className='messageBoards'>
+        <p className='msgData'>{props.rowData.message}</p>
       </div>
     </div >
   )
