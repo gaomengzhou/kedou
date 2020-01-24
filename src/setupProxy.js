@@ -6,6 +6,7 @@ module.exports = function (app) {
             '/kedou/api',
             {
                 target: 'http://tadpole-appapi.fftechs.com:2082/',  
+                // target: 'https://api.sgdd02.com:443/',  
                 changeOrigin: true, 
                 pathRewrite: { 
                     '^/kedou/api': ''

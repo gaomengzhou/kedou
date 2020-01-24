@@ -10,6 +10,9 @@
        display: flex;
        align-items: center;
        font-weight: 800;
+       text-overflow:ellipsis;
+       overflow:hidden;
+       white-space:nowrap;
        .icont{
            width: .35rem;
            height: 100%;
@@ -25,5 +28,19 @@
     border-bottom-color: #38b6e7;
     border-left-color: #9718ec;
     border-right-color: #9718ec;
+   }
+   .right{
+       font-weight: 800;
+       color: #9718ec;
+       font-size: .3rem;
+       display: flex;
+       align-items: center;
+       line-height: .4rem;
+       .textRight{
+           font-weight: 400;
+           margin-left: .1rem;
+           color: #000;
+           font-size: .24rem;
+       }
    }
 }

@@ -1,12 +1,14 @@
 import Header from '@/components/header';
-import { category } from '@/store/action/book';
+// import { category } from '@/store/action/book';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import Audio from '../../components/Audio';
-import Login from '../../components/login';
-import Tabs from '../../components/tabs';
-import { detail } from '../../services/book';
-import './index.less';
+import { connect } from 'react-redux'
+import { category } from '@/store/action/book'
+import Tabs from '../../components/tabs'
+import Login from '../../components/login'
+import { detail } from '../../services/book'
+// import BooksDetail from '../../components/BooksDetail'
+import Audio from '../../components/Audio'
+import './index.less'
 const stateToProps = (state) => {
 	return {
 		tabList: state.book.tabList,
@@ -28,6 +30,7 @@ class Book extends Component {
 			loginShow: false,
 			my: false,
 			novelItem: '',
+			detailShow: false
 			// collectSucceed: []
 		}
 	}
@@ -35,8 +38,14 @@ class Book extends Component {
 		this.props.category({
 			page: 1
 		})
-	}
-	componentWillUnmount() {
+		if (this.props.history.location.state) {
+			const { id } = this.props.history.location.state
+			if (id) {
+				this.getBooKDetail(id)
+			}
+		}
+
+
 	}
 	testRightCallBack = () => {
 		if (this.state.loginShow && sessionStorage.getItem('user_id')) {
@@ -118,7 +127,6 @@ class Book extends Component {
 			user_id: sessionStorage.getItem('user_id'),
 			novel_id: bookId
 		}).then(res => {
-			console.log(res);
 
 			const serials = res.video
 			const novelPoster = res.poster
@@ -129,8 +137,18 @@ class Book extends Component {
 				novelTitle,
 				player: serials[0]
 			}
+			document.querySelector('.TabBer').style.display = 'none'
 			this.setState({
-				novelItem
+				detailShow: true,
+				novelItem,
+				detailInfo: res
+			}, () => {
+				this.props.history.push({
+					pathname: '/book',
+					state: {
+						id: bookId
+					}
+				})
 			})
 		})
 
@@ -166,22 +184,42 @@ class Book extends Component {
 	// 	console.log(123);
 
 	// }
+	setDetailShow = () => {
+		document.querySelector('.TabBer').style.display = 'block'
+		if (document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.header-search') && document.querySelector('.background') && document.querySelector('.am-tab-bar-bar')) {
+			document.querySelector('.background').style.top = '0rem'
+			document.querySelector('.header-search').style.top = '0rem'
+			document.querySelector('.am-tabs-tab-bar-wrap').style.top = '1rem'
+			document.querySelector('.am-tab-bar-bar').style.bottom = '0'
+		}
+		this.setState({
+			detailShow: !this.state.detailShow
+		})
+	}
 	render() {
 		const {
 			state: {
 				loginShow,
 				my,
+				detailShow,
 				novelItem,
-				// collectSucceed
+				// collectSucceed,
+				detailInfo
 			},
 			props: {
 				tabList
 			},
 			getBooKDetail,
 			testRightCallBack,
+			setDetailShow
 			// setCollect
 		} = this
-
+		const novelItem2 = {
+			...novelItem,
+			setDetailShow,
+			detailInfo,
+			getBooKDetail
+		}
 		const bookHeader = {
 			// leftCallBack: this.testCallBack,
 			rightCallBack: testRightCallBack,
@@ -196,37 +234,37 @@ class Book extends Component {
 		}
 		return (
 			<div id='home_book'>
-				<Header {...bookHeader} />
-				<Tabs {...tabsParameter} />
-				{loginShow && <Login rightCallBack={this.testRightCallBack} />}
+				<div style={!detailShow ? { display: 'block' } : { display: 'none' }}>
+					<Header {...bookHeader} />
+					<Tabs {...tabsParameter} />
+					{loginShow && <Login rightCallBack={this.testRightCallBack} />}
+					{
+						my && <div style={{
+							position: 'fixed',
+							top: '1rem',
+							left: '.1rem',
+							zIndex: '1000',
+							padding: '.1rem',
+							backgroundColor: '#fff',
+							borderRadius: '.1rem'
+						}}>
+							{
+								this.Popo()
+							}
+							<div style={{
+								position: 'absolute',
+								top: '-.2rem',
+								left: '20%',
+								borderTop: ' .1rem solid transparent',
+								borderBottom: '.1rem solid #fff',
+								borderLeft: '.1rem solid transparent',
+								borderRight: '.1rem solid transparent'
+							}}></div>
+						</div>
+					}
+				</div>
 				{
-					my && <div style={{
-						position: 'fixed',
-						top: '1rem',
-						left: '.1rem',
-						zIndex: '1000',
-						padding: '.1rem',
-						backgroundColor: '#fff',
-						borderRadius: '.1rem'
-					}}>
-						{
-							this.Popo()
-						}
-						<div style={{
-							position: 'absolute',
-							top: '-.2rem',
-							left: '20%',
-							borderTop: ' .1rem solid transparent',
-							borderBottom: '.1rem solid #fff',
-							borderLeft: '.1rem solid transparent',
-							borderRight: '.1rem solid transparent'
-						}}></div>
-					</div>
-				}
-				{
-					novelItem && (<>
-						<Audio {...novelItem} />
-					</>)
+					novelItem && <Audio {...novelItem2} />
 				}
 
 			</div>

@@ -121,6 +121,7 @@ class MyViewList extends React.Component {
     return (
       <ListView
         ref={el => this.lv = el}
+        className='video-detail-list-view'
         dataSource={this.state.dataSource}
         renderFooter={() => (<div style={{ textAlign: 'center' }}>
           {/* {this.state.isLoading ? '加载中...' : '加载完毕'} */}

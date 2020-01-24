@@ -385,8 +385,6 @@ class index extends Component {
 						<ListView
 							dataSource={dataSource}
 							renderRow={(rowData, sectionID, rowID) => {
-								console.log(rowData);
-								
 								const info = {
 									rowData,
 									rowID,

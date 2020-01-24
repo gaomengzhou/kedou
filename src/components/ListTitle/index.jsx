@@ -1,7 +1,7 @@
 import React from 'react'
 import './index.less'
 function index(props) {
-    const {title,more,changeActionKey}=props
+    const {title,more,changeActionKey,right}=props
     return (
         <div id='listTitle'>
            <div className="titleInfo">
@@ -15,6 +15,11 @@ function index(props) {
            }}>
                更多
            </span>}
+           {right&& <span className='right'>
+               {right} <span className="textRight">
+                   听过
+               </span>
+               </span>}
         </div>
     )
 }

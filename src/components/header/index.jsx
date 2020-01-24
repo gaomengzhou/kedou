@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
+import React, { Component } from 'react'
 import { Icon, SearchBar } from 'antd-mobile';
-import React, { Component } from 'react';
+import './index.less'
+import { theme } from '../../utils/theme'
 import { withRouter } from 'react-router-dom';
-import { theme } from '../../utils/theme';
-import './index.less';
 @withRouter
 class index extends Component {
 	constructor(props) {
@@ -25,7 +24,7 @@ class index extends Component {
 				searchText,
 			},
 			props: {
-				leftCallBack,
+				// leftCallBack,
 				rightCallBack,
 			},
 			searchSubmit,
@@ -86,12 +85,12 @@ class index extends Component {
 								width: '.5rem'
 							}} />}
 						</div>
-
+						
 					</div>
 					<div className="search" onClick={
 						()=>{
 							this.props.history.push('/search/type='+this.props.type)
-
+							
 						}
 					}>
 						<SearchBar placeholder="搜索" style={{

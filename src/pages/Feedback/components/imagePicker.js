@@ -34,7 +34,6 @@ class ImagePickerExample extends React.Component {
 
 
   onChange = (files, type, index) => {
-    console.log(files, type, index);
     this.setState({
       files,
     });
@@ -60,7 +59,7 @@ class ImagePickerExample extends React.Component {
           files={files}
           multiple
           onChange={this.onChange}
-          onImageClick={(index, fs) => console.log(index, fs)}
+          // onImageClick={(index, fs) => console.log(index, fs)}
           selectable={files.length < 3}
           accept="image/gif,image/jpeg,image/jpg,image/png"
         />

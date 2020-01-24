@@ -38,7 +38,6 @@ class SearchBarExample extends React.Component {
     this.props.history.push(`/detailVideo/video_id=${item.id}`)
   }
   onChange = (e) => {
-    console.log(e.target.value)
     this.setState({ value: e.target.value });
     if (e.target.value === '' || e.target.value === ' ') {
       this.setState({
@@ -57,7 +56,6 @@ class SearchBarExample extends React.Component {
   };
 
   render() {
-    console.log(this.props)
     if (this.state.isvideo) {
       return (
         <div>

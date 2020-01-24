@@ -33,6 +33,11 @@ const routes = [
         component: Book,
     },
     {
+        path: '/book/:id',
+        key: 'book',
+        component: Book,
+    },
+    {
         path: '/userfeedback',
         key: 'userfeedback',
         component: UserFeedBack

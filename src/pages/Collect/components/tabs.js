@@ -11,6 +11,7 @@ const TabExample = (props) => (
       initialPage={0}
       onChange={props.onTabChange}
       animated
+      swipeable={false}
       useOnPan={false}
       tabBarActiveTextColor={theme.hitActiveColor}
       tabBarInactiveTextColor='#e0d7d7'

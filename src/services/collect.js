@@ -19,3 +19,10 @@ export const delBoolCollectApi = (params) => {
     ...params
   })
 }
+
+// 删除视频收藏记录
+export const delVideoCollectApi = (params) => {
+  return initAxios().post('/v2/VideoInterface/collect_clear', {
+    ...params
+  })
+}

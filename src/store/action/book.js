@@ -7,6 +7,8 @@ export const category=({
     return book.category({
         ...parameter
     }).then(res=>{
+        console.log(res);
+        
         res = [{
             title: '全部小说',
             key:'全部小说',

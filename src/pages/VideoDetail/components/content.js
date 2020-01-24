@@ -23,7 +23,6 @@ const Content = (props) => {
       Toast.fail('分享复制失败')
     }
   }
-  console.log(props.detailData)
   return (
     <div id='contentPlayer' style={{ padding: '.1rem', background: '#fff' }}>
       <div className='title'>
