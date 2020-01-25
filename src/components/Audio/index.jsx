@@ -1,13 +1,13 @@
+import { ListView, Modal, Toast } from 'antd-mobile';
+import copy from 'copy-to-clipboard';
 import React from 'react';
 import ReactAplayer from 'react-aplayer';
-import './index.scss'
-import ListTitle from '../ListTitle'
-import BookDetailGuess from '../BookDetailGuess'
-import { Modal, Toast, ListView } from 'antd-mobile'
-import { collect, comment, comment_add } from '../../services/book'
 import { withRouter } from 'react-router-dom';
-import CommentItem from '../CommentItem'
-import copy from 'copy-to-clipboard';
+import { collect, comment, comment_add } from '../../services/book';
+import BookDetailGuess from '../BookDetailGuess';
+import CommentItem from '../CommentItem';
+import ListTitle from '../ListTitle';
+import './index.scss';
 let iTimeout;
 let iInterval;
 @withRouter
@@ -152,7 +152,7 @@ class App extends React.Component {
 
 
 	getComment = () => {
-		if(!this.state.commentShow){
+		if (!this.state.commentShow) {
 			return false
 		}
 		comment({
@@ -410,7 +410,6 @@ class App extends React.Component {
 				Countdown,
 				timeNum,
 				Timer,
-				minutes
 			},
 			props: {
 				getBooKDetail
