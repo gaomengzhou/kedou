@@ -5,13 +5,12 @@ import BookTabContent from '../BookTabContent'
 class index extends Component {
 	constructor(props) {
 		super(props)
-
 		this.state = {
 			activeKey: null
 		}
 	}
 	changeActionKey = (sty) => {
-		console.log(sty, this.state.activeKey);
+		// console.log(sty, this.state.activeKey);
 
 		const oldNum = this.state.activeKey
 		//console.log('123123123123',sty);
@@ -46,7 +45,7 @@ class index extends Component {
 			tabList:this.props.tabList,
 			changeActionKey: this.changeActionKey,
 			getBooKDetail:this.props.getBooKDetail,
-			testRightCallBack:this.props.testRightCallBack
+			testRightCallBack:this.props.testRightCallBack,
 			// setCollect:this.props.setCollect,
 			// collectSucceed:this.props.collectSucceed
 		}

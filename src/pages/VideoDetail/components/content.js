@@ -7,8 +7,8 @@ import React from 'react';
 import '../player.less';
 const Content = (props) => {
   const onPress = (item) => {
-    window.sessionStorage.removeItem('goBack')
     document.documentElement.scrollTop = 0
+    window.sessionStorage.removeItem('goBack')
     const user_id = sessionStorage.getItem('user_id');
     props.router.history.push(`/detailVideo/video_id=${item.id}&user_id=${user_id}`);
     props.getVideo(item.id);

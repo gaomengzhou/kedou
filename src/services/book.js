@@ -29,3 +29,24 @@ export const collect = ({
         ...parameter
     })
 }
+export const comment = ({
+    ...parameter
+} = {}) => {
+    return initAxios().post(`/v2/novel/comment`, {
+        ...parameter
+    })
+}
+export const comment_thumbs = ({
+    ...parameter
+} = {}) => {
+    return initAxios().post(`/v2/novel/comment_thumbs`, {
+        ...parameter
+    })
+}
+export const comment_add = ({
+    ...parameter
+} = {}) => {
+    return initAxios().post(`/v2/novel/comment_add`, {
+        ...parameter
+    })
+}

@@ -26,6 +26,7 @@ class VideoDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showControl: false,//是否显示播放条
       isCollect: false,//是否收藏了
       isReload: false,//判断是否应该刷新
       message: '',//留言的内容
@@ -43,6 +44,16 @@ class VideoDetail extends Component {
     this.getVideo()
     this.getChat()
     this.isLeave = false;
+    this.timer = setTimeout(() => {
+      let controller = document.querySelector('.dplayer-controller');
+      let controllerMask = document.querySelector('.dplayer-controller-mask');
+      controller.style.display = 'none';
+      controllerMask.style.display = 'none';
+      this.setState({
+        display: true,
+        showControl: true
+      })
+    }, 3000);
   }
 
   componentWillUnmount() {
@@ -92,7 +103,6 @@ class VideoDetail extends Component {
           this.InitDPlayer('www.baidu.com')
           document.querySelector('.dplayer-full-icon').style.display = 'none'
         }
-
       })
     }
   }
@@ -216,6 +226,29 @@ class VideoDetail extends Component {
       }
     })
   }
+  controlView = () => {
+    clearTimeout(this.timer)
+    let controller = document.querySelector('.dplayer-controller');
+    let controllerMask = document.querySelector('.dplayer-controller-mask');
+    this.setState({
+      display: !this.state.display,
+      showControl: !this.state.showControl
+    })
+
+    if (!this.state.showControl) {
+      this.setState({
+        showControl: true
+      })
+      controller.style.display = 'none';
+      controllerMask.style.display = 'none';
+    } else {
+      this.setState({
+        showControl: false
+      })
+      controller.style.display = 'block';
+      controllerMask.style.display = 'block';
+    }
+  }
   render() {
     const { videoDetailReducer } = this.props;
     const { HotVideoList } = videoDetailReducer
@@ -250,7 +283,7 @@ class VideoDetail extends Component {
     return (
       <div className='playerIndex'>
         <PublicNavBar  {...navBarProps} />
-        <div onClick={() => this.setState({ display: !this.state.display })} id='dplayer' />
+        <div onClick={this.controlView} id='dplayer' />
         <Content {...contentProps} />
         <div className='InpBottomSay'>
           <i className='iconPhoto' />

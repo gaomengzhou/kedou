@@ -65,7 +65,6 @@ class Collect extends Component {
       })
     });
 
-
     new Promise(resolve => {
       this.props.getVideoCollect({
         user_id: sessionStorage.getItem('user_id'),
@@ -151,7 +150,9 @@ class Collect extends Component {
                 videoCollectList: res,
                 dataSource: this.state.dataSource.cloneWithRows(res),
                 count: 0,
+                videoPage: 1,
                 ids: '',
+                isStop: false,
               })
             })
           }
@@ -187,6 +188,7 @@ class Collect extends Component {
   }
   //切换Tab取消勾选的项目
   onTabChange = (v, i) => {
+    document.documentElement.scrollTop = 0
     this.setState({ page: i })
     const data = JSON.parse(JSON.stringify(this.state.bookCollectList))
     const data2 = JSON.parse(JSON.stringify(this.state.videoCollectList))
@@ -397,7 +399,8 @@ class Collect extends Component {
       edit: true,
       onLeftClick: this.onLeftClick,
       onRightClick: this.onRightClick,
-      isEdit: this.state.isEdit
+      isEdit: this.state.isEdit,
+      isCollect: true,
     }
     const videoTab = () => {
       const videoPros = {

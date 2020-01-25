@@ -9,3 +9,4 @@ export const BOOK_TAB_LIST = 'BOOK_TAB_LIST';
 export const GET_SEARCH_VIDEO = 'GET_SEARCH_VIDEO';
 export const GET_SEARCH_BOOK = 'GET_SEARCH_BOOK';
 export const GET_BOOL_COLLECT = 'GET_BOOL_COLLECT';
+export const REFRESH='REFRESH'

@@ -1,4 +1,5 @@
-import { Button, TextareaItem } from 'antd-mobile';
+import { Button, TextareaItem, Toast } from 'antd-mobile';
+import copy from 'copy-to-clipboard';
 import { createForm } from 'rc-form';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -18,11 +19,29 @@ class UserFeedBack extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      weChat: 'kedouzb',
+      qq: '826301938',
+      potato: 'kedouyifei',
+      tel: '123-123-123',
     }
   }
 
   onLeftClick = () => this.props.history.go(-1);
+  sendMsg = () => {
+    Toast.info('完善中,敬请期待!',1,false)
+  }
+  copyWechat = () => {
+    copy(this.state.weChat);
+    Toast.success('复制成功', 1, false)
+  }
+  copyQQ = () => {
+    copy(this.state.qq);
+    Toast.success('复制成功', 1, false)
+  }
+  copyPotato = () => {
+    copy(this.state.potato);
+    Toast.success('复制成功', 1, false)
+  }
 
   render() {
     const { getFieldProps } = this.props.form;
@@ -54,23 +73,25 @@ class UserFeedBack extends Component {
             <p className='feedbackimg'>更多反馈方式</p>
             <div className='feedBackStyles'>
               <p className='feedBackText'>联系管理员</p>
-              <Button className='feedBackBtn'>发送消息</Button>
+              <Button onClick={this.sendMsg} className='feedBackBtn'>发送消息</Button>
             </div>
             <div className='feedBackStyles'>
-              <p className='feedBackText'>微信客服: kedouzb</p>
-              <Button className='feedBackBtn'>复制微信号</Button>
+              <p className='feedBackText'>微信客服: {this.state.weChat}</p>
+              <Button onClick={this.copyWechat} className='feedBackBtn'>复制微信号</Button>
             </div>
             <div className='feedBackStyles'>
-              <p className='feedBackText'>客服QQ: 826301938</p>
-              <Button className='feedBackBtn'>复制QQ号</Button>
+              <p className='feedBackText'>客服QQ: {this.state.qq}</p>
+              <Button onClick={this.copyQQ} className='feedBackBtn'>复制QQ号</Button>
             </div>
             <div className='feedBackStyles'>
-              <p className='feedBackText'>Potato：kedouyifei</p>
-              <Button className='feedBackBtn'>复制号码</Button>
+              <p className='feedBackText'>Potato：{this.state.potato}</p>
+              <Button onClick={this.copyPotato} className='feedBackBtn'>复制号码</Button>
             </div>
             <div className='feedBackStyles'>
-              <p className='feedBackText'>客服电话: 123-123-123</p>
-              <Button className='feedBackBtn'>拨打号码</Button>
+              <p className='feedBackText'>客服电话: {this.state.tel}</p>
+              <Button className='feedBackBtn'>
+                <a style={{ color: '#000' }} href={`tel:${this.state.tel}`}>拨打电话</a>
+              </Button>
             </div>
           </div>
         </div>

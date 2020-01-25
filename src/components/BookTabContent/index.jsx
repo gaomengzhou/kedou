@@ -4,6 +4,15 @@ import { bookList as getBookList } from '../../services/book'
 import BookListContent from '../BookListContent'
 import ListTitle from '../ListTitle'
 import { bannel_list } from '../../services/bannel'
+import { connect } from 'react-redux'
+const stateToProps = (state) => {
+    return {
+		refresh:state.book.refresh,
+    }
+}
+@connect(
+    stateToProps,
+)
 class index extends Component {
 	constructor(props) {
 		super(props)
@@ -16,7 +25,7 @@ class index extends Component {
 				rowHasChanged: (row1, row2) => row1 !== row2,
 			}),
 			bannel: [],
-			bookList: []
+			bookList: [],
 		}
 	}
 
@@ -24,26 +33,13 @@ class index extends Component {
 		await bannel_list({
 			type: 1
 		}).then(res => {
-			console.log(res);
-			
 			this.setState({
-				bannel: res
+				bannel: res,
 			})
-
-		})
-		await bannel_list({
-			type: 3
-		}).then(res => {
-			console.log(res);
-			
-			// this.setState({
-			// 	bannel: res
-			// })
 
 		})
 		await this.onRefresh()
 	}
-
 	onRefresh = async () => {
 		await this.setState({
 			isRefreshing: true
@@ -54,7 +50,7 @@ class index extends Component {
 				let hotList;
 				let obj;
 				await getBookList({
-					user_id:sessionStorage.getItem('user_id')||'',
+					user_id: sessionStorage.getItem('user_id') || '',
 					page: 1,
 					rows: 10,
 					order: "created_date",
@@ -63,7 +59,7 @@ class index extends Component {
 					newList = res
 				})
 				await getBookList({
-					user_id:sessionStorage.getItem('user_id')||'',
+					user_id: sessionStorage.getItem('user_id') || '',
 					page: 1,
 					rows: 10,
 					order: "play",
@@ -81,7 +77,7 @@ class index extends Component {
 			}
 			case this.props.tabList[1].title: {
 				await getBookList({
-					user_id:sessionStorage.getItem('user_id')||'',
+					user_id: sessionStorage.getItem('user_id') || '',
 					page: 1,
 					rows: 20,
 					order: "created_date",
@@ -95,7 +91,7 @@ class index extends Component {
 			}
 			case this.props.tabList[2].title: {
 				await getBookList({
-					user_id:sessionStorage.getItem('user_id')||'',
+					user_id: sessionStorage.getItem('user_id') || '',
 					page: 1,
 					rows: 20,
 					order: "play",
@@ -108,7 +104,7 @@ class index extends Component {
 			}
 			default: {
 				await getBookList({
-					user_id:sessionStorage.getItem('user_id')||'',
+					user_id: sessionStorage.getItem('user_id') || '',
 					page: 1,
 					rows: 20,
 					category_id: this.props.tab.category_id
@@ -135,7 +131,7 @@ class index extends Component {
 		switch (this.props.tab.title) {
 			case this.props.tabList[1].title: {
 				getBookList({
-					user_id:sessionStorage.getItem('user_id')||'',
+					user_id: sessionStorage.getItem('user_id') || '',
 					page: this.state.page + 1,
 					rows: 10,
 					order: "created_date",
@@ -159,8 +155,8 @@ class index extends Component {
 			}
 			case this.props.tabList[2].title: {
 				getBookList({
-					user_id:sessionStorage.getItem('user_id')||'',
-					page: this.state.page+1,
+					user_id: sessionStorage.getItem('user_id') || '',
+					page: this.state.page + 1,
 					rows: 10,
 					order: "play",
 				}).then(res => {
@@ -182,10 +178,10 @@ class index extends Component {
 			}
 			default: {
 				getBookList({
-					user_id:sessionStorage.getItem('user_id')||'',
-					page: this.state.page+1,
+					user_id: sessionStorage.getItem('user_id') || '',
+					page: this.state.page + 1,
 					rows: 10,
-					category_id:this.props.tab.category_id
+					category_id: this.props.tab.category_id
 				}).then(res => {
 					if (res.length === 0) {
 						this.setState({
@@ -257,7 +253,7 @@ class index extends Component {
 		}, false);
 	}
 	listHeader = () => {
-		if(this.state.bannel.length===0){
+		if (this.state.bannel.length === 0) {
 			return false
 		}
 		return (
@@ -281,17 +277,17 @@ class index extends Component {
 			state: {
 				dataSource,
 				isRefreshing,
-				noMore
+				noMore,
 			},
-			props:{
+			props: {
 				getBooKDetail,
-				testRightCallBack
+				testRightCallBack,
+				refresh
 			},
 			onRefresh,
 			onEndReached,
 			listHeader
 		} = this
-
 		const contentStyle = {
 			display: 'flex',
 			justifyContent: 'space-between',
@@ -305,77 +301,76 @@ class index extends Component {
 				return (
 					<div id="bookHomeList">
 						<ListView
-						dataSource={dataSource}
-						renderHeader={() => listHeader()}
-						renderRow={(rowData, sectionID, rowID) => {
-							console.log(rowData);
-							return (
-								<>
-									{rowID === 'newList' &&
-										<>
-											<	ListTitle title={'最新小说'} more={true} changeActionKey={this.props.changeActionKey} />
-											<div style={contentStyle}>
-												{rowData.map((ev, i) => {
-													const info = {
-														ev,
-														rowID,
-														getBooKDetail,
-														testRightCallBack
-														// setCollect,
-														// collectSucceed
-													}
-													return (
-														<BookListContent key={i} {...info} />
-													)
-												})}
-											</div>
-										</>
+							dataSource={dataSource}
+							renderHeader={() => listHeader()}
+							renderRow={(rowData, sectionID, rowID) => {
+								return (
+									<>
+										{rowID === 'newList' &&
+											<>
+												<	ListTitle title={'最新小说'} more={true} changeActionKey={this.props.changeActionKey} />
+												<div style={contentStyle}>
+													{rowData.map((ev, i) => {
+														const info = {
+															ev,
+															rowID,
+															getBooKDetail,
+															testRightCallBack
+															// setCollect,
+															// collectSucceed
+														}
+														return (
+															<BookListContent key={i} {...info} />
+														)
+													})}
+												</div>
+											</>
 
-									}
-									{rowID === 'hotList' &&
-										<>
-											<	ListTitle title={'最热小说'} more={true} changeActionKey={this.props.changeActionKey} />
-											<div style={contentStyle}>
-												{rowData.map((ev, i) => {
-													const info = {
-														ev,
-														rowID,
-														getBooKDetail,
-														testRightCallBack
-														// setCollect,
-														// collectSucceed
-													}
-													return (
-														<BookListContent key={i} {...info} />
-													)
-												})}
-											</div>
-										</>
+										}
+										{rowID === 'hotList' &&
+											<>
+												<	ListTitle title={'最热小说'} more={true} changeActionKey={this.props.changeActionKey} />
+												<div style={contentStyle}>
+													{rowData.map((ev, i) => {
+														const info = {
+															ev,
+															rowID,
+															getBooKDetail,
+															testRightCallBack
+															// setCollect,
+															// collectSucceed
+														}
+														return (
+															<BookListContent key={i} {...info} />
+														)
+													})}
+												</div>
+											</>
 
-									}
-								</>
-							)
-						}}
-						useBodyScroll={true}
-						pullToRefresh={<PullToRefresh
-							refreshing={isRefreshing}
-							onRefresh={onRefresh}
-						/>}
-						// onEndReachedThreshold={10}
-						onScroll={() => {
-							if (document.querySelector('.background') && document.querySelector('.header-search') && document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.am-tab-bar-bar')) {
-								this.scrollDirect()
-							} else {
-								return false
+										}
+									</>
+								)
+							}}
+							useBodyScroll={true}
+							pullToRefresh={refresh?<PullToRefresh
+								refreshing={isRefreshing}
+								onRefresh={onRefresh}
+							/> :''}
+							// onEndReachedThreshold={10}
+							onScroll={() => {
+								if (document.querySelector('.background') && document.querySelector('.header-search') && document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.am-tab-bar-bar')) {
+									this.scrollDirect()
+								} else {
+									return false
+								}
 							}
-						}
-						}
-						scrollEventThrottle={11111111110}
-						// onEndReached={onEndReached}
-						renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-							{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
-						</div>)}
-					/>
+							}
+							scrollEventThrottle={11111111110}
+							// onEndReached={onEndReached}
+							renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
+								{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
+							</div>)}
+						/>
 					</div>
 				)
 			}
@@ -400,10 +395,10 @@ class index extends Component {
 								)
 							}}
 							useBodyScroll={true}
-							pullToRefresh={<PullToRefresh
+							pullToRefresh={refresh?<PullToRefresh
 								refreshing={isRefreshing}
 								onRefresh={onRefresh}
-							/>}
+							/> :''}
 							onEndReachedThreshold={10}
 							onEndReached={onEndReached}
 							pageSize={10}
@@ -435,10 +430,10 @@ class index extends Component {
 								)
 							}}
 							useBodyScroll={true}
-							pullToRefresh={<PullToRefresh
+							pullToRefresh={refresh?<PullToRefresh
 								refreshing={isRefreshing}
 								onRefresh={onRefresh}
-							/>}
+							/> :''}
 							onEndReachedThreshold={10}
 							onEndReached={onEndReached}
 							pageSize={10}

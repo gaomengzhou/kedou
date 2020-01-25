@@ -1,21 +1,9 @@
-import { Button, ImagePicker } from 'antd-mobile';
+import { Button, ImagePicker, Toast } from 'antd-mobile';
 import React from 'react';
 import { connect } from 'react-redux';
 import { userFeedBacks } from '../../../store/action/feedBack';
 import '../index.less';
 import './imgpicker.less';
-
-// const data = [
-//   {
-//     url: 'https://zos.alipayobjects.com/rmsportal/PZUUCKTRIHWiZSY.jpeg',
-//     id: '2121',
-//   },
-//   {
-//     url: 'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg',
-//     id: '2122',
-//   }
-// ];
-const data = []
 const mapDispatchToProps = {
   userFeedBacks
 };
@@ -27,7 +15,7 @@ class ImagePickerExample extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      files: data,
+      files: [],
       userFeedBack: '',
     }
   }
@@ -38,16 +26,29 @@ class ImagePickerExample extends React.Component {
       files,
     });
   }
-  feedBackBtn = () => {
+
+  feedBackBtn = async () => {
     const userFeedBack = this.props.userFeedBack ? this.props.userFeedBack : null
     const { files } = this.state;
     const imgs = files.map((item, i) => item.url).join(',')
     if (userFeedBack === null) {
+      Toast.info('请输入点内容', 1)
       return
     } else {
-      this.props.userFeedBacks({ user_id: sessionStorage.getItem('user_id'), role: 'user', message: userFeedBack, images: imgs })
+      try {
+        let res = await this.props.userFeedBacks({
+          user_id: sessionStorage.getItem('user_id'),
+          role: 'user',
+          message: userFeedBack,
+          images: imgs,
+        })
+        Toast.success(res.suc)
+        this.props.form.setFieldsValue({ 'userFeedBack': '' })
+        this.setState({ files: [] })
+      } catch (error) {
+        Toast.fail(error.message)
+      }
     }
-    this.props.form.setFieldsValue({ 'userFeedBack': '' })
   }
 
   render() {

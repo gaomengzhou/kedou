@@ -7,8 +7,6 @@ export const category=({
     return book.category({
         ...parameter
     }).then(res=>{
-        console.log(res);
-        
         res = [{
             title: '全部小说',
             key:'全部小说',
@@ -41,7 +39,14 @@ export const bookList=({
     return book.bookList({
         ...parameter
     }).then(res=>{
-        console.log(res);
         
+    })
+}
+
+export const setOnRefresh=(parameter)=>(dispatch)=>{
+    
+    dispatch({
+        type:actionType.REFRESH,
+        refresh:parameter
     })
 }
