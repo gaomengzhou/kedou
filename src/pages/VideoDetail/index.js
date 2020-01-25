@@ -228,26 +228,29 @@ class VideoDetail extends Component {
   }
   controlView = () => {
     clearTimeout(this.timer)
-    let controller = document.querySelector('.dplayer-controller');
-    let controllerMask = document.querySelector('.dplayer-controller-mask');
     this.setState({
       display: !this.state.display,
-      showControl: !this.state.showControl
     })
+    // let controller = document.querySelector('.dplayer-controller');
+    // let controllerMask = document.querySelector('.dplayer-controller-mask');
+    // this.setState({
+    //   display: !this.state.display,
+    //   showControl: !this.state.showControl
+    // })
 
-    if (!this.state.showControl) {
-      this.setState({
-        showControl: true
-      })
-      controller.style.display = 'none';
-      controllerMask.style.display = 'none';
-    } else {
-      this.setState({
-        showControl: false
-      })
-      controller.style.display = 'block';
-      controllerMask.style.display = 'block';
-    }
+    // if (!this.state.showControl) {
+    //   this.setState({
+    //     showControl: true
+    //   })
+    //   controller.style.display = 'none';
+    //   controllerMask.style.display = 'none';
+    // } else {
+    //   this.setState({
+    //     showControl: false
+    //   })
+    //   controller.style.display = 'block';
+    //   controllerMask.style.display = 'block';
+    // }
   }
   render() {
     const { videoDetailReducer } = this.props;

@@ -81,7 +81,7 @@
   "scripts": {
     "dev": "react-app-rewired start",
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build-p": "react-app-rewired build",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {

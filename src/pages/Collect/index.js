@@ -319,6 +319,7 @@ class Collect extends Component {
   }
 
   goToVideo = (item) => {
+    document.documentElement.scrollTop = 0
     window.sessionStorage.setItem('goBack', 'true')
     const user_id = sessionStorage.getItem('user_id');
     this.props.history.push(`/detailVideo/video_id=${item.video_id}&user_id=${user_id}`);
