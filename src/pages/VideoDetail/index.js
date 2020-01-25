@@ -57,6 +57,7 @@ class VideoDetail extends Component {
   }
 
   componentWillUnmount() {
+    clearTimeout(this.timer)
     this.dPlayer && this.dPlayer.destroy();
     this.isLeave = true;
   }
