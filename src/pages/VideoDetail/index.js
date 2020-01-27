@@ -15,6 +15,7 @@ import ModalPlayer from './components/ModalPlayer';
 import './player.less';
 
 let setTimer;
+let timeCount = 0;
 
 const mapDispatchToProps = {
   getVideoOnePatch, getChat
@@ -44,27 +45,30 @@ class VideoDetail extends Component {
   }
 
   componentDidMount() {
+    const user_id = sessionStorage.getItem('user_id')
     this.getVideo()
     this.getChat()
     this.isLeave = false;
-    this.timer = setTimeout(() => {
-      let dplayer = document.getElementById('dplayer')
-      dplayer.classList.add('dplayer-hide-controller')
-      document.querySelector('.dplayer-controller').addEventListener('click', function (e) {
-        e.stopPropagation()
-      })
-      this.setState({
-        display: true,
-        showControl: true
-      })
-    }, 3000);
+    if (user_id) {
+      this.timer = setTimeout(() => {
+        let dplayer = document.getElementById('dplayer')
+        dplayer.classList.add('dplayer-hide-controller')
+        document.querySelector('.dplayer-controller').addEventListener('click', function (e) {
+          e.stopPropagation()
+        })
+        this.setState({
+          display: true,
+          showControl: true
+        })
+      }, 3000);
+    }
   }
 
   componentWillUnmount() {
     clearTimeout(this.timer)
     this.dPlayer && this.dPlayer.destroy();
     this.isLeave = true;
-    clearTimeout(setTimer)
+    clearInterval(setTimer)
   }
 
   getChat = (vId = '') => {
@@ -114,6 +118,7 @@ class VideoDetail extends Component {
   }
 
   InitDPlayer = (url = '') => {
+    const user_id = sessionStorage.getItem('user_id')
     if (this.dPlayer || this.isLeave) return;
     this.dp = new DPlayer({
       container: document.getElementById('dplayer'),
@@ -129,9 +134,12 @@ class VideoDetail extends Component {
         url: url
       },
     });
-    document.querySelector('.dplayer-controller').addEventListener('click', function (e) {
-      e.stopPropagation()
-    })
+    if (user_id) {
+      document.querySelector('.dplayer-controller').addEventListener('click', function (e) {
+        e.stopPropagation();
+        timeCount = 0;
+      })
+    }
   }
 
   onLeftClick = () => {
@@ -237,13 +245,19 @@ class VideoDetail extends Component {
   }
 
   setTimerFN = () => {
-    setTimer=setTimeout(() => {
-      document.getElementById('dplayer').classList.add('dplayer-hide-controller')
-      this.setState({
-        display: true,
-        showControl: true
-      })
-    }, 5000);
+    setTimer = setInterval(() => {
+      timeCount++
+      console.log(timeCount)
+      if (timeCount === 5) {
+        document.getElementById('dplayer').classList.add('dplayer-hide-controller')
+        this.setState({
+          display: true,
+          showControl: true
+        })
+        clearInterval(setTimer);
+        timeCount = 0
+      }
+    }, 1000);
   }
 
   controlView = () => {
@@ -255,9 +269,11 @@ class VideoDetail extends Component {
     if (!this.state.showControl) {
       this.setState({
         showControl: true
-      })
-      let dplayer = document.getElementById('dplayer')
-      dplayer.classList.add('dplayer-hide-controller')
+      });
+      let dplayer = document.getElementById('dplayer');
+      dplayer.classList.add('dplayer-hide-controller');
+      clearInterval(setTimer);
+      timeCount=0;
     } else {
       this.setState({
         showControl: false
