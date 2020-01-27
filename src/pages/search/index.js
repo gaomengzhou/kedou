@@ -7,6 +7,7 @@ import { getSearchBook, getSearchVideo } from '../../store/action/search';
 import BookSearch from './components/BookContent';
 import VideoSearch from './components/VideoContent';
 import './index.less';
+let timerCount = 0;
 const mapDispatchToProps = {
   getSearchVideo, getSearchBook
 };
@@ -65,20 +66,25 @@ class SearchBarExample extends React.Component {
     this.props.history.push(`/detailVideo/video_id=${item.id}`)
   }
   onChange = async (e) => {
-    console.log(e.target.value)
-    this.setState({ value: e.target.value });
-    if (e.target.value === '' || e.target.value === ' ') {
+    timerCount++
+    const searchValue = e.target.value.replace(/\s+/g, '');
+    this.setState({
+      value: e.target.value,
+      keyword: searchValue,
+    });
+    if (searchValue === '') {
       this.setState({
         isSearch: false
       })
     } else {
       if (this.props.match.params.name === 'video') {
         this.setState({
-          keyword: e.target.value,
           stopRequest: false,
           page: 1,
         })
-        const res = await this.props.getSearchVideo({ keyword: e.target.value, rows: '10', page: '1' })
+        const res = await setTimeout(() => {
+          this.props.getSearchVideo({ keyword: searchValue, rows: '10', page: '1' })
+        }, 600);
         if (res.length > 0) {
           this.setState({
             videoData: res,
@@ -99,11 +105,10 @@ class SearchBarExample extends React.Component {
         }
       } else {
         this.setState({
-          keyword: e.target.value,
           stopRequest: false,
           page: 1,
         })
-        const res = await this.props.getSearchBook({ keyword: e.target.value, rows: '10', page: '1' })
+        const res = await this.props.getSearchBook({ keyword: searchValue, rows: '10', page: '1' })
         if (res.length > 0) {
           this.setState({
             bookData: res,
@@ -155,13 +160,6 @@ class SearchBarExample extends React.Component {
     }
   }
 
-  keyUp = () => {
-    const values = this.state.value;
-    const value = values.replace(/\s+/g, '')
-    this.setState({
-      value,
-    })
-  }
   render() {
     if (this.state.isvideo) {
       const videoSearchProps = {
@@ -180,7 +178,6 @@ class SearchBarExample extends React.Component {
               onChange={this.onChange}
               value={this.state.value}
               onKeyDown={this.onKeyDown}
-              onKeyUp={this.keyUp}
             />
             <span onClick={this.goback}>取消</span>
             <p className='searchIcon' />
@@ -211,7 +208,6 @@ class SearchBarExample extends React.Component {
               onChange={this.onChange}
               value={this.state.value}
               onKeyDown={this.onKeyDown}
-              onKeyUp={this.keyUp}
             />
             <span onClick={this.goback}>取消</span>
             <p className='searchIcon' />
