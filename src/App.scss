@@ -5,11 +5,19 @@
   list-style: none;
   box-sizing: border-box;
 }
-
+body{
+  background-color: #fff !important;
+}
 .App {
   text-align: center;
 }
-
+.am-list-footer{
+  background-color: #f5f5f9 !important;
+  padding: 0 !important;
+  div{
+    background-color: #f5f5f9 !important;
+  }
+}
 .App-logo {
   height: 40vmin;
 }

@@ -3,7 +3,7 @@ import { PullToRefresh, ListView, Carousel } from 'antd-mobile';
 import ListTitle from '../ListTitle'
 import ListContent from '../ListContent'
 import { connect } from 'react-redux'
-import { getHomeVideoList } from '@/store/action/video'
+import { getHomeVideoList } from '../../store/action/video'
 import { getTabList, search_video } from '../../services/video'
 import { bannel_list } from '../../services/bannel'
 const stateToProps = (state) => {
@@ -22,7 +22,7 @@ class index extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			isLoading: false,
+			isLoading: true,
 			noMore: false,
 			isRefreshing: true,
 			dataSource: new ListView.DataSource({
@@ -41,12 +41,12 @@ class index extends Component {
 			type: 1
 		}).then(res => {
 			this.setState({
-				bannel: res
+				bannel: res,
+				isLoading: true,
 			})
 
 		})
 		await this.onRefresh()
-
 	}
 	static getDerivedStateFromProps(props, state) {
 		const {
@@ -82,12 +82,16 @@ class index extends Component {
 
 	onRefresh = async () => {
 		await this.setState({
-			isRefreshing: true
+			isRefreshing: true,
+			isLoading: true,
 		})
 		switch (this.props.tab.title) {
 			case '全部影片': {
 				await this.props.getHomeLabelList({
 					type: 0
+				})
+				await this.setState({
+					isLoading: false,
 				})
 				break;
 			}
@@ -95,11 +99,17 @@ class index extends Component {
 				await this.props.getHomeVideoList({
 					rows: ''
 				})
+				await this.setState({
+					isLoading: false,
+				})
 				break;
 			}
 			case '重磅热播': {
 				await this.props.getHomeVideoList({
 					rows: ''
+				})
+				await this.setState({
+					isLoading: false,
 				})
 				break;
 			}
@@ -110,7 +120,8 @@ class index extends Component {
 					id: this.props.tab.id
 				}).then(res => {
 					this.setState({
-						videoList: res
+						videoList: res,
+						isLoading: false,
 					})
 				})
 				break;
@@ -123,7 +134,8 @@ class index extends Component {
 					label: this.props.tab.title
 				}).then(res => {
 					this.setState({
-						videoList: res
+						videoList: res,
+						isLoading: false,
 					})
 
 				})
@@ -182,6 +194,7 @@ class index extends Component {
 						videoList,
 						page: this.state.page + 1,
 						rows: 20,
+						isLoading: false,
 						dataSource: this.state.dataSource.cloneWithRows(videoList),
 					})
 				})
@@ -206,7 +219,7 @@ class index extends Component {
 
 
 		this.setState({
-			isLoading: false,
+			// isLoading: false,
 			data: Date.now()
 		})
 		loading = false
@@ -230,58 +243,64 @@ class index extends Component {
 
 	}
 
-	scrollDirect = () => {
-		const _this = this
-		var beforeScrollTop = document.documentElement.scrollTop || document.body.scrollTop
-		window.addEventListener("scroll", function () {
-			var afterScrollTop = document.documentElement.scrollTop || document.body.scrollTop,
-				delta = afterScrollTop - beforeScrollTop;
-			if (delta === 0) return false;
-			const scroll = delta > 0 ? "down" : "up"
-			const stateScroll = _this.state.scroll
-			if (document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.header-search') && document.querySelector('.background') && document.querySelector('.am-tab-bar-bar')) {
-				if (afterScrollTop > 150) {
-					if (scroll !== stateScroll || !stateScroll) {
-						if (scroll === 'down' && afterScrollTop > 100) {
-							document.querySelector('.am-tabs-tab-bar-wrap').style.top = '-2rem'
-							document.querySelector('.header-search').style.top = '-2rem'
-							document.querySelector('.background').style.top = '-2rem'
-							document.querySelector('.am-tab-bar-bar').style.bottom = '-2rem'
-						} else {
-							document.querySelector('.background').style.top = '0rem'
-							document.querySelector('.header-search').style.top = '0rem'
-							document.querySelector('.am-tabs-tab-bar-wrap').style.top = '1rem'
-							document.querySelector('.am-tab-bar-bar').style.bottom = '0'
-						}
-						_this.setState({
-							scroll: delta > 0 ? "down" : "up"
-						})
-					}
-				}
-			} else {
-				return null
-			}
-			beforeScrollTop = afterScrollTop;
-		}, false);
-	}
+	// scrollDirect = () => {
+	// 	const _this = this
+	// 	var beforeScrollTop = document.documentElement.scrollTop || document.body.scrollTop
+	// 	window.addEventListener("scroll", function () {
+	// 		var afterScrollTop = document.documentElement.scrollTop || document.body.scrollTop,
+	// 			delta = afterScrollTop - beforeScrollTop;
+	// 		if (delta === 0) return false;
+	// 		const scroll = delta > 0 ? "down" : "up"
+	// 		const stateScroll = _this.state.scroll
+	// 		if (document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.header-search') && document.querySelector('.background') && document.querySelector('.TabBer')) {
+	// 			if (afterScrollTop > 150) {
+	// 				if (scroll !== stateScroll || !stateScroll) {
+	// 					if (scroll === 'down' && afterScrollTop > 100) {
+	// 						document.querySelector('.am-tabs-tab-bar-wrap').style.top = '-1rem'
+	// 						document.querySelector('.header-search').style.top = '-2rem'
+	// 						document.querySelector('.background').style.top = '-2rem'
+	// 						document.querySelector('.TabBer').style.bottom = '-2rem'
+	// 						_this.props.closeMyLoginShow()
+	// 					} else {
+	// 						document.querySelector('.background').style.top = '0rem'
+	// 						document.querySelector('.header-search').style.top = '0rem'
+	// 						document.querySelector('.am-tabs-tab-bar-wrap').style.top = '1rem'
+	// 						document.querySelector('.TabBer').style.bottom = '0'
+	// 					}
+	// 					_this.setState({
+	// 						scroll: delta > 0 ? "down" : "up"
+	// 					})
+	// 				}
+	// 			} else {
+	// 				document.querySelector('.background').style.top = '0rem'
+	// 				document.querySelector('.header-search').style.top = '0rem'
+	// 				document.querySelector('.am-tabs-tab-bar-wrap').style.top = '1rem'
+	// 				document.querySelector('.TabBer').style.bottom = '0'
+	// 			}
+	// 		} else {
+	// 			return null
+	// 		}
+	// 		beforeScrollTop = afterScrollTop;
+	// 	}, false);
+	// }
 	listHeader = () => {
-		if(this.state.bannel.length===0){
+		if (this.state.bannel.length === 0) {
 			return false
 		}
 		return (
-				<Carousel
-					autoplay={true}
-					infinite={true}
-					selectedIndex={0}
-				>
-					{this.state.bannel.map(val => (
-						<img
-							src={val.url}
-							alt="正在加载图片"
-							style={{ width: '100%', height: '100%' }}
-						/>
-					))}
-				</Carousel>
+			<Carousel
+				autoplay={true}
+				infinite={true}
+				selectedIndex={0}
+			>
+				{this.state.bannel.map(val => (
+					<img
+						src={val.url}
+						alt="正在加载图片"
+						style={{ width: '100%', height: '100%' }}
+					/>
+				))}
+			</Carousel>
 		)
 	}
 	render() {
@@ -383,17 +402,17 @@ class index extends Component {
 							refreshing={isRefreshing}
 							onRefresh={onRefresh}
 						/>}
-						onScroll={() => {
-							if (document.querySelector('.background') && document.querySelector('.header-search') && document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.am-tab-bar-bar')) {
-								this.scrollDirect()
-							} else {
-								return false
-							}
-						}
-						}
+						// onScroll={() => {
+						// 	if (document.querySelector('.background') && document.querySelector('.header-search') && document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.TabBer')) {
+						// 		this.scrollDirect()
+						// 	} else {
+						// 		return false
+						// 	}
+						// }
+						// }
 						scrollEventThrottle={11111111110}
-						renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-							{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
+						renderFooter={() => (<div style={{ padding: '.3rem 0 1rem 0', textAlign: 'center' }}>
+							{this.state.isLoading ? 'Loading...' : '没有更多了'}
 						</div>)}
 					/>
 				)
@@ -424,9 +443,9 @@ class index extends Component {
 								refreshing={isRefreshing}
 								onRefresh={onRefresh}
 							/>}
-							renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-								{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
-							</div>)}
+							renderFooter={() => (<div style={{ padding: '.3rem 0 1rem 0', textAlign: 'center' }}>
+							{this.state.isLoading ? 'Loading...' : '没有更多了'}
+						</div>)}
 						/>
 					</div>
 				)
@@ -457,9 +476,9 @@ class index extends Component {
 								refreshing={isRefreshing}
 								onRefresh={onRefresh}
 							/>}
-							renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-								{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
-							</div>)}
+							renderFooter={() => (<div style={{ padding: '.3rem 0 1rem 0', textAlign: 'center' }}>
+							{this.state.isLoading ? 'Loading...' : '没有更多了'}
+						</div>)}
 						/>
 					</div>
 				)
@@ -489,7 +508,7 @@ class index extends Component {
 							onEndReachedThreshold={10}
 							onEndReached={onEndReached}
 							pageSize={10}
-							renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
+							renderFooter={() => (<div style={{ padding: '.3rem 0 1rem 0', textAlign: 'center' }}>
 								{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
 							</div>)}
 						/>

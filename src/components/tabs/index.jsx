@@ -35,7 +35,8 @@ class index extends Component {
 				getHomeLabelList: this.props.getHomeLabelList,
 				goToVideoDetail: this.props.goToVideoDetail,
 				headerShow: this.props.headerShow,
-				labelList: this.props.labelList
+				labelList: this.props.labelList,
+				closeMyLoginShow:this.props.closeMyLoginShow,
 
 			}
 			return <TabContent key={tab.key} {...tabContent} />
@@ -46,6 +47,7 @@ class index extends Component {
 			changeActionKey: this.changeActionKey,
 			getBooKDetail:this.props.getBooKDetail,
 			testRightCallBack:this.props.testRightCallBack,
+			closeMyLoginShow:this.props.closeMyLoginShow,
 			// setCollect:this.props.setCollect,
 			// collectSucceed:this.props.collectSucceed
 		}

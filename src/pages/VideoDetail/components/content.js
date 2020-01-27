@@ -17,7 +17,8 @@ const Content = (props) => {
 
   const copyAccessKey = () => {
     if (props.detailData.share_url) {
-      copy(props.detailData.share_url)
+      // copy(props.detailData.share_url)
+      copy(window.location.href)
       Toast.success('已复制邀请链接,粘贴分享给好友')
     } else {
       Toast.fail('分享复制失败')
@@ -26,7 +27,7 @@ const Content = (props) => {
   return (
     <div id='contentPlayer' style={{ padding: '.1rem', background: '#fff' }}>
       <div className='title'>
-        <p style={{ fontWeight: 900 }} className='titleLogo'><img src={require('@/assets/images/ico@2x.png')} alt="" /></p>
+        <p style={{ fontWeight: 900 }} className='titleLogo'><img src={require('../../../assets/images/ico@2x.png')} alt="" /></p>
         <p className='titleText'>{props.detailData.title}</p>
         <p className='lastP'>
           <span style={{ fontSize: '.35rem', color: "#840fe4", fontWeight: 900 }}>{props.detailData.play_num}</span>看过

@@ -10,7 +10,7 @@ const ListContent = (props) => {
       comment_id: props.rowData.id
     }).then(res => {
       if (res.err) {
-        Toast.fail('已经点过,不能在点!')
+        Toast.fail('已经点过,不能再点!')
         return
       }
       if (res.suc) {

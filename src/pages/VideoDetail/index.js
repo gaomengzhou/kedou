@@ -13,6 +13,9 @@ import { getChat, getVideoOnePatch } from '../../store/action/videoDetail';
 import Content from './components/content';
 import ModalPlayer from './components/ModalPlayer';
 import './player.less';
+
+let setTimer;
+
 const mapDispatchToProps = {
   getVideoOnePatch, getChat
 };
@@ -45,10 +48,11 @@ class VideoDetail extends Component {
     this.getChat()
     this.isLeave = false;
     this.timer = setTimeout(() => {
-      let controller = document.querySelector('.dplayer-controller');
-      let controllerMask = document.querySelector('.dplayer-controller-mask');
-      controller.style.display = 'none';
-      controllerMask.style.display = 'none';
+      let dplayer = document.getElementById('dplayer')
+      dplayer.classList.add('dplayer-hide-controller')
+      document.querySelector('.dplayer-controller').addEventListener('click', function (e) {
+        e.stopPropagation()
+      })
       this.setState({
         display: true,
         showControl: true
@@ -60,6 +64,7 @@ class VideoDetail extends Component {
     clearTimeout(this.timer)
     this.dPlayer && this.dPlayer.destroy();
     this.isLeave = true;
+    clearTimeout(setTimer)
   }
 
   getChat = (vId = '') => {
@@ -124,6 +129,9 @@ class VideoDetail extends Component {
         url: url
       },
     });
+    document.querySelector('.dplayer-controller').addEventListener('click', function (e) {
+      e.stopPropagation()
+    })
   }
 
   onLeftClick = () => {
@@ -227,31 +235,37 @@ class VideoDetail extends Component {
       }
     })
   }
+
+  setTimerFN = () => {
+    setTimer=setTimeout(() => {
+      document.getElementById('dplayer').classList.add('dplayer-hide-controller')
+      this.setState({
+        display: true,
+        showControl: true
+      })
+    }, 5000);
+  }
+
   controlView = () => {
     clearTimeout(this.timer)
     this.setState({
       display: !this.state.display,
+      showControl: !this.state.showControl
     })
-    // let controller = document.querySelector('.dplayer-controller');
-    // let controllerMask = document.querySelector('.dplayer-controller-mask');
-    // this.setState({
-    //   display: !this.state.display,
-    //   showControl: !this.state.showControl
-    // })
-
-    // if (!this.state.showControl) {
-    //   this.setState({
-    //     showControl: true
-    //   })
-    //   controller.style.display = 'none';
-    //   controllerMask.style.display = 'none';
-    // } else {
-    //   this.setState({
-    //     showControl: false
-    //   })
-    //   controller.style.display = 'block';
-    //   controllerMask.style.display = 'block';
-    // }
+    if (!this.state.showControl) {
+      this.setState({
+        showControl: true
+      })
+      let dplayer = document.getElementById('dplayer')
+      dplayer.classList.add('dplayer-hide-controller')
+    } else {
+      this.setState({
+        showControl: false
+      })
+      let dplayer = document.getElementById('dplayer')
+      dplayer.classList.remove('dplayer-hide-controller')
+      this.setTimerFN()
+    }
   }
   render() {
     const { videoDetailReducer } = this.props;
@@ -287,7 +301,7 @@ class VideoDetail extends Component {
     return (
       <div className='playerIndex'>
         <PublicNavBar  {...navBarProps} />
-        <div onClick={this.controlView} id='dplayer' />
+        <div id='dplayer' onClick={this.controlView} />
         <Content {...contentProps} />
         <div className='InpBottomSay'>
           <i className='iconPhoto' />

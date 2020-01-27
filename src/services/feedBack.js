@@ -5,3 +5,11 @@ export const getFeedBack = (params) => {
     ...params
   })
 }
+
+
+// 获取反馈联系方式
+export const contactApi = (params) => {
+  return initAxios().post('/v2/common/contact_list', {
+    ...params
+  })
+}

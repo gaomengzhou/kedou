@@ -19,7 +19,7 @@ class index extends Component {
 			userIptFocus: false,
 			pswIptFocus: false,
 			codeIptFocus: false,
-			rePswIptFocus:false
+			rePswIptFocus: false
 		}
 	}
 	initialization = () => {
@@ -54,6 +54,7 @@ class index extends Component {
 		const getCode = this.state.getCode
 		const { telNumber } = this.state
 		if (telNumber.length !== 11) {
+			Toast.info('请填写正确的手机号')
 			return false
 		}
 		if (getCode === '获取验证码' || getCode === '重新获取') {
@@ -83,6 +84,18 @@ class index extends Component {
 			const { code } = res
 			if (code) {
 				if (code !== 0) {
+					if (!telNumber) {
+						Toast.info('请填写手机号')
+						return false
+					}
+					if (!passWord) {
+						Toast.info('请填写密码')
+						return false
+					}
+					if (!codeNumber) {
+						Toast.info('请填写验证码')
+						return false
+					}
 					Toast.info(res.err)
 					return false
 				}
@@ -103,9 +116,15 @@ class index extends Component {
 			const { code } = res
 			if (code) {
 				if (res.code !== 0) {
-					console.log(res);
-
-					Toast.info(res.err)
+					if (!telNumber) {
+						Toast.info('请填写手机号')
+						return false
+					}
+					if (!passWord) {
+						Toast.info('请填写密码')
+						return false
+					}
+					Toast.info('请正确填写用户名和密码')
 					return false
 				}
 			}
@@ -124,13 +143,17 @@ class index extends Component {
 		}).then(res => {
 			const { code } = res
 			if (code !== 0) {
-				console.log(2);
-
+				if (!codeNumber) {
+					Toast.info('请填写验证码')
+					return false
+				}
+				if (!telNumber) {
+					Toast.info('请填写手机号')
+					return false
+				}
 				Toast.info(res.err)
 				return false
 			}
-			console.log(3);
-
 			this.setState({
 				changePassWord: !this.state.changePassWord,
 				Retrieve: !this.state.Retrieve,
@@ -147,7 +170,11 @@ class index extends Component {
 	changePSWSubMit = () => {
 		const { telNumber, passWord, rePassWord } = this.state
 		if (telNumber.length !== 11 || passWord !== rePassWord) {
-			Toast.info('请检查参数')
+			Toast.info('两次密码不一样')
+			return false
+		}
+		if (passWord.length < 6) {
+			Toast.info('密码不能小于6位')
 			return false
 		}
 		change_pwd({
@@ -188,7 +215,8 @@ class index extends Component {
 			margin: 'auto',
 			width: '80%',
 			// height: '40%',
-			backgroundColor: '#fff',
+			background: "url(" + require("../../assets/images/BG.png") + ") no-repeat center ",
+			// backgroundAttachment: 'fixed',
 			borderRadius: '.2rem',
 		}
 		return (
@@ -230,7 +258,7 @@ class index extends Component {
 									})
 								}} />
 								<div className="iconBox">
-									<img src={this.state.userIptFocus ? require('@/assets/images/phone_pressed_ico.png') : require('@/assets/images/phone_nomal_ico.png')} alt="" className="icont" />
+									<img src={this.state.userIptFocus ? require('../../assets/images/phone_pressed_ico.png') : require('../../assets/images/phone_nomal_ico.png')} alt="" className="icont" />
 								</div>
 							</div>
 							<div className="Ipt">
@@ -250,7 +278,7 @@ class index extends Component {
 									})
 								}} />
 								<div className="iconBox">
-									<img src={this.state.pswIptFocus ? require('@/assets/images/password_pressed_ico.png') : require('@/assets/images/password_nomal_ico.png')} alt="" className="icont" />
+									<img src={this.state.pswIptFocus ? require('../../assets/images/password_pressed_ico.png') : require('../../assets/images/password_nomal_ico.png')} alt="" className="icont" />
 								</div>
 
 							</div>
@@ -285,7 +313,7 @@ class index extends Component {
 						<p>注册</p>
 						<div className='inputBox'>
 							<div className="Ipt">
-							<input type="text" maxLength='11' placeholder='请输入手机号' onBlur={() => {
+								<input type="text" maxLength='11' placeholder='请输入手机号' onBlur={() => {
 									this.setState({
 										userIptFocus: false
 									})
@@ -301,7 +329,7 @@ class index extends Component {
 									})
 								}} />
 								<div className="iconBox">
-									<img src={this.state.userIptFocus ? require('@/assets/images/phone_pressed_ico.png') : require('@/assets/images/phone_nomal_ico.png')} alt="" className="icont" />
+									<img src={this.state.userIptFocus ? require('../../assets/images/phone_pressed_ico.png') : require('../../assets/images/phone_nomal_ico.png')} alt="" className="icont" />
 								</div>
 							</div>
 							<div className='codeIpt' style={{
@@ -334,7 +362,7 @@ class index extends Component {
 									}
 								} > {getCode}</span>
 								<div className="iconBox">
-									<img src={this.state.codeIptFocus ? require('@/assets/images/safe_pressed_ico.png') : require('@/assets/images/safe_nomal_ico.png')} alt="" className="icont" />
+									<img src={this.state.codeIptFocus ? require('../../assets/images/safe_pressed_ico.png') : require('../../assets/images/safe_nomal_ico.png')} alt="" className="icont" />
 								</div>
 							</div>
 							<div className="Ipt">
@@ -354,7 +382,7 @@ class index extends Component {
 									})
 								}} />
 								<div className="iconBox">
-									<img src={this.state.pswIptFocus ? require('@/assets/images/password_pressed_ico.png') : require('@/assets/images/password_nomal_ico.png')} alt="" className="icont" />
+									<img src={this.state.pswIptFocus ? require('../../assets/images/password_pressed_ico.png') : require('../../assets/images/password_nomal_ico.png')} alt="" className="icont" />
 								</div>
 
 							</div>
@@ -370,8 +398,8 @@ class index extends Component {
 					}} className='registered'>
 						<p>忘记密码</p>
 						<div className='inputBox'>
-						<div className="Ipt">
-							<input type="text" maxLength='11' placeholder='请输入手机号' onBlur={() => {
+							<div className="Ipt">
+								<input type="text" maxLength='11' placeholder='请输入手机号' onBlur={() => {
 									this.setState({
 										userIptFocus: false
 									})
@@ -387,7 +415,7 @@ class index extends Component {
 									})
 								}} />
 								<div className="iconBox">
-									<img src={this.state.userIptFocus ? require('@/assets/images/phone_pressed_ico.png') : require('@/assets/images/phone_nomal_ico.png')} alt="" className="icont" />
+									<img src={this.state.userIptFocus ? require('../../assets/images/phone_pressed_ico.png') : require('../../assets/images/phone_nomal_ico.png')} alt="" className="icont" />
 								</div>
 							</div>
 							<div className='codeIpt' style={{
@@ -420,7 +448,7 @@ class index extends Component {
 									}
 								} > {getCode}</span>
 								<div className="iconBox">
-									<img src={this.state.codeIptFocus ? require('@/assets/images/safe_pressed_ico.png') : require('@/assets/images/safe_nomal_ico.png')} alt="" className="icont" />
+									<img src={this.state.codeIptFocus ? require('../../assets/images/safe_pressed_ico.png') : require('../../assets/images/safe_nomal_ico.png')} alt="" className="icont" />
 								</div>
 							</div>
 
@@ -453,7 +481,7 @@ class index extends Component {
 									})
 								}} />
 								<div className="iconBox">
-									<img src={this.state.pswIptFocus ? require('@/assets/images/password_pressed_ico.png') : require('@/assets/images/password_nomal_ico.png')} alt="" className="icont" />
+									<img src={this.state.pswIptFocus ? require('../../assets/images/password_pressed_ico.png') : require('../../assets/images/password_nomal_ico.png')} alt="" className="icont" />
 								</div>
 
 							</div>
@@ -474,7 +502,7 @@ class index extends Component {
 									})
 								}} />
 								<div className="iconBox">
-									<img src={this.state.rePswIptFocus ? require('@/assets/images/ico3.png') : require('@/assets/images/ico2.png')} alt="" className="icont" />
+									<img src={this.state.rePswIptFocus ? require('../../assets/images/ico3.png') : require('../../assets/images/ico2.png')} alt="" className="icont" />
 								</div>
 
 							</div>

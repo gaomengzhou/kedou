@@ -18,7 +18,7 @@ class index extends Component {
 		super(props)
 
 		this.state = {
-			isLoading: false,
+			isLoading: true,
 			noMore: false,
 			isRefreshing: true,
 			dataSource: new ListView.DataSource({
@@ -42,7 +42,8 @@ class index extends Component {
 	}
 	onRefresh = async () => {
 		await this.setState({
-			isRefreshing: true
+			isRefreshing: true,
+			isLoading: true,
 		})
 		switch (this.props.tab.title) {
 			case this.props.tabList[0].title: {
@@ -71,7 +72,8 @@ class index extends Component {
 					}
 				})
 				await this.setState({
-					bookList: obj
+					bookList: obj,
+					isLoading: false,
 				})
 				break;
 			}
@@ -84,7 +86,8 @@ class index extends Component {
 					sort: "created_date"
 				}).then(res => {
 					this.setState({
-						bookList: res
+						bookList: res,
+						isLoading: false,
 					})
 				})
 				break
@@ -97,7 +100,8 @@ class index extends Component {
 					order: "play",
 				}).then(res => {
 					this.setState({
-						bookList: res
+						bookList: res,
+						isLoading: false,
 					})
 				})
 				break
@@ -110,7 +114,8 @@ class index extends Component {
 					category_id: this.props.tab.category_id
 				}).then(res => {
 					this.setState({
-						bookList: res
+						bookList: res,
+						isLoading: false,
 					})
 
 				})
@@ -194,6 +199,7 @@ class index extends Component {
 						bookList,
 						page: this.state.page + 1,
 						rows: 20,
+						isLoading: false,
 						dataSource: this.state.dataSource.cloneWithRows(bookList),
 					})
 				})
@@ -213,45 +219,51 @@ class index extends Component {
 		if (loading) {
 			this.concatList()
 		}
-		this.setState({
-			isLoading: false
-		})
+		// this.setState({
+		// 	isLoading: false
+		// })
 		loading = false
 	}
-	scrollDirect = () => {
-		const _this = this
-		var beforeScrollTop = document.documentElement.scrollTop || document.body.scrollTop
-		window.addEventListener("scroll", function () {
-			var afterScrollTop = document.documentElement.scrollTop || document.body.scrollTop,
-				delta = afterScrollTop - beforeScrollTop;
-			if (delta === 0) return false;
-			const scroll = delta > 0 ? "down" : "up"
-			const stateScroll = _this.state.scroll
-			if (document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.header-search') && document.querySelector('.background') && document.querySelector('.am-tab-bar-bar')) {
-				if (afterScrollTop > 150) {
-					if (scroll !== stateScroll || !stateScroll) {
-						if (scroll === 'down' && afterScrollTop > 100) {
-							document.querySelector('.am-tabs-tab-bar-wrap').style.top = '-2rem'
-							document.querySelector('.header-search').style.top = '-2rem'
-							document.querySelector('.background').style.top = '-2rem'
-							document.querySelector('.am-tab-bar-bar').style.bottom = '-2rem'
-						} else {
-							document.querySelector('.background').style.top = '0rem'
-							document.querySelector('.header-search').style.top = '0rem'
-							document.querySelector('.am-tabs-tab-bar-wrap').style.top = '1rem'
-							document.querySelector('.am-tab-bar-bar').style.bottom = '0'
-						}
-						_this.setState({
-							scroll: delta > 0 ? "down" : "up"
-						})
-					}
-				}
-			} else {
-				return null
-			}
-			beforeScrollTop = afterScrollTop;
-		}, false);
-	}
+	// scrollDirect = () => {
+	// 	const _this = this
+	// 	var beforeScrollTop = document.documentElement.scrollTop || document.body.scrollTop
+	// 	window.addEventListener("scroll", function () {
+	// 		var afterScrollTop = document.documentElement.scrollTop || document.body.scrollTop,
+	// 			delta = afterScrollTop - beforeScrollTop;
+	// 		if (delta === 0) return false;
+	// 		const scroll = delta > 0 ? "down" : "up"
+	// 		const stateScroll = _this.state.scroll
+	// 		if (document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.header-search') && document.querySelector('.background') && document.querySelector('.TabBer')) {
+	// 			if (afterScrollTop > 150) {
+	// 				if (scroll !== stateScroll || !stateScroll) {
+	// 					if (scroll === 'down' && afterScrollTop > 100) {
+	// 						document.querySelector('.am-tabs-tab-bar-wrap').style.top = '-1rem'
+	// 						document.querySelector('.header-search').style.top = '-2rem'
+	// 						document.querySelector('.background').style.top = '-2rem'
+	// 						document.querySelector('.TabBer').style.bottom = '-2rem'
+	// 						_this.props.closeMyLoginShow()
+	// 					} else {
+	// 						document.querySelector('.background').style.top = '0rem'
+	// 						document.querySelector('.header-search').style.top = '0rem'
+	// 						document.querySelector('.am-tabs-tab-bar-wrap').style.top = '1rem'
+	// 						document.querySelector('.TabBer').style.bottom = '0'
+	// 					}
+	// 					_this.setState({
+	// 						scroll: delta > 0 ? "down" : "up"
+	// 					})
+	// 				}
+	// 			}else {
+	// 				document.querySelector('.background').style.top = '0rem'
+	// 				document.querySelector('.header-search').style.top = '0rem'
+	// 				document.querySelector('.am-tabs-tab-bar-wrap').style.top = '1rem'
+	// 				document.querySelector('.TabBer').style.bottom = '0'
+	// 			}
+	// 		} else {
+	// 			return null
+	// 		}
+	// 		beforeScrollTop = afterScrollTop;
+	// 	}, false);
+	// }
 	listHeader = () => {
 		if (this.state.bannel.length === 0) {
 			return false
@@ -357,19 +369,19 @@ class index extends Component {
 								onRefresh={onRefresh}
 							/> :''}
 							// onEndReachedThreshold={10}
-							onScroll={() => {
-								if (document.querySelector('.background') && document.querySelector('.header-search') && document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.am-tab-bar-bar')) {
-									this.scrollDirect()
-								} else {
-									return false
-								}
-							}
-							}
+							// onScroll={() => {
+							// 	if (document.querySelector('.background') && document.querySelector('.header-search') && document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.TabBer')) {
+							// 		this.scrollDirect()
+							// 	} else {
+							// 		return false
+							// 	}
+							// }
+							// }
 							scrollEventThrottle={11111111110}
 							// onEndReached={onEndReached}
-							renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-								{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
-							</div>)}
+							renderFooter={() => (<div style={{ padding: '.3rem 0 1rem 0', textAlign: 'center' }}>
+							{this.state.isLoading ? 'Loading...' : '没有更多了'}
+						</div>)}
 						/>
 					</div>
 				)

@@ -3,6 +3,7 @@
   background-image: linear-gradient(to right, rgb(151, 24, 236), rgb(104, 199, 228));
   position: relative;
   width: 100%;
+
   input {
     border-radius: .5rem;
     height: 40px;
@@ -49,6 +50,14 @@
   }
 }
 
+.am-list-search {
+  .am-list-body {
+    &::after {
+      opacity: 0;
+    }
+  }
+}
+
 .searchContentOne {
   background-color: #fff;
   display: flex;
@@ -62,7 +71,7 @@
     border-radius: .3rem;
   }
 
-  .bookImg{
+  .bookImg {
     margin-right: .2rem;
     width: 2.7rem;
     height: 4rem;
@@ -127,7 +136,8 @@
     }
   }
 }
-.noSearch{
+
+.noSearch {
   height: 2rem;
   font-size: .35rem;
   line-height: 2rem;

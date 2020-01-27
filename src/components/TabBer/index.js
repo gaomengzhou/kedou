@@ -20,7 +20,7 @@ class TabBarExample extends React.Component {
     let showNav = /^(\/video|\/book)$/.test(url)
 
     return <>
-      {showNav && <div className='TabBer' style={this.state.fullScreen ? { position: 'fixed', bottom: '0', width: '100%', zIndex: '10001' } : { height: 400 }}>
+      {showNav && <div className='TabBer' style={this.state.fullScreen ? { position: 'fixed', bottom: '0', width: '100%', zIndex: '10001',transition:'1s' } : { height: 400 }}>
         <TabBar
           unselectedTintColor="#949494"
           tintColor="#33A3F4"

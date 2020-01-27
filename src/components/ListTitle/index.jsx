@@ -5,7 +5,7 @@ function index(props) {
     return (
         <div id='listTitle'>
            <div className="titleInfo">
-              <img src={require('@/assets/images/text_ico.png')} alt="" className="icont"/>
+              <img src={require('../../assets/images/text_ico.png')} alt="" className="icont"/>
                {
                    title
                }
