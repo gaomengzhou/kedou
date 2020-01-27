@@ -20,7 +20,7 @@ export default function PublicNavBar(props) {
             top: props.display ? '-.9rem' : 0,
             left: 0,
             zIndex: 1,
-            // transition: '.4s',
+            transition: '.4s',
           } : props.isCollect ? {
             position: 'fixed',
             top: 0,
