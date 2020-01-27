@@ -1,4 +1,4 @@
-import { getHomeLabelList, getHomeVideoList } from '@/store/action/video';
+import { getHomeLabelList, getHomeVideoList } from '../../store/action/video';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../../components/header';
@@ -65,8 +65,12 @@ class Video extends Component {
 				loginShow: !this.state.loginShow
 			})
 		}
-
-
+	}
+	closeMyLoginShow=()=>{
+		this.setState({
+			loginShow: false,
+			my: false
+		})
 	}
 	goToVideoDetail = (obj) => {
 		const {
@@ -115,7 +119,7 @@ class Video extends Component {
 							margin: 'auto',
 							padding: '.1rem'
 						}}>
-							<img src={require(`@/assets/images/${e.src}`)} alt="" style={{
+							<img src={require(`../../assets/images/${e.src}`)} alt="" style={{
 								width: '100%',
 								height: '100%'
 							}} />
@@ -145,6 +149,7 @@ class Video extends Component {
 			getHomeLabelList: this.props.getHomeLabelList,
 			goToVideoDetail: this.goToVideoDetail,
 			headerShow: this.headerShow,
+			closeMyLoginShow: this.closeMyLoginShow,
 		}
 		const videoHeader = {
 			leftCallBack: this.testCallBack,

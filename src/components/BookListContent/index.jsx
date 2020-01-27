@@ -73,14 +73,14 @@ class index extends Component {
                         <div className="img">
                             <img src={props.ev.poster} alt="" className='bigIMG' />
                             <div className='play'>
-                                <img src={require('@/assets/images/book_thumbnail_ico.png')} alt="" className='icont' />{props.ev.play}
+                                <img src={require('../../assets/images/book_thumbnail_ico.png')} alt="" className='icont' />{props.ev.play}
                             </div>
                             <div className="collected" onClick={(e) => {
                                 e.stopPropagation()
                                 this.setCollect(props.ev.id)
 
                             }}>
-                                {<img src={collectSucceed ? require('@/assets/images/like_pressed_btn.png') : require('@/assets/images/like_nomal_btn.png')} alt="" />}
+                                {<img src={collectSucceed ? require('../../assets/images/like_pressed_btn.png') : require('../../assets/images/like_nomal_btn.png')} alt="" />}
                             </div>
                         </div>
                         <p className='title'>

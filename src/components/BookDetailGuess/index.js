@@ -1,8 +1,6 @@
 import React from 'react'
 
 function index(porps) {
-    console.log(porps);
-
     return (
         <div className='bookDetailGuess'>
             <div className="img" onClick={()=>{

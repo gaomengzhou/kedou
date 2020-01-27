@@ -2,7 +2,7 @@ import Header from '@/components/header';
 // import { category } from '@/store/action/book';
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { category,setOnRefresh } from '@/store/action/book'
+import { category, setOnRefresh } from '../../store/action/book'
 import Tabs from '../../components/tabs'
 import Login from '../../components/login'
 import { detail } from '../../services/book'
@@ -12,16 +12,16 @@ import './index.less'
 const stateToProps = (state) => {
     return {
         tabList: state.book.tabList,
-		refresh:state.book.refresh,
+        refresh: state.book.refresh,
     }
 }
 const mapDispatchToProps = {
     category,
-	setOnRefresh
+    setOnRefresh
 };
 @connect(
     stateToProps,
-	mapDispatchToProps,
+    mapDispatchToProps,
 )
 class Book extends Component {
     constructor(props) {
@@ -39,13 +39,13 @@ class Book extends Component {
     componentDidMount() {
         this.props.category({
             page: 1
-		})
-		this.props.setOnRefresh(true)
+        })
+        this.props.setOnRefresh(true)
         if (this.props.history.location.state) {
             const { id } = this.props.history.location.state
             if (id) {
-				this.getBooKDetail(id)
-				this.props.setOnRefresh(false)
+                this.getBooKDetail(id)
+                this.props.setOnRefresh(false)
             }
         }
     }
@@ -66,6 +66,12 @@ class Book extends Component {
         }
 
 
+    }
+    closeMyLoginShow = () => {
+        this.setState({
+            loginShow: false,
+            my: false
+        })
     }
     Popo = () => {
         const arr = [
@@ -157,7 +163,7 @@ class Book extends Component {
 
     }
     // setOnRefresh=()=>{
-	// 	console.log('this.state.detailShow',this.state.detailShow);
+    // 	console.log('this.state.detailShow',this.state.detailShow);
     //         this.setState({
     //             onOnRefresh:this.state.detailShow
     //         })
@@ -194,12 +200,12 @@ class Book extends Component {
     // }
     setDetailShow = () => {
         document.querySelector('.TabBer').style.display = 'block'
-        if (document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.header-search') && document.querySelector('.background') && document.querySelector('.am-tab-bar-bar')) {
-            document.querySelector('.background').style.top = '0rem'
-            document.querySelector('.header-search').style.top = '0rem'
-            document.querySelector('.am-tabs-tab-bar-wrap').style.top = '1rem'
-            document.querySelector('.am-tab-bar-bar').style.bottom = '0'
-        }
+        // if (document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.header-search') && document.querySelector('.background') && document.querySelector('.TabBer')) {
+        //     document.querySelector('.background').style.top = '0rem'
+        //     document.querySelector('.header-search').style.top = '0rem'
+        //     document.querySelector('.am-tabs-tab-bar-wrap').style.top = '1rem'
+        //     document.querySelector('.TabBer').style.bottom = '0'
+        // }
         this.props.setOnRefresh(true)
         this.setState({
             detailShow: !this.state.detailShow
@@ -216,29 +222,32 @@ class Book extends Component {
                 detailInfo,
             },
             props: {
-				tabList
+                tabList
             },
             getBooKDetail,
             testRightCallBack,
             setDetailShow,
+            closeMyLoginShow
             // setCollect
         } = this
         const novelItem2 = {
             ...novelItem,
             setDetailShow,
             detailInfo,
-            getBooKDetail
+            getBooKDetail,
+            closeMyLoginShow
         }
         const bookHeader = {
             // leftCallBack: this.testCallBack,
             rightCallBack: testRightCallBack,
             type: 'book'
-		}
-		
+        }
+
         const tabsParameter = {
             tabList: tabList,
             getBooKDetail,
-			testRightCallBack,
+            testRightCallBack,
+            closeMyLoginShow
             // setCollect,
             // collectSucceed
         }

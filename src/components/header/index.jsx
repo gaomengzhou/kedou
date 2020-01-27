@@ -80,7 +80,7 @@ class index extends Component {
 							onClick={() => {
 								rightCallBack()
 							}}>
-							{<img src={sessionStorage.getItem('user_id')?require('@/assets/images/user_pressed.png'):require('@/assets/images/user_nomal.png')} alt="" style={{
+							{<img src={sessionStorage.getItem('user_id')?require('../../assets/images/user_pressed.png'):require('../../assets/images/user_nomal.png')} alt="" style={{
 								height: '.5rem',
 								width: '.5rem'
 							}} />}

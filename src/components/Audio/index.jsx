@@ -1,13 +1,13 @@
+import { ListView, Modal, Toast } from 'antd-mobile';
+import copy from 'copy-to-clipboard';
 import React from 'react';
 import ReactAplayer from 'react-aplayer';
-import './index.scss'
-import ListTitle from '../ListTitle'
-import BookDetailGuess from '../BookDetailGuess'
-import { Modal, Toast, ListView } from 'antd-mobile'
-import { collect, comment, comment_add } from '../../services/book'
 import { withRouter } from 'react-router-dom';
-import CommentItem from '../CommentItem'
-import copy from 'copy-to-clipboard';
+import { collect, comment, comment_add } from '../../services/book';
+import BookDetailGuess from '../BookDetailGuess';
+import CommentItem from '../CommentItem';
+import ListTitle from '../ListTitle';
+import './index.scss';
 let iTimeout;
 let iInterval;
 @withRouter
@@ -47,8 +47,6 @@ class App extends React.Component {
 		}
 	}
 	componentDidMount() {
-		console.log(this.props.detailInfo);
-
 		this.setState({
 			collected: this.props.detailInfo.collected,
 			name: this.props.novelTitle,
@@ -59,6 +57,7 @@ class App extends React.Component {
 		}, () => {
 			document.querySelector('.aplayer-author').innerHTML = '第1集'
 			document.querySelector('.aplayer-icon-loop').remove()
+			document.body.scrollTop = document.documentElement.scrollTop = 0
 		})
 	}
 	componentWillUnmount() {
@@ -161,7 +160,6 @@ class App extends React.Component {
 			page: 1,
 			rows: 10
 		}).then(res => {
-			console.log(res);
 			this.setState({
 				commentShow: false,
 				commentTitle: res.total,
@@ -178,8 +176,6 @@ class App extends React.Component {
 			page: this.state.page + 1,
 			rows: 10
 		}).then(res => {
-			console.log(res);
-
 			if (res.list.length === 0) {
 				this.setState({
 					noMore: true
@@ -410,7 +406,6 @@ class App extends React.Component {
 				Countdown,
 				timeNum,
 				Timer,
-				minutes
 			},
 			props: {
 				getBooKDetail
@@ -474,6 +469,7 @@ class App extends React.Component {
 							<div className="header">
 								<img className='minimize' src={require('../../assets/images/back_btn.png')} alt="" onClick={() => {
 									this.props.setDetailShow()
+									this.props.closeMyLoginShow()
 									this.setState({
 										detailShow: !this.state.detailShow
 									})
@@ -616,8 +612,6 @@ class App extends React.Component {
 								dataSource={dataSource}
 								pageSize={10}
 								renderRow={(rowData, sectionID, rowID) => {
-									console.log(rowData);
-
 									const parameter = {
 										rowData,
 									}

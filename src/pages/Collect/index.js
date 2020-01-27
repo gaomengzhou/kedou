@@ -76,7 +76,15 @@ class Collect extends Component {
     }).then(res => {
       if (res.length === 0) {
         this.setState({
-          isShow: false
+          isShow: false,
+        })
+      } else if (res.length < 10) {
+        this.setState({
+          isStop: true,
+          isShow: true,
+          videoCollectList: res,
+          dataSource: this.state.dataSource.cloneWithRows(res),
+          isLoading: false,
         })
       } else {
         this.setState({
@@ -90,6 +98,9 @@ class Collect extends Component {
   }
 
   deleteBtn = () => {
+    this.setState({
+      checkedStatus: false
+    })
     if (this.state.page === 1) {
       if (this.state.ids === '') {
         return
