@@ -65,6 +65,7 @@ class SearchBarExample extends React.Component {
     this.props.history.push(`/detailVideo/video_id=${item.id}`)
   }
   onChange = async (e) => {
+    console.log(e.target.value)
     this.setState({ value: e.target.value });
     if (e.target.value === '' || e.target.value === ' ') {
       this.setState({
@@ -73,7 +74,9 @@ class SearchBarExample extends React.Component {
     } else {
       if (this.props.match.params.name === 'video') {
         this.setState({
-          keyword: e.target.value
+          keyword: e.target.value,
+          stopRequest: false,
+          page: 1,
         })
         const res = await this.props.getSearchVideo({ keyword: e.target.value, rows: '10', page: '1' })
         if (res.length > 0) {
@@ -96,7 +99,9 @@ class SearchBarExample extends React.Component {
         }
       } else {
         this.setState({
-          keyword: e.target.value
+          keyword: e.target.value,
+          stopRequest: false,
+          page: 1,
         })
         const res = await this.props.getSearchBook({ keyword: e.target.value, rows: '10', page: '1' })
         if (res.length > 0) {
@@ -150,6 +155,13 @@ class SearchBarExample extends React.Component {
     }
   }
 
+  keyUp = () => {
+    const values = this.state.value;
+    const value = values.replace(/\s+/g, '')
+    this.setState({
+      value,
+    })
+  }
   render() {
     if (this.state.isvideo) {
       const videoSearchProps = {
@@ -168,6 +180,7 @@ class SearchBarExample extends React.Component {
               onChange={this.onChange}
               value={this.state.value}
               onKeyDown={this.onKeyDown}
+              onKeyUp={this.keyUp}
             />
             <span onClick={this.goback}>取消</span>
             <p className='searchIcon' />
@@ -198,6 +211,7 @@ class SearchBarExample extends React.Component {
               onChange={this.onChange}
               value={this.state.value}
               onKeyDown={this.onKeyDown}
+              onKeyUp={this.keyUp}
             />
             <span onClick={this.goback}>取消</span>
             <p className='searchIcon' />
