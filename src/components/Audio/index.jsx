@@ -10,8 +10,9 @@ import ListTitle from '../ListTitle';
 import './index.scss';
 let iTimeout;
 let iInterval;
+let alertInstance;
+let changeSrcTimer
 @withRouter
-
 
 class App extends React.Component {
 	constructor(props) {
@@ -99,6 +100,7 @@ class App extends React.Component {
 	};
 	changeSrc = async (url, num) => {
 		this.onPause()
+		clearTimeout(changeSrcTimer)
 		await this.setState({
 			show: false
 		})
@@ -115,7 +117,7 @@ class App extends React.Component {
 				modal2: false
 			}, () => {
 				if (!this.state.play) {
-					setTimeout(() => {
+					changeSrcTimer=setTimeout(() => {
 						this.ap.toggle()
 					}, 1000);
 				}
@@ -151,7 +153,7 @@ class App extends React.Component {
 
 
 	getComment = () => {
-		if (!this.state.commentShow) {
+		if(!this.state.commentShow){
 			return false
 		}
 		comment({
@@ -227,8 +229,10 @@ class App extends React.Component {
 			return false
 		}
 		this.commentIpt.blur()
-
-		const alertInstance = alert('发送评论', '', [
+		if(alertInstance){
+			alertInstance.close();
+		}
+		alertInstance = alert('发送评论', '', [
 			{ text: '取消' },
 			{
 				text: '发送', onPress: () => {
@@ -254,7 +258,7 @@ class App extends React.Component {
 		setTimeout(() => {
 			// 可以调用close方法以在外部close
 			alertInstance.close();
-		}, 10000);
+		}, 10000111);
 	};
 	changePlay = (num) => {
 		const {

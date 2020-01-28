@@ -29,7 +29,7 @@ const BookContent = (props) => {
   return (
     <ListView
       dataSource={props.dataSourceBook}
-      renderFooter={() => (<div style={{ padding: 0, textAlign: 'center' }}>
+      renderFooter={() => (<div style={{ padding: props.isEdit ? 20 : 0, textAlign: 'center', color: '#fff', background: '#fff' }}>
         {/* {props.isLoading ? '加载中...' : '没够更多了'} */}
         {/* {props.isLoading ? '加载中...' : props.loadingText} */}
       </div>)}

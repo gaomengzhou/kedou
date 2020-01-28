@@ -1,7 +1,9 @@
 .playerDetail {
     padding: 0 0.2rem 1rem .2rem;
     background-color: #fff;
-
+.document{
+    box-shadow: 0 0 .1rem #aaa;
+}
     .Timer {
         position: fixed;
         right: 0;
@@ -147,6 +149,7 @@
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
+            padding: 0 .15rem;
         }
     }
 

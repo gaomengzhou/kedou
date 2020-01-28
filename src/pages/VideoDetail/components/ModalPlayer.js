@@ -20,7 +20,7 @@ const ModalPlayer = (props) => {
         popup
         visible={props.visible}
         closable
-        maskClosable={false}
+        maskClosable
         onClose={props.onClose}
         animationType="slide-up"
         title={`全部评论 (${props.commentNum ? props.commentNum : 0})`}

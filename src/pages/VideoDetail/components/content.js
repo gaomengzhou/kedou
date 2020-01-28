@@ -5,6 +5,7 @@ import { Toast } from 'antd-mobile';
 import copy from 'copy-to-clipboard';
 import React from 'react';
 import '../player.less';
+
 const Content = (props) => {
   const onPress = (item) => {
     document.documentElement.scrollTop = 0
@@ -14,7 +15,6 @@ const Content = (props) => {
     props.getVideo(item.id);
     props.getChat(item.id)
   }
-
   const copyAccessKey = () => {
     if (props.detailData.share_url) {
       // copy(props.detailData.share_url)

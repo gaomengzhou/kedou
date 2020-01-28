@@ -7,7 +7,7 @@ import { getSearchBook, getSearchVideo } from '../../store/action/search';
 import BookSearch from './components/BookContent';
 import VideoSearch from './components/VideoContent';
 import './index.less';
-let timerCount = 0;
+let setRequst = null;
 const mapDispatchToProps = {
   getSearchVideo, getSearchBook
 };
@@ -49,6 +49,7 @@ class SearchBarExample extends React.Component {
   componentWillUnmount() {
     this.props.searchVideoData.data = []
     this.props.searchVideoData.bookData = []
+    clearTimeout(setRequst)
   }
 
   goback = () => {
@@ -65,98 +66,138 @@ class SearchBarExample extends React.Component {
   goPlayer = (item) => {
     this.props.history.push(`/detailVideo/video_id=${item.id}`)
   }
-  onChange = async (e) => {
-    timerCount++
+
+  onChange = (e) => {
     const searchValue = e.target.value.replace(/\s+/g, '');
     this.setState({
       value: e.target.value,
       keyword: searchValue,
     });
-    if (searchValue === '') {
-      this.setState({
-        isSearch: false
-      })
-    } else {
-      if (this.props.match.params.name === 'video') {
+    clearTimeout(setRequst)
+    setRequst = setTimeout(() => {
+      if (searchValue === '') {
         this.setState({
-          stopRequest: false,
-          page: 1,
+          isSearch: false
         })
-        const res = await setTimeout(() => {
-          this.props.getSearchVideo({ keyword: searchValue, rows: '10', page: '1' })
-        }, 600);
-        if (res.length > 0) {
-          this.setState({
-            videoData: res,
-            dataSource: this.state.dataSource.cloneWithRows(res),
-            isLoading: false,
-            noData: false,//有数据
-          })
-        }
-        if (res.length === 0) {
-          this.setState({
-            noData: true // 没数据
-          })
-        }
-        if (res.length < 10) {
-          this.setState({
-            stopRequest: true,
-          })
-        }
       } else {
+        if (this.props.match.params.name === 'video') {
+          this.setState({
+            stopRequest: false,
+            page: 1,
+          })
+          new Promise(resolve => {
+            this.props.getSearchVideo({ keyword: searchValue, rows: '10', page: '1', resolve })
+          }).then(res => {
+            if (res.length > 0) {
+              this.setState({
+                videoData: res,
+                dataSource: this.state.dataSource.cloneWithRows(res),
+                isLoading: false,
+                noData: false,//有数据
+              })
+            }
+            if (res.length === 0) {
+              this.setState({
+                noData: true // 没数据
+              })
+            }
+            if (res.length < 10) {
+              this.setState({
+                stopRequest: true,
+              })
+            }
+          })
+        } else {
+          this.setState({
+            stopRequest: false,
+            page: 1,
+          })
+          new Promise(resolve => {
+            this.props.getSearchBook({ keyword: searchValue, rows: '10', page: '1', handle: 'after', resolve })
+          }).then(res => {
+            if (res.length > 0) {
+              this.setState({
+                bookData: res,
+                dataSource: this.state.dataSource.cloneWithRows(res),
+                isLoading: false,
+                noData: false,//有数据
+              })
+            }
+            if (res.length === 0) {
+              this.setState({
+                noData: true // 没数据
+              })
+            }
+            if (res.length < 10) {
+              this.setState({
+                stopRequest: true,
+              })
+            }
+          })
+        }
         this.setState({
-          stopRequest: false,
-          page: 1,
+          isSearch: true
         })
-        const res = await this.props.getSearchBook({ keyword: searchValue, rows: '10', page: '1' })
-        if (res.length > 0) {
-          this.setState({
-            bookData: res,
-            dataSource: this.state.dataSource.cloneWithRows(res),
-            isLoading: false,
-            noData: false,//有数据
-          })
-        }
-        if (res.length === 0) {
-          this.setState({
-            noData: true // 没数据
-          })
-        }
-        if (res.length < 10) {
-          this.setState({
-            stopRequest: true,
-          })
-        }
       }
-      this.setState({
-        isSearch: true
-      })
-    }
+    }, 1500);
   };
 
-  onScrollVideoData = async () => { //视频滑动请求
-    if (!this.state.stopRequest) {
+  onScrollVideoData = () => { //视频滑动请求
+    // console.log(this.state.isvideo)
+    if (!this.state.stopRequest && this.state.isvideo) {
       this.setState({ isLoading: true });
-      const res = await this.props.getSearchVideo({
-        keyword: this.state.keyword,
-        rows: '10',
-        page: String(this.state.page + 1)
+      new Promise(resolve => {
+        this.props.getSearchVideo({
+          keyword: this.state.keyword,
+          rows: '10',
+          page: String(this.state.page + 1),
+          resolve
+        })
+      }).then(res => {
+        if (res.length < 10) {
+          this.setState({
+            stopRequest: true,
+          })
+          return
+        } else {
+          const videoData = this.state.videoData
+          videoData.push(...res)
+          this.setState({
+            page: this.state.page + 1,
+            isLoading: false,
+            videoData,
+            dataSource: this.state.dataSource.cloneWithRows(videoData),
+          })
+        }
       })
-      if (res.length < 10) {
-        this.setState({
-          stopRequest: true,
+    }
+    if (!this.state.stopRequest && !this.state.isvideo) {
+      this.setState({ isLoading: true });
+      new Promise(resolve => {
+        this.props.getSearchBook({
+          keyword: this.state.keyword,
+          rows: '10',
+          page: String(this.state.page + 1),
+          handle: 'after',
+          resolve,
         })
-        return
-      } else {
-        const videoData = this.state.videoData
-        videoData.push(...res)
-        this.setState({
-          page: this.state.page + 1,
-          isLoading: false,
-          videoData,
-          dataSource: this.state.dataSource.cloneWithRows(videoData),
-        })
-      }
+      }).then(res => {
+        if (res.length < 10) {
+          this.setState({
+            stopRequest: true,
+          })
+          return
+        } else {
+          const videoData = this.state.videoData
+          videoData.push(...res)
+          this.setState({
+            page: this.state.page + 1,
+            isLoading: false,
+            videoData,
+            dataSource: this.state.dataSource.cloneWithRows(videoData),
+          })
+        }
+      })
     }
   }
 

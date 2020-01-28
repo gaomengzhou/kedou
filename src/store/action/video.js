@@ -46,9 +46,9 @@ export const getHomeLabelList = ({
             if(e.category===3){
                 recommend.push(e)
             }else if(e.category===1&&e.type!==1){
-                if(hotLabel.length<6){
+                // if(hotLabel.length<6){
                     hotLabel.push(e)
-                }
+                // }
             }
         });
         dispatch({

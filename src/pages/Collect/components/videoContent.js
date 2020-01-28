@@ -30,7 +30,7 @@ const VideoContent = (props) => {
     <ListView
       dataSource={props.dataSource}
       renderFooter={() => (
-        <div style={{ padding: props.isEdit ? 20 : 0, textAlign: 'center' }}>
+        <div style={{ padding: props.isEdit ? 20 : 0, textAlign: 'center' ,color:'#fff',background:'#fff'}}>
           {/* {props.isLoading ? '加载中...' : props.loadingText} */}
         </div>
       )}

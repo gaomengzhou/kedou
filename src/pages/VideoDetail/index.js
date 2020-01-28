@@ -40,7 +40,7 @@ class VideoDetail extends Component {
       isLoading: false,
       visible: false,
       display: false,
-      isLiked: false
+      isLiked: false,
     }
   }
 
@@ -149,10 +149,20 @@ class VideoDetail extends Component {
       this.props.history.push('/video')
     }
   }
+  bodyScroll = (e) => { e.preventDefault(); }
+
   showComment = () => {
-    this.setState({
-      visible: true
-    })
+    console.log(this.refs.dplayer)
+    document.getElementById('dplayer').addEventListener('touchmove', this.bodyScroll, { passive: false })
+    const height = document.getElementById('dplayer').offsetHeight
+    document.documentElement.scrollTop = height / 3
+    if(this.visible){
+      return
+    }else{
+      this.setState({
+        visible: true,
+      })
+    }
   }
 
   closeLogin = () => {
@@ -247,7 +257,7 @@ class VideoDetail extends Component {
   setTimerFN = () => {
     setTimer = setInterval(() => {
       timeCount++
-      console.log(timeCount)
+      // console.log(timeCount)
       if (timeCount === 5) {
         document.getElementById('dplayer').classList.add('dplayer-hide-controller')
         this.setState({
@@ -273,7 +283,7 @@ class VideoDetail extends Component {
       let dplayer = document.getElementById('dplayer');
       dplayer.classList.add('dplayer-hide-controller');
       clearInterval(setTimer);
-      timeCount=0;
+      timeCount = 0;
     } else {
       this.setState({
         showControl: false
@@ -283,6 +293,7 @@ class VideoDetail extends Component {
       this.setTimerFN()
     }
   }
+
   render() {
     const { videoDetailReducer } = this.props;
     const { HotVideoList } = videoDetailReducer
@@ -308,7 +319,11 @@ class VideoDetail extends Component {
       cb: this.cb,
       commentNum: this.state.detailData.comment_num,
       visible: this.state.visible,
-      onClose: () => this.setState({ visible: false }),
+      onClose: () => {
+        document.documentElement.scrollTop = 0;
+        document.removeEventListener('touchmove', this.bodyScroll, { passive: false });
+        this.setState({ visible: false })
+      },
       dataSource: this.props.videoDetailReducer.comment,
       getChat: this.getChat,
       detailData: this.state.detailData,
@@ -324,7 +339,7 @@ class VideoDetail extends Component {
           <textarea
             onChange={this.saveMsg}
             onKeyDown={this.sendMsg}
-            onFocus={() => this.setState({ visible: true })}
+            onFocus={this.showComment}
             placeholder='我来说两句...'
             type="text"
             value={this.state.message}

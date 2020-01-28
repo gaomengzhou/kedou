@@ -6,12 +6,12 @@ import ListTitle from '../ListTitle'
 import { bannel_list } from '../../services/bannel'
 import { connect } from 'react-redux'
 const stateToProps = (state) => {
-    return {
-		refresh:state.book.refresh,
-    }
+	return {
+		refresh: state.book.refresh,
+	}
 }
 @connect(
-    stateToProps,
+	stateToProps,
 )
 class index extends Component {
 	constructor(props) {
@@ -53,7 +53,7 @@ class index extends Component {
 				await getBookList({
 					user_id: sessionStorage.getItem('user_id') || '',
 					page: 1,
-					rows: 10,
+					rows: 18,
 					order: "created_date",
 					sort: "created_date"
 				}).then(res => {
@@ -62,7 +62,7 @@ class index extends Component {
 				await getBookList({
 					user_id: sessionStorage.getItem('user_id') || '',
 					page: 1,
-					rows: 10,
+					rows: 18,
 					order: "play",
 				}).then(ret => {
 					hotList = ret
@@ -81,7 +81,7 @@ class index extends Component {
 				await getBookList({
 					user_id: sessionStorage.getItem('user_id') || '',
 					page: 1,
-					rows: 20,
+					rows: 21,
 					order: "created_date",
 					sort: "created_date"
 				}).then(res => {
@@ -96,7 +96,7 @@ class index extends Component {
 				await getBookList({
 					user_id: sessionStorage.getItem('user_id') || '',
 					page: 1,
-					rows: 20,
+					rows: 21,
 					order: "play",
 				}).then(res => {
 					this.setState({
@@ -110,7 +110,7 @@ class index extends Component {
 				await getBookList({
 					user_id: sessionStorage.getItem('user_id') || '',
 					page: 1,
-					rows: 20,
+					rows: 21,
 					category_id: this.props.tab.category_id
 				}).then(res => {
 					this.setState({
@@ -138,7 +138,7 @@ class index extends Component {
 				getBookList({
 					user_id: sessionStorage.getItem('user_id') || '',
 					page: this.state.page + 1,
-					rows: 10,
+					rows: 18,
 					order: "created_date",
 					sort: "created_date"
 				}).then(res => {
@@ -162,7 +162,7 @@ class index extends Component {
 				getBookList({
 					user_id: sessionStorage.getItem('user_id') || '',
 					page: this.state.page + 1,
-					rows: 10,
+					rows: 18,
 					order: "play",
 				}).then(res => {
 					if (res.length === 0) {
@@ -185,11 +185,12 @@ class index extends Component {
 				getBookList({
 					user_id: sessionStorage.getItem('user_id') || '',
 					page: this.state.page + 1,
-					rows: 10,
+					rows: 18,
 					category_id: this.props.tab.category_id
 				}).then(res => {
 					if (res.length === 0) {
 						this.setState({
+							isLoading: false,
 							noMore: true
 						})
 						return
@@ -284,6 +285,18 @@ class index extends Component {
 			</Carousel>
 		)
 	}
+	throttle = (fn, delay) => {
+		var lastTime = 0
+		return function () {
+			var nowTime = Date.now()
+			var space = nowTime - lastTime
+			if (space >= delay) {
+				fn()
+				lastTime = Date.now()
+			}
+		}
+	}
+
 	render() {
 		const {
 			state: {
@@ -298,7 +311,8 @@ class index extends Component {
 			},
 			onRefresh,
 			onEndReached,
-			listHeader
+			listHeader,
+			throttle
 		} = this
 		const contentStyle = {
 			display: 'flex',
@@ -364,10 +378,10 @@ class index extends Component {
 								)
 							}}
 							useBodyScroll={true}
-							pullToRefresh={refresh?<PullToRefresh
+							pullToRefresh={refresh ? <PullToRefresh
 								refreshing={isRefreshing}
 								onRefresh={onRefresh}
-							/> :''}
+							/> : ''}
 							// onEndReachedThreshold={10}
 							// onScroll={() => {
 							// 	if (document.querySelector('.background') && document.querySelector('.header-search') && document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.TabBer')) {
@@ -377,11 +391,14 @@ class index extends Component {
 							// 	}
 							// }
 							// }
+							onScroll={throttle(() => {
+								this.props.closeMyLoginShow()
+							}, 1000)}
 							scrollEventThrottle={11111111110}
 							// onEndReached={onEndReached}
-							renderFooter={() => (<div style={{ padding: '.3rem 0 1rem 0', textAlign: 'center' }}>
-							{this.state.isLoading ? 'Loading...' : '没有更多了'}
-						</div>)}
+							renderFooter={() => (<div style={{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}>
+								{this.state.isLoading ? 'Loading...' : '没有更多了'}
+							</div>)}
 						/>
 					</div>
 				)
@@ -407,14 +424,14 @@ class index extends Component {
 								)
 							}}
 							useBodyScroll={true}
-							pullToRefresh={refresh?<PullToRefresh
+							pullToRefresh={refresh ? <PullToRefresh
 								refreshing={isRefreshing}
 								onRefresh={onRefresh}
-							/> :''}
+							/> : ''}
 							onEndReachedThreshold={10}
 							onEndReached={onEndReached}
 							pageSize={10}
-							renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
+							renderFooter={() => (<div style={{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}>
 								{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
 							</div>)}
 						/>
@@ -442,14 +459,14 @@ class index extends Component {
 								)
 							}}
 							useBodyScroll={true}
-							pullToRefresh={refresh?<PullToRefresh
+							pullToRefresh={refresh ? <PullToRefresh
 								refreshing={isRefreshing}
 								onRefresh={onRefresh}
-							/> :''}
-							onEndReachedThreshold={10}
+							/> : ''}
+							onEndReachedThreshold={1}
 							onEndReached={onEndReached}
-							pageSize={10}
-							renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
+							pageSize={12}
+							renderFooter={() => (<div style={{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}>
 								{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
 							</div>)}
 						/>

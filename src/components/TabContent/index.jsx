@@ -303,6 +303,17 @@ class index extends Component {
 			</Carousel>
 		)
 	}
+	throttle = (fn, delay) => {
+		var lastTime = 0
+		return function () {
+			var nowTime = Date.now()
+			var space = nowTime - lastTime
+			if (space >= delay) {
+				fn()
+				lastTime = Date.now()
+			}
+		}
+	}
 	render() {
 		const {
 			state: {
@@ -312,7 +323,8 @@ class index extends Component {
 			},
 			onRefresh,
 			onEndReached,
-			listHeader
+			listHeader,
+			throttle
 		} = this
 		const contentStyle = {
 			display: 'flex',
@@ -402,6 +414,9 @@ class index extends Component {
 							refreshing={isRefreshing}
 							onRefresh={onRefresh}
 						/>}
+						onScroll={throttle(() => {
+							this.props.closeMyLoginShow()
+						}, 1000)}
 						// onScroll={() => {
 						// 	if (document.querySelector('.background') && document.querySelector('.header-search') && document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.TabBer')) {
 						// 		this.scrollDirect()
@@ -444,8 +459,8 @@ class index extends Component {
 								onRefresh={onRefresh}
 							/>}
 							renderFooter={() => (<div style={{ padding: '.3rem 0 1rem 0', textAlign: 'center' }}>
-							{this.state.isLoading ? 'Loading...' : '没有更多了'}
-						</div>)}
+								{this.state.isLoading ? 'Loading...' : '没有更多了'}
+							</div>)}
 						/>
 					</div>
 				)
@@ -477,8 +492,8 @@ class index extends Component {
 								onRefresh={onRefresh}
 							/>}
 							renderFooter={() => (<div style={{ padding: '.3rem 0 1rem 0', textAlign: 'center' }}>
-							{this.state.isLoading ? 'Loading...' : '没有更多了'}
-						</div>)}
+								{this.state.isLoading ? 'Loading...' : '没有更多了'}
+							</div>)}
 						/>
 					</div>
 				)
