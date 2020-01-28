@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { getHomeVideoList } from '../../store/action/video'
 import { getTabList, search_video } from '../../services/video'
 import { bannel_list } from '../../services/bannel'
+import { withRouter } from 'react-router-dom';
 const stateToProps = (state) => {
 	return {
 		tabList: state.video.tabList,
@@ -18,6 +19,7 @@ const mapDispatchToProps = {
 	stateToProps,
 	mapDispatchToProps,
 )
+@withRouter
 class index extends Component {
 	constructor(props) {
 		super(props)
@@ -40,6 +42,8 @@ class index extends Component {
 		await bannel_list({
 			type: 1
 		}).then(res => {
+			console.log(res);
+
 			this.setState({
 				bannel: res,
 				isLoading: true,
@@ -225,24 +229,18 @@ class index extends Component {
 		loading = false
 	}
 
-	recommendCallBack = (e) => {
-		//console.log(e);
+	// recommendCallBack = (e) => {
+	// 	//console.log(e);
 
-	}
-	newCallBack = (e) => {
-		//console.log(e);
+	// }
+	// newCallBack = (e) => {
+	// 	//console.log(e);
 
-	}
-	mostCallBack = (e) => {
-		//console.log(e);
+	// }
+	// mostCallBack = (e) => {
+	// 	//console.log(e);
 
-	}
-	scrollTopChange = (e) => {
-		const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-		console.log(e, scrollTop);
-
-	}
-
+	// }
 	// scrollDirect = () => {
 	// 	const _this = this
 	// 	var beforeScrollTop = document.documentElement.scrollTop || document.body.scrollTop
@@ -298,6 +296,12 @@ class index extends Component {
 						src={val.url}
 						alt="正在加载图片"
 						style={{ width: '100%', height: '100%' }}
+						onClick={() => {
+							// window.location.href=`https://www.baidu.com`
+							// // const w = window.open('about:blank');
+							// // w.location.href=`https://www.baidu.com`;
+							this.props.history.push(val.h5_target)
+						}}
 					/>
 				))}
 			</Carousel>
@@ -415,7 +419,7 @@ class index extends Component {
 							onRefresh={onRefresh}
 						/>}
 						onScroll={throttle(() => {
-							// this.props.closeMyLoginShow()
+							this.props.closeMyLoginShow()
 						}, 1000)}
 						// onScroll={() => {
 						// 	if (document.querySelector('.background') && document.querySelector('.header-search') && document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.TabBer')) {
