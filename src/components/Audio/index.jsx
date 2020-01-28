@@ -8,10 +8,25 @@ import BookDetailGuess from '../BookDetailGuess';
 import CommentItem from '../CommentItem';
 import ListTitle from '../ListTitle';
 import './index.scss';
+import { connect } from 'react-redux'
+import { setOnRefresh } from '../../store/action/book'
 let iTimeout;
 let iInterval;
 let alertInstance;
 let changeSrcTimer
+let alertTimer
+const stateToProps = (state) => {
+    return {
+        refresh: state.book.refresh,
+    }
+}
+const mapDispatchToProps = {
+    setOnRefresh
+};
+@connect(
+    stateToProps,
+    mapDispatchToProps,
+)
 @withRouter
 
 class App extends React.Component {
@@ -109,6 +124,11 @@ class App extends React.Component {
 			show: true,
 			serialShow: false
 		}, () => {
+			if(this.state.serialShow){
+				this.props.setOnRefresh(false)
+			}else{
+				this.props.setOnRefresh(true)
+			}
 			document.querySelector('.aplayer-author').innerHTML = `第${num}集`
 			document.querySelector('.aplayer-icon-loop').remove()
 			this.setState({
@@ -229,6 +249,7 @@ class App extends React.Component {
 			return false
 		}
 		this.commentIpt.blur()
+		clearTimeout(alertTimer)
 		if(alertInstance){
 			alertInstance.close();
 		}
@@ -255,10 +276,10 @@ class App extends React.Component {
 				}
 			},
 		]);
-		setTimeout(() => {
+		alertTimer=setTimeout(() => {
 			// 可以调用close方法以在外部close
 			alertInstance.close();
-		}, 10000111);
+		}, 10000);
 	};
 	changePlay = (num) => {
 		const {
@@ -692,8 +713,19 @@ class App extends React.Component {
 				}
 				{
 					!detailShow && <p className='select' onClick={() => {
+						
 						this.setState({
 							serialShow: !this.state.serialShow
+						},()=>{
+							if(this.state.serialShow){
+								console.log(1);
+								
+								this.props.setOnRefresh(false)
+							}else{
+								console.log(2);
+								
+								this.props.setOnRefresh(true)
+							}
 						})
 					}} >选集</p>
 				}

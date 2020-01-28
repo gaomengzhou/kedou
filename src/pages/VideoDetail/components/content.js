@@ -43,6 +43,7 @@ const Content = (props) => {
           <p onClick={copyAccessKey} className='icon4'></p>{/*分享*/}
         </div>
       </div>
+      {/* 切换显示的地 */}
       <div className='hotVideo'>
         <p className='hotTitle'>猜你喜欢</p>
         <div className='collectContent'>

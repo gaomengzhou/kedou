@@ -33,6 +33,8 @@ class index extends Component {
 		await bannel_list({
 			type: 1
 		}).then(res => {
+			console.log(res);
+			
 			this.setState({
 				bannel: res,
 			})
@@ -85,6 +87,8 @@ class index extends Component {
 					order: "created_date",
 					sort: "created_date"
 				}).then(res => {
+					console.log(res);
+					
 					this.setState({
 						bookList: res,
 						isLoading: false,
@@ -122,6 +126,7 @@ class index extends Component {
 			}
 		}
 		const bookList = await JSON.parse(JSON.stringify(this.state.bookList))
+		console.log(bookList);
 
 		await this.setState({
 			bookList,
@@ -152,7 +157,6 @@ class index extends Component {
 					this.setState({
 						bookList,
 						page: this.state.page + 1,
-						rows: 20,
 						dataSource: this.state.dataSource.cloneWithRows(bookList),
 					})
 				})
@@ -175,7 +179,6 @@ class index extends Component {
 					this.setState({
 						bookList,
 						page: this.state.page + 1,
-						rows: 20,
 						dataSource: this.state.dataSource.cloneWithRows(bookList),
 					})
 				})
@@ -199,7 +202,6 @@ class index extends Component {
 					this.setState({
 						bookList,
 						page: this.state.page + 1,
-						rows: 20,
 						isLoading: false,
 						dataSource: this.state.dataSource.cloneWithRows(bookList),
 					})
@@ -307,13 +309,14 @@ class index extends Component {
 			props: {
 				getBooKDetail,
 				testRightCallBack,
-				refresh
+				refresh,
 			},
 			onRefresh,
 			onEndReached,
 			listHeader,
 			throttle
 		} = this
+		
 		const contentStyle = {
 			display: 'flex',
 			justifyContent: 'space-between',
@@ -396,7 +399,8 @@ class index extends Component {
 							}, 1000)}
 							scrollEventThrottle={11111111110}
 							// onEndReached={onEndReached}
-							renderFooter={() => (<div style={{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}>
+							// renderFooter={() => (<div style={{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}>
+							renderFooter={() => (<div style={document.querySelector('.player')?{ padding: '.3rem 0 2rem 0', textAlign: 'center' }:{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}> 
 								{this.state.isLoading ? 'Loading...' : '没有更多了'}
 							</div>)}
 						/>
@@ -430,10 +434,11 @@ class index extends Component {
 							/> : ''}
 							onEndReachedThreshold={10}
 							onEndReached={onEndReached}
-							pageSize={10}
-							renderFooter={() => (<div style={{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}>
-								{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
-							</div>)}
+							initialListSize={21}
+							pageSize={21}
+							renderFooter={() => (<div style={document.querySelector('.player')?{ padding: '.3rem 0 2rem 0', textAlign: 'center' }:{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}> 
+							{this.state.isLoading ? 'Loading...' : (noMore?'没有更多了':'')}
+						</div>)}
 						/>
 					</div>
 				)
@@ -465,10 +470,11 @@ class index extends Component {
 							/> : ''}
 							onEndReachedThreshold={1}
 							onEndReached={onEndReached}
-							pageSize={12}
-							renderFooter={() => (<div style={{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}>
-								{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
-							</div>)}
+							pageSize={18}
+							initialListSize={21}
+							renderFooter={() => (<div style={document.querySelector('.player')?{ padding: '.3rem 0 2rem 0', textAlign: 'center' }:{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}> 
+							{this.state.isLoading ? 'Loading...' : '没有更多了'}
+						</div>)}
 						/>
 					</div>
 				)

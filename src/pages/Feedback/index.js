@@ -51,12 +51,12 @@ class UserFeedBack extends Component {
 
   onLeftClick = () => this.props.history.go(-1);
   sendMsg = () => {
-    let who = prompt("请输入收件人邮箱: ", this.state.msgadmin);
-    let what = prompt("输入主题: ", "意见反馈");
-    // let who = this.state.msgadmin
-    // let what = '意见反馈'
-    if (window.confirm("你确定要向" + who + "发送主题为 " + what + "的邮件么?") === true) {
-      window.parent.location.href = 'mailto:' + who + '?subject=' + what + '';
+    let what = prompt("请输入要反馈的主题: ", "意见反馈");
+    let who = this.state.msgadmin
+    if (what !== null && who !== '') {
+      if (window.confirm(`你确定要向${who}发送主题为${what}的邮件么?`) === true) {
+        window.parent.location.href = `mailto:${who}?subject=${what}`;
+      }
     }
   }
   copyWechat = () => {

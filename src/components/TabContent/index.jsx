@@ -415,7 +415,7 @@ class index extends Component {
 							onRefresh={onRefresh}
 						/>}
 						onScroll={throttle(() => {
-							this.props.closeMyLoginShow()
+							// this.props.closeMyLoginShow()
 						}, 1000)}
 						// onScroll={() => {
 						// 	if (document.querySelector('.background') && document.querySelector('.header-search') && document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.TabBer')) {

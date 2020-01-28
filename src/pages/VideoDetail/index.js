@@ -66,9 +66,13 @@ class VideoDetail extends Component {
 
   componentWillUnmount() {
     clearTimeout(this.timer)
+    clearTimeout(this.setToast)
     this.dPlayer && this.dPlayer.destroy();
     this.isLeave = true;
     clearInterval(setTimer)
+    document.querySelector('.dplayer-controller').removeEventListener('click', function (e) {
+      e.stopPropagation()
+    })
   }
 
   getChat = (vId = '') => {
@@ -106,12 +110,17 @@ class VideoDetail extends Component {
             navBarTitle: res.title.length >= 20 ? res.title.substring(0, 14).concat('...') : res.title,
             detailData: res
           })
-          return this.InitDPlayer(res.video_url)
+          this.InitDPlayer(res.video_url)
         }
         if (res.code === '-6') {
-          Toast.fail(res.err)
           this.InitDPlayer('www.baidu.com')
-          document.querySelector('.dplayer-full-icon').style.display = 'none'
+          document.querySelector('.dplayer-full-icon').style.display = 'none';
+          this.setState({
+            dpHeight: 0
+          });
+          this.setToast = setTimeout(() => {
+            Toast.fail(res.err)
+          }, 800);
         }
       })
     }
@@ -152,13 +161,12 @@ class VideoDetail extends Component {
   bodyScroll = (e) => { e.preventDefault(); }
 
   showComment = () => {
-    console.log(this.refs.dplayer)
     document.getElementById('dplayer').addEventListener('touchmove', this.bodyScroll, { passive: false })
     const height = document.getElementById('dplayer').offsetHeight
     document.documentElement.scrollTop = height / 3
-    if(this.visible){
+    if (this.visible) {
       return
-    }else{
+    } else {
       this.setState({
         visible: true,
       })
@@ -314,6 +322,10 @@ class VideoDetail extends Component {
       detailData: this.state.detailData,
       showComment: this.showComment,
       collectBtn: this.collectBtn,
+
+      cb: this.cb,
+      isReload: this.state.isReload,
+      dataSource: this.props.videoDetailReducer.comment,
     }
     const modalProps = {
       cb: this.cb,
@@ -332,7 +344,11 @@ class VideoDetail extends Component {
     return (
       <div className='playerIndex'>
         <PublicNavBar  {...navBarProps} />
-        <div id='dplayer' onClick={this.controlView} />
+        <div
+          id='dplayer'
+          onClick={this.controlView}
+          style={{ width: '100%' }}
+        />
         <Content {...contentProps} />
         <div className='InpBottomSay'>
           <i className='iconPhoto' />

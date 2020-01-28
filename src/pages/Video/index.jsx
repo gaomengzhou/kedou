@@ -65,10 +65,13 @@ class Video extends Component {
 				loginShow: !this.state.loginShow
 			})
 		}
+
+	
+		
 	}
 	closeMyLoginShow=()=>{
 		this.setState({
-			loginShow: false,
+			// loginShow: false,
 			my: false
 		})
 	}

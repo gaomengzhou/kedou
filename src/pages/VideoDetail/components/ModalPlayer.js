@@ -5,11 +5,15 @@ import MyListView from './ViewList';
 
 
 const ModalPlayer = (props) => {
+  const bodyScroll = (e) => { e.preventDefault(); }
   const viewProps = {
     cb: props.cb,
     isReload: props.isReload,
     dataSource: props.dataSource,
     getChat: props.getChat
+  }
+  if (document.querySelector('.playerModals') !== null) {
+    document.querySelector('.playerModals').addEventListener('touchmove', bodyScroll, { passive: false })
   }
   return (
     <div className='playerModals'>

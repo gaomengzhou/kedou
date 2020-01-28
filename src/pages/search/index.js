@@ -143,7 +143,6 @@ class SearchBarExample extends React.Component {
   };
 
   onScrollVideoData = () => { //视频滑动请求
-    // console.log(this.state.isvideo)
     if (!this.state.stopRequest && this.state.isvideo) {
       this.setState({ isLoading: true });
       new Promise(resolve => {

@@ -247,7 +247,7 @@ class Book extends Component {
             tabList: tabList,
             getBooKDetail,
             testRightCallBack,
-            closeMyLoginShow
+            closeMyLoginShow,
             // setCollect,
             // collectSucceed
         }

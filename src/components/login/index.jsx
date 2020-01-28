@@ -22,8 +22,13 @@ class index extends Component {
 			rePswIptFocus: false
 		}
 	}
-	initialization = () => {
-		this.setState({
+
+	componentDidMount() {
+
+	}
+
+	initialization = async () => {
+		await this.setState({
 			loginContent: true,
 			registered: false,
 			Retrieve: false,
@@ -33,6 +38,7 @@ class index extends Component {
 			passWord: '',
 			getCode: '获取验证码'
 		})
+
 		this.props.rightCallBack()
 	}
 	timeChange = () => {
@@ -218,6 +224,7 @@ class index extends Component {
 			background: "url(" + require("../../assets/images/BG.png") + ") no-repeat center ",
 			// backgroundAttachment: 'fixed',
 			borderRadius: '.2rem',
+			zIndex: '1111111'
 		}
 		return (
 			<div style={{
@@ -231,14 +238,11 @@ class index extends Component {
 				zIndex: '999',
 				display: 'flex',
 				alignItems: 'center'
-			}} onClick={() => {
-				initialization()
-
 			}} className="modal-home">
 				{
-					loginContent && <div style={modalStyle} onClick={(e) => {
+					loginContent && <div style={modalStyle} className='login' onClick={(e) => {
 						e.stopPropagation()
-					}} className='login'>
+					}}>
 						<p>登录</p>
 						<div className='inputBox'>
 							<div className="Ipt">
@@ -247,7 +251,7 @@ class index extends Component {
 										userIptFocus: false
 									})
 
-								}} onFocus={() => {
+								}} onFocus={(e) => {
 									this.setState({
 										userIptFocus: true
 									})
@@ -267,7 +271,8 @@ class index extends Component {
 										pswIptFocus: false
 									})
 
-								}} onFocus={() => {
+								}} onFocus={(e) => {
+									e.stopPropagation()
 									this.setState({
 										pswIptFocus: true
 									})
@@ -291,7 +296,7 @@ class index extends Component {
 								})
 							}}>
 								忘记密码？
-                            </span>
+						</span>
 							<span onClick={() => {
 								this.setState({
 									loginContent: !this.state.loginContent,
@@ -299,11 +304,16 @@ class index extends Component {
 								})
 							}}>
 								去注册 >
-                            </span>
+						</span>
 						</div>
 						<Button onClick={() => {
 							login()
 						}}>确定</Button>
+						<div className='close_btn' onClick={()=>{
+							initialization()
+						}}>
+							<img src={require('../../assets/images/close_btn.png')} alt="" />
+						</div>
 					</div>
 				}
 				{
@@ -390,6 +400,11 @@ class index extends Component {
 						<Button onClick={() => {
 							register()
 						}}>注册并登录</Button>
+						<div className='close_btn' onClick={()=>{
+							initialization()
+						}}>
+							<img src={require('../../assets/images/close_btn.png')} alt="" />
+						</div>
 					</div>
 				}
 				{
@@ -456,6 +471,11 @@ class index extends Component {
 						<Button onClick={() => {
 							registeredSubMit()
 						}}>提交</Button>
+						<div className='close_btn' onClick={()=>{
+							initialization()
+						}}>
+							<img src={require('../../assets/images/close_btn.png')} alt="" />
+						</div>
 					</div>
 				}
 				{
@@ -510,6 +530,11 @@ class index extends Component {
 						<Button onClick={() => {
 							changePSWSubMit()
 						}}>提交并登录</Button>
+						<div className='close_btn' onClick={()=>{
+							initialization()
+						}}>
+							<img src={require('../../assets/images/close_btn.png')} alt="" />
+						</div>
 					</div>
 				}
 			</div>
