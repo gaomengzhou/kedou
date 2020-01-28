@@ -20,7 +20,11 @@ const VideoSearch = (props) => {
             </div>
             <div style={{ display: 'flex', marginTop: '.3rem' }}>
               <p className='typeText1'>{item.class_name}</p>
-              <p className='typeText2'>{item.label.split('|')[2]}</p>
+              {
+                item.label.split('|')[2]
+                  ? <p className='typeText2'>{item.label.split('|')[2]}</p>
+                  : <p className='typeText2'>{item.label.split('|')[0]}</p>
+              }
             </div>
           </div>
         </div>
