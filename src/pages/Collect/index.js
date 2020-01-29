@@ -217,7 +217,7 @@ class Collect extends Component {
       dataSourceBook: this.state.dataSourceBook.cloneWithRows(data),
       count: 0,
       ids: '',
-      isLoading: true
+      isLoading: false
     })
   }
   //全选
@@ -332,8 +332,7 @@ class Collect extends Component {
   goToVideo = (item) => {
     document.documentElement.scrollTop = 0
     window.sessionStorage.setItem('goBack', 'true')
-    const user_id = sessionStorage.getItem('user_id');
-    this.props.history.push(`/detailVideo/video_id=${item.video_id}&user_id=${user_id}`);
+    this.props.history.push(`/detailVideo/video_id=${item.video_id}`);
   }
 
   callBackStateVideo = () => {

@@ -1,4 +1,3 @@
-// import { Toast } from 'antd-mobile';
 import { getChatApi, getVideoOne } from '../../services/videoDetail';
 import { GET_HOT_VIDEO } from '../actionType';
 

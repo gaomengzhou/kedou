@@ -4,7 +4,7 @@ import '../index.less';
 
 const VideoSearch = (props) => {
   const onEndReached = (event) => {
-    props.onScrollVideoData()
+    props.onScrollData()
   }
 
   const row = (item, sectionID, rowID) => {
@@ -16,7 +16,7 @@ const VideoSearch = (props) => {
             <h1>{item.title}</h1>
             <div style={{ display: 'flex' }}>
               <p className='playerNum'>{item.play_num}</p>
-              {/* <p className='collectNum'>40504</p> */}
+              <p className='collectNum'>{item.most_like}</p>
             </div>
             <div style={{ display: 'flex', marginTop: '.3rem' }}>
               <p className='typeText1'>{item.class_name}</p>
@@ -34,9 +34,11 @@ const VideoSearch = (props) => {
   return (
     <ListView
       dataSource={props.dataSource}
-      // renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-      //   {state.isLoading ? 'Loading...' : 'Loaded'}
-      // </div>)}
+      renderFooter={() => (
+        <div style={{ marginTop: 20, marginBottom: 20, padding: 0, textAlign: 'center' }}>
+          {props.dataSource._cachedRowCount >9 ? props.isLoading ? '加载中...' : props.loadingText : ''}
+        </div>
+      )}
       renderRow={row}
       className="am-list-search"
       pageSize={4}

@@ -26,12 +26,13 @@ class index extends Component {
 			props: {
 				// leftCallBack,
 				rightCallBack,
+				detailShow
 			},
 			searchSubmit,
 			changeSearchText
 		} = this
 		return (
-			<header id="headerHome" >
+			<header id="headerHome" style={!detailShow ? { display: 'block' } : { display: 'none' }} >
 
 				<div className='header-search' style={{
 					position: 'fixed',

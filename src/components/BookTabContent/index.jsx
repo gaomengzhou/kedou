@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { PullToRefresh, ListView, Carousel } from 'antd-mobile';
+// import { PullToRefresh, ListView } from 'antd-mobile';
 import { bookList as getBookList } from '../../services/book'
 import BookListContent from '../BookListContent'
 import ListTitle from '../ListTitle'
-import { bannel_list } from '../../services/bannel'
+// import { bannel_list } from '../../services/bannel'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 const stateToProps = (state) => {
 	return {
 		refresh: state.book.refresh,
+		bannelList: state.bannel.bannelList,
 	}
 }
 @connect(
@@ -26,23 +28,22 @@ class index extends Component {
 			dataSource: new ListView.DataSource({
 				rowHasChanged: (row1, row2) => row1 !== row2,
 			}),
-			bannel: [],
 			bookList: [],
 		}
 	}
 
-	async componentDidMount() {
-		await bannel_list({
-			type: 1
-		}).then(res => {
-			console.log(res);
-			
-			this.setState({
-				bannel: res,
-			})
+	componentDidMount() {
+		// await bannel_list({
+		// 	type: 1
+		// }).then(res => {
+		// 	console.log(res);
 
-		})
-		await this.onRefresh()
+		// 	this.setState({
+		// 		bannel: res,
+		// 	})
+
+		// })
+		this.onRefresh()
 	}
 	onRefresh = async () => {
 		await this.setState({
@@ -89,8 +90,6 @@ class index extends Component {
 					order: "created_date",
 					sort: "created_date"
 				}).then(res => {
-					console.log(res);
-					
 					this.setState({
 						bookList: res,
 						isLoading: false,
@@ -128,7 +127,6 @@ class index extends Component {
 			}
 		}
 		const bookList = await JSON.parse(JSON.stringify(this.state.bookList))
-		console.log(bookList);
 
 		await this.setState({
 			bookList,
@@ -270,7 +268,14 @@ class index extends Component {
 	// 	}, false);
 	// }
 	listHeader = () => {
-		if (this.state.bannel.length === 0) {
+		const {
+			bannelList
+		} = this.props
+
+		if (!bannelList) {
+			return false
+		}
+		if (!bannelList.length) {
 			return false
 		}
 		return (
@@ -279,7 +284,7 @@ class index extends Component {
 				infinite={true}
 				selectedIndex={0}
 			>
-				{this.state.bannel.map(val => (
+				{bannelList.map(val => (
 					<img
 						src={val.url}
 						alt="正在加载图片"
@@ -312,7 +317,7 @@ class index extends Component {
 			state: {
 				dataSource,
 				isRefreshing,
-				noMore,
+				noMore
 			},
 			props: {
 				getBooKDetail,
@@ -324,7 +329,7 @@ class index extends Component {
 			listHeader,
 			throttle
 		} = this
-		
+
 		const contentStyle = {
 			display: 'flex',
 			justifyContent: 'space-between',
@@ -337,9 +342,12 @@ class index extends Component {
 			case this.props.tabList[0].title: {
 				return (
 					<div id="bookHomeList">
+						{
+							listHeader()
+						}
 						<ListView
 							dataSource={dataSource}
-							renderHeader={() => listHeader()}
+							// renderHeader={() => listHeader()}
 							renderRow={(rowData, sectionID, rowID) => {
 								return (
 									<>
@@ -408,7 +416,7 @@ class index extends Component {
 							scrollEventThrottle={11111111110}
 							// onEndReached={onEndReached}
 							// renderFooter={() => (<div style={{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}>
-							renderFooter={() => (<div style={document.querySelector('.player')?{ padding: '.3rem 0 2rem 0', textAlign: 'center' }:{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}> 
+							renderFooter={() => (<div style={document.querySelector('.player') ? { padding: '.3rem 0 2rem 0', textAlign: 'center' } : { padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}>
 								{this.state.isLoading ? 'Loading...' : '没有更多了'}
 							</div>)}
 						/>
@@ -417,7 +425,9 @@ class index extends Component {
 			}
 			case this.props.tabList[1].title: case this.props.tabList[2].title: {
 				return (
-					<div className="tabsList">
+					<div className="tabsList" style={{
+						paddingTop:'.5rem'
+					}}>
 						<ListView
 							dataSource={dataSource}
 							renderRow={(rowData, sectionID, rowID) => {
@@ -444,16 +454,18 @@ class index extends Component {
 							onEndReached={onEndReached}
 							initialListSize={21}
 							pageSize={21}
-							renderFooter={() => (<div style={document.querySelector('.player')?{ padding: '.3rem 0 2rem 0', textAlign: 'center' }:{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}> 
-							{this.state.isLoading ? 'Loading...' : (noMore?'没有更多了':'')}
-						</div>)}
+							renderFooter={() => (<div style={document.querySelector('.player') ? { padding: '.3rem 0 2rem 0', textAlign: 'center' } : { padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}>
+								{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
+							</div>)}
 						/>
 					</div>
 				)
 			}
 			default: {
 				return (
-					<div className="tabsList">
+					<div className="tabsList"  style={{
+						paddingTop:'.5rem'
+					}}>
 						<ListView
 							dataSource={dataSource}
 							renderRow={(rowData, sectionID, rowID) => {
@@ -480,9 +492,9 @@ class index extends Component {
 							onEndReached={onEndReached}
 							pageSize={18}
 							initialListSize={21}
-							renderFooter={() => (<div style={document.querySelector('.player')?{ padding: '.3rem 0 2rem 0', textAlign: 'center' }:{ padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}> 
-							{this.state.isLoading ? 'Loading...' : '没有更多了'}
-						</div>)}
+							renderFooter={() => (<div style={document.querySelector('.player') ? { padding: '.3rem 0 2rem 0', textAlign: 'center' } : { padding: '.3rem 0 1.5rem 0', textAlign: 'center' }}>
+								{this.state.isLoading ? 'Loading...' : '没有更多了'}
+							</div>)}
 						/>
 					</div>
 				)

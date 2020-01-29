@@ -5,14 +5,14 @@ import '../index.less';
 
 const bookSearch = (props) => {
   const onEndReached = (event) => {
-    props.onScrollVideoData()
+    props.onScrollData()
   }
 
   const row = (item, sectionID, rowID) => {
     return (
       <div key={item.id} className='searchContent'>
         <div className='searchContentOne'>
-          <img onClick={()=>props.goBook(item)} style={{ width: '2.7rem', height: '4rem' }} src={item.poster} alt="" />
+          <img onClick={() => props.goBook(item)} style={{ width: '2.7rem', height: '4rem' }} src={item.poster} alt="" />
           <div style={{ height: '4rem' }}>
             <div className='searchText'>
               <h1>{item.title}</h1>
@@ -33,9 +33,11 @@ const bookSearch = (props) => {
   return (
     <ListView
       dataSource={props.dataSource}
-      // renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-      //   {state.isLoading ? 'Loading...' : 'Loaded'}
-      // </div>)}
+      renderFooter={() => (
+        <div style={{ marginTop: 20, marginBottom: 20, padding: 0, textAlign: 'center' }}>
+          {props.dataSource._cachedRowCount >9 ? props.isLoading ? '加载中...' : props.loadingText : ''}
+        </div>
+      )}
       renderRow={row}
       className="am-list-search"
       pageSize={4}

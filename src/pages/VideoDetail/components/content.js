@@ -10,15 +10,16 @@ const Content = (props) => {
   const onPress = (item) => {
     document.documentElement.scrollTop = 0
     window.sessionStorage.removeItem('goBack')
-    const user_id = sessionStorage.getItem('user_id');
-    props.router.history.push(`/detailVideo/video_id=${item.id}&user_id=${user_id}`);
+    props.router.history.push(`/detailVideo/video_id=${item.id}`);
     props.getVideo(item.id);
     props.getChat(item.id)
   }
   const copyAccessKey = () => {
     if (props.detailData.share_url) {
       // copy(props.detailData.share_url)
-      copy(window.location.href)
+      let shareUrl = window.location.href
+      shareUrl=`${shareUrl}&code=${sessionStorage.getItem('invitation_code')}`
+      copy(shareUrl)
       Toast.success('已复制邀请链接,粘贴分享给好友')
     } else {
       Toast.fail('分享复制失败')
@@ -43,7 +44,6 @@ const Content = (props) => {
           <p onClick={copyAccessKey} className='icon4'></p>{/*分享*/}
         </div>
       </div>
-      {/* 切换显示的地 */}
       <div className='hotVideo'>
         <p className='hotTitle'>猜你喜欢</p>
         <div className='collectContent'>

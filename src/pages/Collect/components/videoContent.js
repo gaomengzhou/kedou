@@ -30,15 +30,15 @@ const VideoContent = (props) => {
     <ListView
       dataSource={props.dataSource}
       renderFooter={() => (
-        <div style={{ padding: props.isEdit ? 20 : 0, textAlign: 'center' ,color:'#fff',background:'#fff'}}>
-          {/* {props.isLoading ? '加载中...' : props.loadingText} */}
+        <div style={{ marginTop: 20, marginBottom:props.isEdit? 60:20, padding: 0, textAlign: 'center' }}>
+          {props.dataSource._cachedRowCount >9 ? props.isLoading ? '加载中...' : props.loadingText : ''}
         </div>
       )}
       renderRow={rows}
       className="am-list-video"
       pageSize={4}
       useBodyScroll
-      // onScroll={() => { console.log('scroll'); }}
+      onScroll={() => console.log('scroll')}
       scrollRenderAheadDistance={500}
       onEndReached={onEndReached}
       onEndReachedThreshold={10}

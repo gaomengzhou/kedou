@@ -52,10 +52,16 @@
 
 .am-list-search {
   .am-list-body {
+    &::before {
+      opacity: 0;
+    }
     &::after {
       opacity: 0;
     }
   }
+}
+.am-list-footer div{
+  background-color: #fff !important;
 }
 
 .searchContentOne {

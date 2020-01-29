@@ -1,5 +1,6 @@
 // eslint-disable-next-line
-import { Toast } from 'antd-mobile';
+import { Modal, Toast } from 'antd-mobile';
+import copy from 'copy-to-clipboard';
 import DPlayer from 'dplayer';
 import 'dplayer/dist/DPlayer.min.css';
 import { createForm } from 'rc-form';
@@ -67,9 +68,10 @@ class VideoDetail extends Component {
   componentWillUnmount() {
     clearTimeout(this.timer)
     clearTimeout(this.setToast)
+    clearTimeout(this.shareTimeOut)
+    clearInterval(setTimer)
     this.dPlayer && this.dPlayer.destroy();
     this.isLeave = true;
-    clearInterval(setTimer)
     document.querySelector('.dplayer-controller').removeEventListener('click', function (e) {
       e.stopPropagation()
     })
@@ -84,6 +86,17 @@ class VideoDetail extends Component {
       rows: '10'
     })
   }
+  toShare = (res) => {
+    if (res.result) {
+      copy(res.share_url)
+      Toast.success('邀请码链接复制成功,粘贴给好友注册吧!', 3)
+      this.shareTimeOut = setTimeout(() => {
+        this.props.history.push('/video')
+      }, 3000);
+    } else {
+      Toast.success('网络延迟稍后再试')
+    }
+  }
 
   getVideo = (videoId = '') => {
     const { id } = this.props.match.params
@@ -94,7 +107,7 @@ class VideoDetail extends Component {
     } else {
       this.setState({ noLogin: false })
       new Promise((resolve) => {
-        this.props.getVideoOnePatch({ user_id, video_id: videoId === '' ? video_id : videoId, resolve })
+        this.props.getVideoOnePatch({ user_id, video_id: String(videoId) === '' ? video_id : String(videoId), resolve })
       }).then(res => {
         if (res.user_fabulous === 0) {
           this.setState({
@@ -112,15 +125,16 @@ class VideoDetail extends Component {
           })
           this.InitDPlayer(res.video_url)
         }
-        if (res.code === '-6') {
-          this.InitDPlayer('www.baidu.com')
+        if (res.code === -6) {
+          this.InitDPlayer(' ')
           document.querySelector('.dplayer-full-icon').style.display = 'none';
           this.setState({
             dpHeight: 0
           });
-          this.setToast = setTimeout(() => {
-            Toast.fail(res.err)
-          }, 800);
+          Modal.alert(res.err, '邀请用户可提升观看次数', [
+            { text: '回首页', onPress: () => this.props.history.push('/video') },
+            { text: '去邀请', onPress: () => this.toShare(res) },
+          ])
         }
       })
     }
@@ -162,8 +176,8 @@ class VideoDetail extends Component {
 
   showComment = () => {
     document.getElementById('dplayer').addEventListener('touchmove', this.bodyScroll, { passive: false })
-    const height = document.getElementById('dplayer').offsetHeight
-    document.documentElement.scrollTop = height / 3
+    // const height = document.getElementById('dplayer').offsetHeight
+    // document.documentElement.scrollTop = height / 3
     if (this.visible) {
       return
     } else {
@@ -332,7 +346,7 @@ class VideoDetail extends Component {
       commentNum: this.state.detailData.comment_num,
       visible: this.state.visible,
       onClose: () => {
-        document.documentElement.scrollTop = 0;
+        // document.documentElement.scrollTop = 0;
         document.removeEventListener('touchmove', this.bodyScroll, { passive: false });
         this.setState({ visible: false })
       },

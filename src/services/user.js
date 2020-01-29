@@ -4,12 +4,14 @@ import {
 export const register = ({
     mobile,
     password,
-    code
+    code,
+    invite
 } = {}) => {
     return initAxios().post(`/v2/api/h5_register`, {
         mobile,
         password,
-        code
+        code,
+        invite
     })
 }
 export const sendCode = ({
@@ -49,4 +51,9 @@ export const change_pwd = ({
 } = {}) => initAxios().post(`/v2/user/change_pwd`, {
     mobile,
     password
+})
+export const user_info_no = ({
+    user_id
+} = {}) => initAxios().post(`/v2/user/user_info_no`, {
+    user_id
 })

@@ -32,7 +32,7 @@ class Video extends Component {
 	}
 	getHomeLabelList = async (num) => {
 		await this.props.getHomeVideoList({
-			rows: ''
+			rows:20
 		})
 		await this.props.getHomeLabelList({
 			type: num

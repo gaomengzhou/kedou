@@ -42,8 +42,6 @@ class index extends Component {
 		await bannel_list({
 			type: 1
 		}).then(res => {
-			console.log(res);
-
 			this.setState({
 				bannel: res,
 				isLoading: true,
@@ -53,14 +51,16 @@ class index extends Component {
 		await this.onRefresh()
 	}
 	static getDerivedStateFromProps(props, state) {
-		const {
+		let {
 			recommend,
 			hotLabel,
 			newVideoList,
 			hotVideoList
 		} = props
 		switch (props.tab.title) {
-			case '全部影片': {
+			case props.labelList[0].title: {
+				newVideoList=newVideoList.slice(0,10)
+				hotVideoList=hotVideoList.slice(0,10)
 				return {
 					videoList: {
 						recommend,
@@ -69,11 +69,11 @@ class index extends Component {
 						hotVideoList,
 					}
 				}
-			} case '最新片源': {
+			} case props.labelList[1].title: {
 				return {
 					videoList: newVideoList
 				}
-			} case '重磅热播': {
+			} case props.labelList[2].title: {
 				return {
 					videoList: hotVideoList
 				}
@@ -90,7 +90,7 @@ class index extends Component {
 			isLoading: true,
 		})
 		switch (this.props.tab.title) {
-			case '全部影片': {
+			case this.props.labelList[0].title: {
 				await this.props.getHomeLabelList({
 					type: 0
 				})
@@ -99,18 +99,18 @@ class index extends Component {
 				})
 				break;
 			}
-			case '最新片源': {
+			case this.props.labelList[1].title: {
 				await this.props.getHomeVideoList({
-					rows: ''
+					rows: 20
 				})
 				await this.setState({
 					isLoading: false,
 				})
 				break;
 			}
-			case '重磅热播': {
+			case this.props.labelList[2].title: {
 				await this.props.getHomeVideoList({
-					rows: ''
+					rows: 20
 				})
 				await this.setState({
 					isLoading: false,
@@ -217,13 +217,8 @@ class index extends Component {
 		if (loading) {
 			this.concatList()
 		}
-
-
-
-
-
 		this.setState({
-			// isLoading: false,
+			isLoading: false,
 			data: Date.now()
 		})
 		loading = false
@@ -337,7 +332,7 @@ class index extends Component {
 			// justifyContent:'left'
 		}
 		switch (this.props.tab.title) {
-			case '全部影片': {
+			case this.props.labelList[0].title: {
 				return (
 					<ListView
 						dataSource={dataSource}
@@ -435,7 +430,7 @@ class index extends Component {
 						</div>)}
 					/>
 				)
-			} case '最新片源': {
+			} case this.props.labelList[1].title: {
 				return (
 					<div className='newVideoListView'>
 						<ListView
@@ -462,13 +457,20 @@ class index extends Component {
 								refreshing={isRefreshing}
 								onRefresh={onRefresh}
 							/>}
+							initialListSize={20}
+							pageSize={20}
 							renderFooter={() => (<div style={{ padding: '.3rem 0 1rem 0', textAlign: 'center' }}>
-								{this.state.isLoading ? 'Loading...' : '没有更多了'}
+								{this.state.isLoading ? 'Loading...' : <div className='ChangeList' onClick={()=>{
+									onRefresh()
+									document.body.scrollTop = document.documentElement.scrollTop = 0
+								}} >
+									换一批
+									</div>}
 							</div>)}
 						/>
 					</div>
 				)
-			} case '重磅热播': {
+			} case this.props.labelList[2].title: {
 				return (
 					<div className='newVideoListView'>
 						<ListView
@@ -495,8 +497,15 @@ class index extends Component {
 								refreshing={isRefreshing}
 								onRefresh={onRefresh}
 							/>}
+							initialListSize={20}
+							pageSize={20}
 							renderFooter={() => (<div style={{ padding: '.3rem 0 1rem 0', textAlign: 'center' }}>
-								{this.state.isLoading ? 'Loading...' : '没有更多了'}
+								{this.state.isLoading ? 'Loading...' :  <div className='ChangeList' onClick={()=>{
+									onRefresh()
+									document.body.scrollTop = document.documentElement.scrollTop = 0
+								}} >
+									换一批
+									</div>}
 							</div>)}
 						/>
 					</div>
