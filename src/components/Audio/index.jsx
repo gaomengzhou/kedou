@@ -172,11 +172,14 @@ class App extends React.Component {
 	}
 
 
-	getComment = () => {
+	 getComment = async () => {
 		if(!this.state.commentShow){
 			return false
 		}
-		comment({
+		await this.setState({
+			isLoading:true
+		})
+		await comment({
 			user_id: sessionStorage.getItem('user_id'),
 			novel_id: this.props.detailInfo.id,
 			page: 1,
@@ -186,6 +189,8 @@ class App extends React.Component {
 				commentShow: false,
 				commentTitle: res.total,
 				commentList: res.list,
+				noMore:false,
+				isLoading:false,
 				dataSource: this.state.dataSource.cloneWithRows(res.list),
 			})
 		})
@@ -718,12 +723,8 @@ class App extends React.Component {
 							serialShow: !this.state.serialShow
 						},()=>{
 							if(this.state.serialShow){
-								console.log(1);
-								
 								this.props.setOnRefresh(false)
 							}else{
-								console.log(2);
-								
 								this.props.setOnRefresh(true)
 							}
 						})

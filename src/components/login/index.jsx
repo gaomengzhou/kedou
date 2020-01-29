@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Toast } from 'antd-mobile'
-import { register, sendCode, login, auth_mobile, change_pwd } from '../../services/user'
+import { register, sendCode, login, auth_mobile, change_pwd, user_info_no } from '../../services/user'
 import './index.less'
+import { withRouter } from 'react-router-dom';
+@withRouter
 class index extends Component {
 	constructor(props) {
 		super(props)
@@ -19,11 +21,26 @@ class index extends Component {
 			userIptFocus: false,
 			pswIptFocus: false,
 			codeIptFocus: false,
-			rePswIptFocus: false
+			rePswIptFocus: false,
+			invitation_code:''
 		}
 	}
 
 	componentDidMount() {
+		if (/code/.test(this.props.match.params.id)) {
+			const query = "video_id=" + this.props.match.params.id
+			const vars = query.split("&");
+			vars.forEach(e => {
+				const pair = e.split("=");
+				if (pair[0] === 'code') {
+					this.setState({
+						invitation_code:pair[1]
+					})
+				}
+
+			});
+		}
+
 
 	}
 
@@ -80,13 +97,16 @@ class index extends Component {
 
 		}
 	}
-	register = () => {
-		const { telNumber, codeNumber, passWord } = this.state
-		register({
+	register =async () => {
+		const { telNumber, codeNumber, passWord,invitation_code } = this.state
+	 	await register({
 			mobile: telNumber,
 			password: passWord,
-			code: codeNumber
+			code: codeNumber,
+			invite:invitation_code||''
 		}).then(res => {
+			console.log(telNumber, codeNumber, passWord,invitation_code);
+			
 			const { code } = res
 			if (code) {
 				if (code !== 0) {
@@ -106,15 +126,21 @@ class index extends Component {
 					return false
 				}
 			}
+			console.log(res);
 			sessionStorage.setItem('user_id', res.user_id)
 			sessionStorage.setItem('mobile', telNumber)
 			Toast.info('注册成功')
 			this.initialization()
 		})
+		await user_info_no({
+			user_id: sessionStorage.getItem('user_id')
+		}).then(res => {
+			sessionStorage.setItem('invitation_code', res.invitation_code)
+		})
 	}
-	login = () => {
+	login = async () => {
 		const { telNumber, passWord } = this.state
-		login({
+		await login({
 			mobile: telNumber,
 			password: passWord,
 			mold: 'pwd'
@@ -139,10 +165,15 @@ class index extends Component {
 			Toast.info('登录成功')
 			this.initialization()
 		})
+		await user_info_no({
+			user_id: sessionStorage.getItem('user_id')
+		}).then(res => {
+			sessionStorage.setItem('invitation_code', res.invitation_code)
+		})
 	}
-	registeredSubMit = () => {
+	registeredSubMit = async () => {
 		const { telNumber, codeNumber } = this.state
-		auth_mobile({
+		await auth_mobile({
 			mobile: telNumber,
 			event: 'auth_mobile',
 			code: codeNumber
@@ -171,9 +202,13 @@ class index extends Component {
 
 
 		})
-
+		await user_info_no({
+			user_id: sessionStorage.getItem('user_id')
+		}).then(res => {
+			sessionStorage.setItem('invitation_code', res.invitation_code)
+		})
 	}
-	changePSWSubMit = () => {
+	changePSWSubMit = async () => {
 		const { telNumber, passWord, rePassWord } = this.state
 		if (telNumber.length !== 11 || passWord !== rePassWord) {
 			Toast.info('两次密码不一样')
@@ -183,7 +218,7 @@ class index extends Component {
 			Toast.info('密码不能小于6位')
 			return false
 		}
-		change_pwd({
+		await change_pwd({
 			mobile: telNumber,
 			password: passWord
 		}).then(res => {
@@ -195,6 +230,11 @@ class index extends Component {
 			Toast.info(res.suc)
 			this.initialization()
 
+		})
+		await user_info_no({
+			user_id: sessionStorage.getItem('user_id')
+		}).then(res => {
+			sessionStorage.setItem('invitation_code', res.invitation_code)
 		})
 	}
 	render() {
@@ -309,7 +349,7 @@ class index extends Component {
 						<Button onClick={() => {
 							login()
 						}}>确定</Button>
-						<div className='close_btn' onClick={()=>{
+						<div className='close_btn' onClick={() => {
 							initialization()
 						}}>
 							<img src={require('../../assets/images/close_btn.png')} alt="" />
@@ -400,7 +440,7 @@ class index extends Component {
 						<Button onClick={() => {
 							register()
 						}}>注册并登录</Button>
-						<div className='close_btn' onClick={()=>{
+						<div className='close_btn' onClick={() => {
 							initialization()
 						}}>
 							<img src={require('../../assets/images/close_btn.png')} alt="" />
@@ -471,7 +511,7 @@ class index extends Component {
 						<Button onClick={() => {
 							registeredSubMit()
 						}}>提交</Button>
-						<div className='close_btn' onClick={()=>{
+						<div className='close_btn' onClick={() => {
 							initialization()
 						}}>
 							<img src={require('../../assets/images/close_btn.png')} alt="" />
@@ -530,7 +570,7 @@ class index extends Component {
 						<Button onClick={() => {
 							changePSWSubMit()
 						}}>提交并登录</Button>
-						<div className='close_btn' onClick={()=>{
+						<div className='close_btn' onClick={() => {
 							initialization()
 						}}>
 							<img src={require('../../assets/images/close_btn.png')} alt="" />

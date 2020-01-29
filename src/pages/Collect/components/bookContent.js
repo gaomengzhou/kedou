@@ -29,10 +29,11 @@ const BookContent = (props) => {
   return (
     <ListView
       dataSource={props.dataSourceBook}
-      renderFooter={() => (<div style={{ padding: props.isEdit ? 20 : 0, textAlign: 'center', color: '#fff', background: '#fff' }}>
-        {/* {props.isLoading ? '加载中...' : '没够更多了'} */}
-        {/* {props.isLoading ? '加载中...' : props.loadingText} */}
-      </div>)}
+      renderFooter={() => (
+        <div style={{ marginTop: 20, marginBottom: props.isEdit ? 60 : 20, padding: 0, textAlign: 'center' }}>
+          {props.dataSourceBook._cachedRowCount >4 ? '没有更多了' : ''}
+          {/* {props.dataSourceBook._cachedRowCount>=10?props.isLoading ? '加载中...' : props.loadingText:''} */}
+        </div>)}
       renderRow={row}
       className="am-list-video"
       pageSize={4}

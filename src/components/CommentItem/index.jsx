@@ -12,8 +12,6 @@ class index extends Component {
     }
     componentDidMount() {
         const rowData=this.props.rowData
-        console.log(rowData);
-        
         this.setState({
             thumbed:rowData.thumbed,
             thumbs:rowData.thumbs,

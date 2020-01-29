@@ -24,6 +24,7 @@ class SearchBarExample extends React.Component {
     });
 
     this.state = {
+      loadingText: '加载完成',
       stopRequest: false,
       keyword: '',
       noData: false,
@@ -33,7 +34,7 @@ class SearchBarExample extends React.Component {
       isvideo: true,
       page: 1,// 请求分页
       videoData: [],
-      bookDate: [],
+      bookData: [],
       isLoading: true,
     }
   }
@@ -64,6 +65,7 @@ class SearchBarExample extends React.Component {
   }
 
   goPlayer = (item) => {
+    sessionStorage.setItem('goBack', 'true')
     this.props.history.push(`/detailVideo/video_id=${item.id}`)
   }
 
@@ -80,6 +82,9 @@ class SearchBarExample extends React.Component {
           isSearch: false
         })
       } else {
+        this.setState({
+          isSearch: true
+        })
         if (this.props.match.params.name === 'video') {
           this.setState({
             stopRequest: false,
@@ -98,12 +103,14 @@ class SearchBarExample extends React.Component {
             }
             if (res.length === 0) {
               this.setState({
-                noData: true // 没数据
+                noData: true, // 没数据
+                loadingText: '没有更多了',
               })
             }
             if (res.length < 10) {
               this.setState({
                 stopRequest: true,
+                loadingText: '没有更多了',
               })
             }
           })
@@ -125,24 +132,23 @@ class SearchBarExample extends React.Component {
             }
             if (res.length === 0) {
               this.setState({
-                noData: true // 没数据
+                noData: true,// 没数据
+                loadingText: '没有更多了',
               })
             }
             if (res.length < 10) {
               this.setState({
                 stopRequest: true,
+                loadingText: '没有更多了',
               })
             }
           })
         }
-        this.setState({
-          isSearch: true
-        })
       }
     }, 1500);
   };
 
-  onScrollVideoData = () => { //视频滑动请求
+  onScrollData = () => { // 滑动请求
     if (!this.state.stopRequest && this.state.isvideo) {
       this.setState({ isLoading: true });
       new Promise(resolve => {
@@ -154,8 +160,14 @@ class SearchBarExample extends React.Component {
         })
       }).then(res => {
         if (res.length < 10) {
+          const videoData = this.state.videoData
+          videoData.push(...res)
           this.setState({
             stopRequest: true,
+            loadingText: '没有更多了',
+            isLoading: false,
+            videoData,
+            dataSource: this.state.dataSource.cloneWithRows(videoData),
           })
           return
         } else {
@@ -182,18 +194,24 @@ class SearchBarExample extends React.Component {
         })
       }).then(res => {
         if (res.length < 10) {
+          const bookData = this.state.bookData
+          bookData.push(...res)
           this.setState({
+            bookData,
+            dataSource: this.state.dataSource.cloneWithRows(bookData),
             stopRequest: true,
+            loadingText: '没有更多了',
+            isLoading: false,
           })
           return
         } else {
-          const videoData = this.state.videoData
-          videoData.push(...res)
+          const bookData = this.state.bookData
+          bookData.push(...res)
           this.setState({
             page: this.state.page + 1,
             isLoading: false,
-            videoData,
-            dataSource: this.state.dataSource.cloneWithRows(videoData),
+            bookData,
+            dataSource: this.state.dataSource.cloneWithRows(bookData),
           })
         }
       })
@@ -201,12 +219,15 @@ class SearchBarExample extends React.Component {
   }
 
   render() {
+    console.log(this.props)
     if (this.state.isvideo) {
       const videoSearchProps = {
+        loadingText: this.state.loadingText,
+        isLoading: this.state.isLoading,
         dataSource: this.state.dataSource,
         noData: this.state.noData,
         goPlayer: this.goPlayer,
-        onScrollVideoData: this.onScrollVideoData,
+        onScrollData: this.onScrollData,
       }
       return (
         <div>
@@ -233,10 +254,12 @@ class SearchBarExample extends React.Component {
       );
     } else {
       const bookSearchProps = {
+        loadingText: this.state.loadingText,
+        isLoading: this.state.isLoading,
         dataSource: this.state.dataSource,
         noData: this.state.noData,
         goBook: this.goBook,
-        onScrollVideoData: this.onScrollVideoData
+        onScrollData: this.onScrollData
       }
       return (
         <div>

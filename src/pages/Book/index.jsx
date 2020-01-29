@@ -3,6 +3,7 @@ import Header from '@/components/header';
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { category, setOnRefresh } from '../../store/action/book'
+import {bannel_list} from '../../store/action/bannel'
 import Tabs from '../../components/tabs'
 import Login from '../../components/login'
 import { detail } from '../../services/book'
@@ -17,7 +18,8 @@ const stateToProps = (state) => {
 }
 const mapDispatchToProps = {
     category,
-    setOnRefresh
+    setOnRefresh,
+    bannel_list
 };
 @connect(
     stateToProps,
@@ -39,6 +41,9 @@ class Book extends Component {
     componentDidMount() {
         this.props.category({
             page: 1
+        })
+        this.props.bannel_list({
+            type:1
         })
         this.props.setOnRefresh(true)
         if (this.props.history.location.state) {
@@ -69,7 +74,6 @@ class Book extends Component {
     }
     closeMyLoginShow = () => {
         this.setState({
-            loginShow: false,
             my: false
         })
     }
@@ -96,6 +100,7 @@ class Book extends Component {
                     <div key={e.goto} onClick={() => {
                         if (e.title === '退出登录') {
                             sessionStorage.removeItem('user_id')
+                            sessionStorage.removeItem('invitation_code')
                             this.setState({
                                 my: false
                             })
@@ -222,7 +227,7 @@ class Book extends Component {
                 detailInfo,
             },
             props: {
-                tabList
+                tabList,
             },
             getBooKDetail,
             testRightCallBack,
@@ -240,6 +245,7 @@ class Book extends Component {
         const bookHeader = {
             // leftCallBack: this.testCallBack,
             rightCallBack: testRightCallBack,
+            detailShow,
             type: 'book'
         }
 
@@ -248,12 +254,13 @@ class Book extends Component {
             getBooKDetail,
             testRightCallBack,
             closeMyLoginShow,
+            detailShow
             // setCollect,
             // collectSucceed
         }
         return (
             <div id='home_book'>
-                <div style={!detailShow ? { display: 'block' } : { display: 'none' }}>
+                <div style={!detailShow ? { height: '100%' } : { height: '0' }}>
                     <Header {...bookHeader} />
                     <Tabs {...tabsParameter} />
                     {loginShow && <Login rightCallBack={this.testRightCallBack} />}
