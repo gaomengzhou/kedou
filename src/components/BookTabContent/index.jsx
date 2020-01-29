@@ -5,6 +5,7 @@ import BookListContent from '../BookListContent'
 import ListTitle from '../ListTitle'
 import { bannel_list } from '../../services/bannel'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom';
 const stateToProps = (state) => {
 	return {
 		refresh: state.book.refresh,
@@ -13,6 +14,7 @@ const stateToProps = (state) => {
 @connect(
 	stateToProps,
 )
+@withRouter
 class index extends Component {
 	constructor(props) {
 		super(props)
@@ -282,6 +284,12 @@ class index extends Component {
 						src={val.url}
 						alt="正在加载图片"
 						style={{ width: '100%', height: '100%' }}
+						onClick={() => {
+							// window.location.href=`https://www.baidu.com`
+							// // const w = window.open('about:blank');
+							// // w.location.href=`https://www.baidu.com`;
+							this.props.history.push(val.h5_target)
+						}}
 					/>
 				))}
 			</Carousel>
