@@ -67,6 +67,11 @@
 
     #listTitle {
         background-color: rgba(255, 255, 255, 1);
+        .titleInfo{
+            img{
+                width: .45rem;
+            }
+        }
     }
 
     .itemBtn {
@@ -99,9 +104,12 @@
                 margin-right: .5rem;
             }
         }
-
+        .activeCollected{
+            color:  rgb(131, 45, 244);
+        }
         p {
             text-align: center;
+            
         }
     }
 
@@ -397,6 +405,7 @@
             background-color: rgba(0, 0, 0, 0);
             border: none;
         }
+      
     }
 }
 

@@ -60,7 +60,14 @@ const Content = (props) => {
                 }}
                 key={item.id}
               >
-                <ImgLoad src={item.cover_one} item={item} top={'35%'} left={'25%'} width={'100%'} height={'80%'} />
+                <ImgLoad
+                  src={item.cover_one}
+                  item={item}
+                  top={'35%'}
+                  left={'25%'}
+                  width={'100%'}
+                  height={'80%'}
+                />
                 <p>{item.title}</p>
               </div>
             ))
