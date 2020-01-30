@@ -3,7 +3,7 @@ import Header from '@/components/header';
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { category, setOnRefresh } from '../../store/action/book'
-import {bannel_list} from '../../store/action/bannel'
+import { bannel_list } from '../../store/action/bannel'
 import Tabs from '../../components/tabs'
 import Login from '../../components/login'
 import { detail } from '../../services/book'
@@ -43,7 +43,7 @@ class Book extends Component {
             page: 1
         })
         this.props.bannel_list({
-            type:1
+            type: 1
         })
         this.props.setOnRefresh(true)
         if (this.props.history.location.state) {
@@ -55,22 +55,25 @@ class Book extends Component {
         }
     }
     testRightCallBack = () => {
-        if (this.state.loginShow && sessionStorage.getItem('user_id')) {
+        const { loginShow, my } = this.state
+        const user_id = sessionStorage.getItem('user_id')
+        if (!user_id) {
             this.setState({
-                loginShow: !this.state.loginShow
-            })
-        } else if (!this.state.loginShow && sessionStorage.getItem('user_id')) {
-            this.setState({
-                my: !this.state.my
+                loginShow: !loginShow
             })
         } else {
-            this.setState({
-                loginShow: !this.state.loginShow,
-                novelItem: null
-            })
+            if (loginShow) {
+                this.setState({
+                    loginShow: false,
+                    my: false
+                })
+            } else {
+                this.setState({
+                    my: !my
+                })
+            }
+
         }
-
-
     }
     closeMyLoginShow = () => {
         this.setState({
