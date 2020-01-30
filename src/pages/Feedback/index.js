@@ -88,7 +88,7 @@ class UserFeedBack extends Component {
             {...getFieldProps('userFeedBack', {
               //initialValue: '', //初始值
             })}
-            placeholder='请详细输入您需要解决的问题，就算您提交了我们也依然不会改，有效截图有助于我们客服找到并物理超度您，非常感谢您的配合。'
+            placeholder='请输入您需要反馈的问题...'
             rows={8}
             count={500}
             style={{ fontSize: '.24rem' }}
