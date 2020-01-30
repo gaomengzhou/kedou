@@ -3,7 +3,6 @@ import Book from '../pages/Book'
 import Collect from '../pages/Collect'
 import UserFeedBack from '../pages/Feedback'
 import Search from '../pages/search'
-import Test from '../pages/test'
 import Video from '../pages/Video'
 import VideoDetail from '../pages/VideoDetail'
 const routes = [
@@ -13,12 +12,7 @@ const routes = [
         component: Video
     },
     {
-        path: '/test',
-        key: 'test',
-        component: Test
-    },
-    {
-        path: '/detailVideo/video_id=:id',
+        path: '/detailVideo/:id/:code?',
         key: 'detailVideo',
         component: VideoDetail
     },
