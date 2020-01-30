@@ -11,13 +11,15 @@ const VideoSearch = (props) => {
   const row = (item, sectionID, rowID) => {
     return (
       <div key={item.id} className='searchContent'>
-        <div className='searchContentOne' style={{position:'relative'}}>
+        <div className='searchContentOne' style={{ position: 'relative' }}>
           <ImgLoad
             onClick={() => props.goPlayer(item)}
             src={item.cover_one}
             item={item}
             top={'43%'}
-            left={'9%'}
+            left={'8%'}
+            width={'3rem'}
+            height={'2rem'}
           />
           <div className='searchText'>
             <h1>{item.title}</h1>

@@ -1,5 +1,6 @@
 import { ActivityIndicator } from 'antd-mobile';
 import React, { Component } from 'react';
+import './style.less';
 /**
  * {item} 图片数据
  * {top} {left} 定位距离
@@ -13,6 +14,14 @@ class ImgLoad extends Component {
       imgLoad: true
     }
   }
+  componentDidMount() {
+    if (!this.props.src) {
+      this.setState({
+        imgLoad: false
+      })
+    }
+  }
+
   imgLoadOver = () => {
     this.setState({
       imgLoad: false
@@ -21,32 +30,43 @@ class ImgLoad extends Component {
   render() {
     return (
       <>
-        <div style={{
+        <div id='img-activity-indicator' style={{
           position: 'absolute',
           top: this.props.top,
           left: this.props.left,
-          display: this.state.imgLoad ? 'block' : 'none'
+          display: this.state.imgLoad ? 'block' : 'none',
+          zIndex: 2
         }}>
-          <ActivityIndicator animating={this.state.imgLoad} text={'图片加载中...'} />
+          <ActivityIndicator
+            animating={this.state.imgLoad}
+            text={'图片加载中...'}
+          />
         </div>
-        <img
-          onClick={this.props.onClick}
-          onLoad={this.imgLoadOver}
-          style={{
-            width: this.props.width,
-            height: this.props.height,
-            opacity: this.state.imgLoad ? 0 : 1,
-            boxShadow: '#999 1px 1px 5px'
-          }}
-          src={
-            this.props.src ? this.props.src : ''
-          }
-          alt={
-            this.props.src
-              ? ''
-              : '暂无图片'
-          }
-        />
+        <div style={{
+          boxShadow: '#999 1px 1px 5px',
+          width: this.props.width,
+          height: this.props.height,
+          borderRadius: '.3rem',
+        }}>
+          <img
+            onClick={this.props.onClick}
+            onLoad={this.imgLoadOver}
+            style={{
+              width: '100%',
+              height: '100%',
+              transition: '2s',
+              opacity: this.state.imgLoad ? 0 : 1,
+            }}
+            src={
+              this.props.src ? this.props.src : ''
+            }
+            alt={
+              this.props.src
+                ? ''
+                : '暂无图片'
+            }
+          />
+        </div>
       </>
     )
   }

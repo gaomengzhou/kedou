@@ -75,15 +75,6 @@ class App extends React.Component {
 			document.querySelector('.aplayer-icon-loop').remove()
 			document.body.scrollTop = document.documentElement.scrollTop = 0
 		})
-
-		console.log(document.querySelector('.aplayer-thumb'));
-		
-		// document.querySelector('.aplayer-thumb').style.height='.2rem'
-		// document.querySelector('.aplayer-thumb').style.width='.2rem'
-		// document.querySelector('.aplayer-thumb').style.marginTop='-.1rem'
-		// document.querySelector('.aplayer-thumb').style.marginRight='-.1rem'
-		// document.querySelector('.aplayer-thumb').style.top='0'
-		// document.querySelector('.aplayer-thumb').style.right='0'
 	}
 	componentWillUnmount() {
 		this.onPause()
@@ -164,7 +155,7 @@ class App extends React.Component {
 			novel_id: novel_id
 		}).then(res => {
 			if (res.code === 0) {
-				Toast.info(res.suc)
+				Toast.info(res.suc, 1, null, false)
 				if (res.suc === '取消成功') {
 					this.setState({
 						collectedNum: this.state.collectedNum - 1,
@@ -573,7 +564,7 @@ class App extends React.Component {
 
 								}}>
 									<img src={collected ? require('../../assets/images/comment_pressed_btn.png') : require('../../assets/images/comment_nomal_btn.png')} alt="" />
-									<p>{collectedNum}</p>
+									<p className={collected?'activeCollected':''}>{collectedNum}</p>
 								</div>
 							</div>
 							{/* <div className="right">

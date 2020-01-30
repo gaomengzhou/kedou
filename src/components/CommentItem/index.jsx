@@ -25,13 +25,13 @@ class index extends Component {
             comment_id:this.state.id
         }).then(res=>{
             if(res.code===0){
-                Toast.info(res.suc)
+                Toast.info(res.suc, 1, null, false)
                 this.setState({
                     thumbed:1,
                     thumbs:this.state.thumbs+1
                 })
             }else{
-                Toast.info(res.err)
+                Toast.info(res.err, 1, null, false)
             }
             
         })

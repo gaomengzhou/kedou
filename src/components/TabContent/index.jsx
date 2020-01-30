@@ -59,8 +59,8 @@ class index extends Component {
 		} = props
 		switch (props.tab.title) {
 			case props.labelList[0].title: {
-				newVideoList=newVideoList.slice(0,10)
-				hotVideoList=hotVideoList.slice(0,10)
+				newVideoList = newVideoList.slice(0, 10)
+				hotVideoList = hotVideoList.slice(0, 10)
 				return {
 					videoList: {
 						recommend,
@@ -292,9 +292,13 @@ class index extends Component {
 						alt="正在加载图片"
 						style={{ width: '100%', height: '100%' }}
 						onClick={() => {
-							// window.location.href=`https://www.baidu.com`
-							// // const w = window.open('about:blank');
-							// // w.location.href=`https://www.baidu.com`;
+							if (/^(http|https)/.test(val.h5_target)) {
+								// window.location.href=val.h5_target
+								const w = window.open('about:blank');
+								w.location.href=val.h5_target;
+								return false
+							}
+
 							this.props.history.push(val.h5_target)
 						}}
 					/>
@@ -460,7 +464,7 @@ class index extends Component {
 							initialListSize={20}
 							pageSize={20}
 							renderFooter={() => (<div style={{ padding: '.3rem 0 1rem 0', textAlign: 'center' }}>
-								{this.state.isLoading ? 'Loading...' : <div className='ChangeList' onClick={()=>{
+								{this.state.isLoading ? 'Loading...' : <div className='ChangeList' onClick={() => {
 									onRefresh()
 									document.body.scrollTop = document.documentElement.scrollTop = 0
 								}} >
@@ -500,7 +504,7 @@ class index extends Component {
 							initialListSize={20}
 							pageSize={20}
 							renderFooter={() => (<div style={{ padding: '.3rem 0 1rem 0', textAlign: 'center' }}>
-								{this.state.isLoading ? 'Loading...' :  <div className='ChangeList' onClick={()=>{
+								{this.state.isLoading ? 'Loading...' : <div className='ChangeList' onClick={() => {
 									onRefresh()
 									document.body.scrollTop = document.documentElement.scrollTop = 0
 								}} >

@@ -52,27 +52,17 @@ class Video extends Component {
 	testRightCallBack = () => {
 		const { loginShow, my } = this.state
 		const user_id = sessionStorage.getItem('user_id')
-	console.log(1);
-	
 		if (!user_id) {
-			console.log(2);
-			
 			this.setState({
 				loginShow: !loginShow
 			})
 		} else {
-			console.log(3);
-			
 			if (loginShow) {
-				console.log(4);
-				
 				this.setState({
 					loginShow: false,
 					my: false
 				})
 			} else {
-				console.log(5);
-				
 				this.setState({
 					my: !my
 				})
