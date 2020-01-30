@@ -1,5 +1,6 @@
 import { Checkbox, ListView } from 'antd-mobile';
 import React from 'react';
+import ImgLoad from '../../../components/ImgActivityIndicator';
 import '../style.less';
 
 const BookContent = (props) => {
@@ -12,15 +13,23 @@ const BookContent = (props) => {
       props.isEdit ?
         <label key={item.novel_id}>
           <CheckboxItem checked={item.isCheck ? true : false} onChange={(v) => props.selectOne(v, index, item)}>
-            <div className='collectContent'>
-              <img style={{ width: '100%', height: '100%' }} src={item.poster} alt="" />
+            <div className='collectContentBook'>
+              <img style={{ width: '100%', height: '92%' }} src={item.poster} alt="" />
               <p>{item.title}</p>
               {/* <span>昨天</span> */}
             </div>
           </CheckboxItem>
         </label> :
-        <div key={item.novel_id} className='collectContent'>
-          <img onClick={() => props.goToBook(item)} style={{ width: '100%', height: '100%' }} src={item.poster} alt="" />
+        <div key={item.novel_id} className='collectContentBook' style={{ position: 'relative' }}>
+          <ImgLoad
+            onClick={() => props.goToBook(item)}
+            src={item.poster}
+            width={'100%'}
+            height={'92%'}
+            item={item}
+            top={'45%'}
+            left={'25%'}
+          />
           <p>{item.title}</p>
           {/* <span>昨天</span> */}
         </div>
@@ -31,7 +40,7 @@ const BookContent = (props) => {
       dataSource={props.dataSourceBook}
       renderFooter={() => (
         <div style={{ marginTop: 20, marginBottom: props.isEdit ? 60 : 20, padding: 0, textAlign: 'center' }}>
-          {props.dataSourceBook._cachedRowCount >4 ? '没有更多了' : ''}
+          {props.dataSourceBook._cachedRowCount > 4 ? '没有更多了' : ''}
           {/* {props.dataSourceBook._cachedRowCount>=10?props.isLoading ? '加载中...' : props.loadingText:''} */}
         </div>)}
       renderRow={row}

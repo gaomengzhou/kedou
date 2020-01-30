@@ -1,5 +1,6 @@
 import { ListView } from 'antd-mobile';
 import React from 'react';
+import ImgLoad from '../../../components/ImgActivityIndicator';
 import '../index.less';
 
 const VideoSearch = (props) => {
@@ -10,8 +11,14 @@ const VideoSearch = (props) => {
   const row = (item, sectionID, rowID) => {
     return (
       <div key={item.id} className='searchContent'>
-        <div className='searchContentOne'>
-          <img onClick={() => props.goPlayer(item)} src={item.cover_one} alt="" />
+        <div className='searchContentOne' style={{position:'relative'}}>
+          <ImgLoad
+            onClick={() => props.goPlayer(item)}
+            src={item.cover_one}
+            item={item}
+            top={'43%'}
+            left={'9%'}
+          />
           <div className='searchText'>
             <h1>{item.title}</h1>
             <div style={{ display: 'flex' }}>
@@ -36,7 +43,7 @@ const VideoSearch = (props) => {
       dataSource={props.dataSource}
       renderFooter={() => (
         <div style={{ marginTop: 20, marginBottom: 20, padding: 0, textAlign: 'center' }}>
-          {props.dataSource._cachedRowCount >9 ? props.isLoading ? '加载中...' : props.loadingText : ''}
+          {props.dataSource._cachedRowCount > 9 ? props.isLoading ? '加载中...' : props.loadingText : ''}
         </div>
       )}
       renderRow={row}

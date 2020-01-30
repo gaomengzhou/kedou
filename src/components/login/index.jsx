@@ -77,7 +77,7 @@ class index extends Component {
 				type: 'user'
 			}).then(res => {
 				if (res.code === 0) {
-					Toast.info(res.suc)
+					Toast.info(res.suc, 1, null, false)
 					this.timeChange()
 				} else {
 					Toast.info(res.err)
@@ -94,8 +94,6 @@ class index extends Component {
 			code: codeNumber,
 			invite: invitation_code || ''
 		}).then(res => {
-			console.log(telNumber, codeNumber, passWord, invitation_code);
-
 			const { code } = res
 			if (code) {
 				if (code !== 0) {
@@ -115,9 +113,8 @@ class index extends Component {
 					return false
 				}
 			}
-			Toast.info('注册成功')
+			Toast.info('注册成功', 1, null, false)
 			this.login('注册成功')
-			this.initialization()
 		})
 	}
 	login = async (info) => {
@@ -148,13 +145,21 @@ class index extends Component {
 				user_id: res.user_id
 			}).then(ret => {
 				sessionStorage.setItem('invitation_code', ret.invitation_code)
-				Toast.info(info||'登录成功')
+				Toast.info(info || '登录成功', 1, null, false)
 			})
 			this.initialization()
 		})
 	}
 	registeredSubMit = async () => {
 		const { telNumber, codeNumber } = this.state
+		if (!telNumber) {
+			Toast.info('请填写手机号')
+			return false
+		}
+		if (!codeNumber) {
+			Toast.info('请填写验证码')
+			return false
+		}
 		await auth_mobile({
 			mobile: telNumber,
 			event: 'auth_mobile',
@@ -162,14 +167,6 @@ class index extends Component {
 		}).then(res => {
 			const { code } = res
 			if (code !== 0) {
-				if (!codeNumber) {
-					Toast.info('请填写验证码')
-					return false
-				}
-				if (!telNumber) {
-					Toast.info('请填写手机号')
-					return false
-				}
 				Toast.info(res.err)
 				return false
 			}
@@ -179,7 +176,7 @@ class index extends Component {
 				codeNumber: '',
 				passWord: ''
 			})
-			Toast.info(res.suc)
+			Toast.info(res.suc, 1, null, false)
 			return false
 
 
@@ -204,9 +201,8 @@ class index extends Component {
 				Toast.info(res.err)
 				return false
 			}
-			Toast.info(res.suc)
+			Toast.info(res.suc, 1, null, false)
 			this.login(res.suc)
-			this.initialization()
 
 		})
 	}
