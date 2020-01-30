@@ -22,26 +22,16 @@ class index extends Component {
 			pswIptFocus: false,
 			codeIptFocus: false,
 			rePswIptFocus: false,
-			invitation_code:''
+			invitation_code: ''
 		}
 	}
 
 	componentDidMount() {
-		if (/code/.test(this.props.match.params.id)) {
-			const query = "video_id=" + this.props.match.params.id
-			const vars = query.split("&");
-			vars.forEach(e => {
-				const pair = e.split("=");
-				if (pair[0] === 'code') {
-					this.setState({
-						invitation_code:pair[1]
-					})
-				}
-
-			});
+		if (this.props.match.params.code) {
+			this.setState({
+				invitation_code: this.props.match.params.code
+			})
 		}
-
-
 	}
 
 	initialization = async () => {
@@ -81,7 +71,6 @@ class index extends Component {
 			return false
 		}
 		if (getCode === '获取验证码' || getCode === '重新获取') {
-
 			sendCode({
 				mobile: telNumber,
 				event,
@@ -97,16 +86,16 @@ class index extends Component {
 
 		}
 	}
-	register =async () => {
-		const { telNumber, codeNumber, passWord,invitation_code } = this.state
-	 	await register({
+	register = () => {
+		const { telNumber, codeNumber, passWord, invitation_code } = this.state
+		register({
 			mobile: telNumber,
 			password: passWord,
 			code: codeNumber,
-			invite:invitation_code||''
+			invite: invitation_code || ''
 		}).then(res => {
-			console.log(telNumber, codeNumber, passWord,invitation_code);
-			
+			console.log(telNumber, codeNumber, passWord, invitation_code);
+
 			const { code } = res
 			if (code) {
 				if (code !== 0) {
@@ -126,20 +115,21 @@ class index extends Component {
 					return false
 				}
 			}
-			console.log(res);
-			sessionStorage.setItem('user_id', res.user_id)
-			sessionStorage.setItem('mobile', telNumber)
 			Toast.info('注册成功')
+			this.login('注册成功')
 			this.initialization()
 		})
-		await user_info_no({
-			user_id: sessionStorage.getItem('user_id')
-		}).then(res => {
-			sessionStorage.setItem('invitation_code', res.invitation_code)
-		})
 	}
-	login = async () => {
+	login = async (info) => {
 		const { telNumber, passWord } = this.state
+		if (!telNumber) {
+			Toast.info('请填写手机号')
+			return false
+		}
+		if (!passWord) {
+			Toast.info('请填写密码')
+			return false
+		}
 		await login({
 			mobile: telNumber,
 			password: passWord,
@@ -148,27 +138,19 @@ class index extends Component {
 			const { code } = res
 			if (code) {
 				if (res.code !== 0) {
-					if (!telNumber) {
-						Toast.info('请填写手机号')
-						return false
-					}
-					if (!passWord) {
-						Toast.info('请填写密码')
-						return false
-					}
 					Toast.info('请正确填写用户名和密码')
 					return false
 				}
 			}
 			sessionStorage.setItem('user_id', res.user_id)
 			sessionStorage.setItem('mobile', res.mobile)
-			Toast.info('登录成功')
+			user_info_no({
+				user_id: res.user_id
+			}).then(ret => {
+				sessionStorage.setItem('invitation_code', ret.invitation_code)
+				Toast.info(info||'登录成功')
+			})
 			this.initialization()
-		})
-		await user_info_no({
-			user_id: sessionStorage.getItem('user_id')
-		}).then(res => {
-			sessionStorage.setItem('invitation_code', res.invitation_code)
 		})
 	}
 	registeredSubMit = async () => {
@@ -202,11 +184,6 @@ class index extends Component {
 
 
 		})
-		await user_info_no({
-			user_id: sessionStorage.getItem('user_id')
-		}).then(res => {
-			sessionStorage.setItem('invitation_code', res.invitation_code)
-		})
 	}
 	changePSWSubMit = async () => {
 		const { telNumber, passWord, rePassWord } = this.state
@@ -228,13 +205,9 @@ class index extends Component {
 				return false
 			}
 			Toast.info(res.suc)
+			this.login(res.suc)
 			this.initialization()
 
-		})
-		await user_info_no({
-			user_id: sessionStorage.getItem('user_id')
-		}).then(res => {
-			sessionStorage.setItem('invitation_code', res.invitation_code)
 		})
 	}
 	render() {

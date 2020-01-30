@@ -10,7 +10,7 @@ const Content = (props) => {
   const onPress = (item) => {
     document.documentElement.scrollTop = 0
     window.sessionStorage.removeItem('goBack')
-    props.router.history.push(`/detailVideo/video_id=${item.id}`);
+    props.router.history.push(`/detailVideo/${item.id}`);
     props.getVideo(item.id);
     props.getChat(item.id)
   }
@@ -18,7 +18,7 @@ const Content = (props) => {
     if (props.detailData.share_url) {
       // copy(props.detailData.share_url)
       let shareUrl = window.location.href
-      shareUrl=`${shareUrl}&code=${sessionStorage.getItem('invitation_code')}`
+      shareUrl=`${shareUrl}/${sessionStorage.getItem('invitation_code')}`
       copy(shareUrl)
       Toast.success('已复制邀请链接,粘贴分享给好友')
     } else {

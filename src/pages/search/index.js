@@ -66,7 +66,7 @@ class SearchBarExample extends React.Component {
 
   goPlayer = (item) => {
     sessionStorage.setItem('goBack', 'true')
-    this.props.history.push(`/detailVideo/video_id=${item.id}`)
+    this.props.history.push(`/detailVideo/${item.id}`)
   }
 
   onChange = (e) => {
@@ -219,7 +219,6 @@ class SearchBarExample extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     if (this.state.isvideo) {
       const videoSearchProps = {
         loadingText: this.state.loadingText,

@@ -332,7 +332,7 @@ class Collect extends Component {
   goToVideo = (item) => {
     document.documentElement.scrollTop = 0
     window.sessionStorage.setItem('goBack', 'true')
-    this.props.history.push(`/detailVideo/video_id=${item.video_id}`);
+    this.props.history.push(`/detailVideo/${item.video_id}`);
   }
 
   callBackStateVideo = () => {
