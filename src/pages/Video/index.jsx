@@ -32,7 +32,7 @@ class Video extends Component {
 	}
 	getHomeLabelList = async (num) => {
 		await this.props.getHomeVideoList({
-			rows:20
+			rows: 20
 		})
 		await this.props.getHomeLabelList({
 			type: num
@@ -50,26 +50,27 @@ class Video extends Component {
 		//console.log(123);
 	}
 	testRightCallBack = () => {
-
-
-		if (this.state.loginShow && sessionStorage.getItem('user_id')) {
+		const { loginShow, my } = this.state
+		const user_id = sessionStorage.getItem('user_id')
+		if (!user_id) {
 			this.setState({
-				loginShow: !this.state.loginShow
-			})
-		} else if (!this.state.loginShow && sessionStorage.getItem('user_id')) {
-			this.setState({
-				my: !this.state.my
+				loginShow: !loginShow
 			})
 		} else {
-			this.setState({
-				loginShow: !this.state.loginShow
-			})
-		}
+			if (loginShow) {
+				this.setState({
+					loginShow: false,
+					my: false
+				})
+			} else {
+				this.setState({
+					my: !my
+				})
+			}
 
-	
-		
+		}
 	}
-	closeMyLoginShow=()=>{
+	closeMyLoginShow = () => {
 		this.setState({
 			// loginShow: false,
 			my: false
@@ -85,7 +86,7 @@ class Video extends Component {
 			})
 			return false
 		}
-		this.props.history.push(`/detailVideo/video_id=${video_id}`)
+		this.props.history.push(`/detailVideo/${video_id}`)
 	}
 	Popo = () => {
 		const arr = [
@@ -110,6 +111,7 @@ class Video extends Component {
 					<div key={e.goto} onClick={() => {
 						if (e.title === '退出登录') {
 							sessionStorage.removeItem('user_id')
+                            sessionStorage.removeItem('invitation_code')
 							this.setState({
 								my: false
 							})
