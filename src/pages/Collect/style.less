@@ -15,18 +15,50 @@
       align-items: center;
     }
   }
-  .am-list-footer{
+
+  .am-list-footer {
     opacity: 1;
   }
-  .am-list-footer div{
+
+  .am-list-footer div {
     background-color: #fff !important;
   }
 }
 
 .collectContent {
   width: 3.5rem;
+  height: 3rem;
   margin: .1rem;
   box-sizing: border-box;
+  text-align: center;
+
+  img {
+    border-radius: .3rem;
+  }
+
+  p {
+    font-size: .28rem;
+    margin: .05rem 0;
+    overflow: hidden;
+    /*超出部分隐藏*/
+    text-overflow: ellipsis;
+    /* 超出部分显示省略号 */
+    white-space: nowrap;
+    /*规定段落中的文本不进行换行 */
+  }
+
+  span {
+    color: #bbb5b5;
+    font-size: .14rem;
+  }
+}
+
+.collectContentBook {
+  width: 3.5rem;
+  height: 6rem;
+  margin: .1rem;
+  box-sizing: border-box;
+  text-align: center;
 
   img {
     border-radius: .3rem;

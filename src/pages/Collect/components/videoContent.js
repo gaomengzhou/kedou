@@ -1,5 +1,6 @@
 import { Checkbox, ListView } from 'antd-mobile';
 import React from 'react';
+import ImgLoad from '../../../components/ImgActivityIndicator';
 import '../style.less';
 
 const VideoContent = (props) => {
@@ -13,14 +14,22 @@ const VideoContent = (props) => {
         <label key={item.id}>
           <CheckboxItem checked={item.isCheck ? true : false} onChange={(v) => props.selectOne2(v, index, item)}>
             <div className='collectContent'>
-              <img style={{ width: '100%', height: '100%' }} src={item.cover_one} alt="" />
+              <img style={{ width: '100%', height: '78%' }} src={item.cover_one} alt="" />
               <p>{item.title}</p>
               {/* <span>昨天</span> */}
             </div>
           </CheckboxItem>
         </label> :
-        <div key={item.id} className='collectContent'>
-          <img onClick={() => props.goToVideo(item)} style={{ width: '100%', height: '100%' }} src={item.cover_one} alt="" />
+        <div key={item.id} className='collectContent' style={{ position: 'relative' }}>
+          <ImgLoad
+            onClick={() => props.goToVideo(item)}
+            src={item.cover_one}
+            width={'100%'}
+            height={'78%'}
+            item={item}
+            top={'35%'}
+            left={'25%'}
+          />
           <p>{item.title}</p>
           {/* <span>昨天</span> */}
         </div>
@@ -30,8 +39,8 @@ const VideoContent = (props) => {
     <ListView
       dataSource={props.dataSource}
       renderFooter={() => (
-        <div style={{ marginTop: 20, marginBottom:props.isEdit? 60:20, padding: 0, textAlign: 'center' }}>
-          {props.dataSource._cachedRowCount >9 ? props.isLoading ? '加载中...' : props.loadingText : ''}
+        <div style={{ marginTop: 20, marginBottom: props.isEdit ? 60 : 20, padding: 0, textAlign: 'center' }}>
+          {props.dataSource._cachedRowCount > 9 ? props.isLoading ? '加载中...' : props.loadingText : ''}
         </div>
       )}
       renderRow={rows}

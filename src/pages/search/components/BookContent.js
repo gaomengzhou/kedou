@@ -1,7 +1,7 @@
 import { ListView } from 'antd-mobile';
 import React from 'react';
+import ImgLoad from '../../../components/ImgActivityIndicator';
 import '../index.less';
-
 
 const bookSearch = (props) => {
   const onEndReached = (event) => {
@@ -11,8 +11,16 @@ const bookSearch = (props) => {
   const row = (item, sectionID, rowID) => {
     return (
       <div key={item.id} className='searchContent'>
-        <div className='searchContentOne'>
-          <img onClick={() => props.goBook(item)} style={{ width: '2.7rem', height: '4rem' }} src={item.poster} alt="" />
+        <div className='searchContentOne' style={{ position: 'relative' }}>
+          <ImgLoad
+            onClick={() => props.goBook(item)}
+            src={item.poster}
+            item={item}
+            width={'2.7rem'}
+            height={'4rem'}
+            top={'46%'}
+            left={'7%'}
+          />
           <div style={{ height: '4rem' }}>
             <div className='searchText'>
               <h1>{item.title}</h1>
@@ -35,7 +43,7 @@ const bookSearch = (props) => {
       dataSource={props.dataSource}
       renderFooter={() => (
         <div style={{ marginTop: 20, marginBottom: 20, padding: 0, textAlign: 'center' }}>
-          {props.dataSource._cachedRowCount >9 ? props.isLoading ? '加载中...' : props.loadingText : ''}
+          {props.dataSource._cachedRowCount > 9 ? props.isLoading ? '加载中...' : props.loadingText : ''}
         </div>
       )}
       renderRow={row}

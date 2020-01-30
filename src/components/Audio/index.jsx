@@ -75,9 +75,20 @@ class App extends React.Component {
 			document.querySelector('.aplayer-icon-loop').remove()
 			document.body.scrollTop = document.documentElement.scrollTop = 0
 		})
+
+		console.log(document.querySelector('.aplayer-thumb'));
+		
+		// document.querySelector('.aplayer-thumb').style.height='.2rem'
+		// document.querySelector('.aplayer-thumb').style.width='.2rem'
+		// document.querySelector('.aplayer-thumb').style.marginTop='-.1rem'
+		// document.querySelector('.aplayer-thumb').style.marginRight='-.1rem'
+		// document.querySelector('.aplayer-thumb').style.top='0'
+		// document.querySelector('.aplayer-thumb').style.right='0'
 	}
 	componentWillUnmount() {
 		this.onPause()
+		this.props.setDetailShow()
+		
 		// document.querySelector('.playerDetail').addEventListener("touchmove", (e) => {
 		//  // 执行滚动回调
 		//  this.sidebarTouchMove(e)
@@ -153,7 +164,7 @@ class App extends React.Component {
 			novel_id: novel_id
 		}).then(res => {
 			if (res.code === 0) {
-				Toast.info(res.suc, 1, null, false)
+				Toast.info(res.suc)
 				if (res.suc === '取消成功') {
 					this.setState({
 						collectedNum: this.state.collectedNum - 1,
@@ -166,7 +177,7 @@ class App extends React.Component {
 					collected: 1
 				})
 			} else {
-				Toast.info(res.err, 1, null, false)
+				Toast.info(res.err)
 			}
 		})
 	}
@@ -268,13 +279,13 @@ class App extends React.Component {
 						message: commentValue
 					}).then(res => {
 						if (res.code === 0) {
-							Toast.info(res.suc)
+							Toast.info(res.suc, 1, null, false)
 							this.setState({
 								commentValue: '',
 								commentShow: true
 							})
 						} else {
-							Toast.info(res.err)
+							Toast.info(res.err, 1, null, false)
 						}
 
 					})
@@ -295,12 +306,12 @@ class App extends React.Component {
 			changeSrc
 		} = this
 		if (serialNum === 1 && num === -1) {
-			Toast.info('已经是第一集了')
+			Toast.info('已经是第一集了', 1, null, false)
 			this.onPause()
 			return false
 		}
 		if (serialNum === playerList.length && num === 1) {
-			Toast.info('已经是最后一集了')
+			Toast.info('已经是最后一集了', 1, null, false)
 			this.onPause()
 			return false
 		}
@@ -412,7 +423,7 @@ class App extends React.Component {
 	}
 	copyShare = () => {
 		copy(this.props.detailInfo.share_url);
-		Toast.info('已复制链接至粘贴板')
+		Toast.info('已复制链接至粘贴板', 1, null, false)
 	}
 	render() {
 		const {

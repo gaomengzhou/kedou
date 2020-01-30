@@ -4,6 +4,7 @@
 import { Toast } from 'antd-mobile';
 import copy from 'copy-to-clipboard';
 import React from 'react';
+import ImgLoad from '../../../components/ImgActivityIndicator';
 import '../player.less';
 
 const Content = (props) => {
@@ -18,13 +19,14 @@ const Content = (props) => {
     if (props.detailData.share_url) {
       // copy(props.detailData.share_url)
       let shareUrl = window.location.href
-      shareUrl=`${shareUrl}/${sessionStorage.getItem('invitation_code')}`
+      shareUrl = `${shareUrl}/${sessionStorage.getItem('invitation_code')}`
       copy(shareUrl)
       Toast.success('已复制邀请链接,粘贴分享给好友')
     } else {
       Toast.fail('分享复制失败')
     }
   }
+
   return (
     <div id='contentPlayer' style={{ padding: '.1rem', background: '#fff' }}>
       <div className='title'>
@@ -53,11 +55,12 @@ const Content = (props) => {
                 onClick={() => onPress(item)}
                 style={{
                   width: '3.5rem',
-                  height: item.cover_one ? '' : '4rem'
+                  height: '2.5rem',
+                  position: 'relative',
                 }}
                 key={item.id}
               >
-                <img style={{ width: '100%', height: '100%' }} src={item.cover_one ? item.cover_one : ''} alt={item.cover_one ? '' : '暂无图片'} />
+                <ImgLoad src={item.cover_one} item={item} top={'35%'} left={'25%'} width={'100%'} height={'80%'} />
                 <p>{item.title}</p>
               </div>
             ))
