@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 /**
  * {item} 图片数据
  * {top} {left} 定位距离
+ * {width} {height} css属性
  */
 class ImgLoad extends Component {
   constructor(props) {
