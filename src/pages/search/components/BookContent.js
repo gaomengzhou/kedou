@@ -15,7 +15,6 @@ const bookSearch = (props) => {
           <ImgLoad
             onClick={() => props.goBook(item)}
             src={item.poster}
-            item={item}
             width={'2.7rem'}
             height={'4rem'}
             top={'46%'}

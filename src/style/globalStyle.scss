@@ -1,0 +1,102 @@
+.am-activity-indicator-spinner {
+  background-image: url('../assets/images/my-loading.png');
+}
+
+.commentBox {
+  margin: 0.2rem 0;
+  // width: 95%;
+  padding: .2rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  // border-radius: .2rem;
+  // box-shadow: 0 0 .1rem #aaa;
+
+  .commentTop {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    .left {
+      display: flex;
+      align-items: center;
+
+      .img {
+        width: 1rem;
+        height: 1rem;
+        padding: .06rem;
+        border: 1px solid #eee;
+        border-radius: 50%;
+        box-shadow: 0 0 .1rem #aaa;
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+        }
+      }
+
+      .name {
+        text-align: left;
+        margin-left: .2rem;
+
+        p {
+          color: #000;
+          font-weight: 800;
+          font-size: .3rem;
+
+        }
+
+        span {
+          font-size: .2rem;
+          color: #777;
+        }
+      }
+    }
+
+    .right {
+      text-align: center;
+
+      .img {
+        width: .5rem;
+        height: .5rem;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .thumbed{
+        color:rgb(131, 45, 244) ;
+      }
+    }
+  }
+
+  .commentContent {
+    position: relative;
+    width: 100%;
+
+    .Triangle {
+      width: .1rem;
+      height: .1rem;
+      border-top: .1rem solid rgba($color: #000000, $alpha: 0);
+      border-left: .1rem solid rgba($color: #000000, $alpha: 0);
+      border-right: .1rem solid rgba($color: #000000, $alpha: 0);
+      border-bottom: .1rem solid #eee;
+      position: absolute;
+      left: .4rem;
+      top: 0rem;
+    }
+
+    .content {
+      flex: 1;
+      padding: .2rem;
+      // position: absolute;
+      // top: 0;
+      // left: 0;
+      margin: .2rem 0 0 0;
+      background-color: #eee;
+      border-radius: .1rem;
+    }
+  }
+}

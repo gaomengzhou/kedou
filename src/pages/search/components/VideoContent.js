@@ -15,7 +15,6 @@ const VideoSearch = (props) => {
           <ImgLoad
             onClick={() => props.goPlayer(item)}
             src={item.cover_one}
-            item={item}
             top={'43%'}
             left={'8%'}
             width={'3rem'}

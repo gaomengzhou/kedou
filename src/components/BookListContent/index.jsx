@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import './index.less'
 import { collect } from '../../services/book'
-import { Toast } from 'antd-mobile'
+import { Toast, ActivityIndicator } from 'antd-mobile'
 
 class index extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            collectSucceed: false
+            collectSucceed: false,
+            loaded: true
         }
     }
     componentDidMount() {
@@ -54,6 +55,13 @@ class index extends Component {
         })
 
     }
+    onLoad = async () => {
+        this.setState({
+            loaded: false
+        })
+
+
+    };
     render() {
         let props = this.props
         if (!props.ev) {
@@ -63,7 +71,20 @@ class index extends Component {
                 ...props
             }
         }
-        const { collectSucceed } = this.state
+        const { collectSucceed, loaded } = this.state
+        const ActivityIndicatorStyle = {
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            margin: 'auto',
+            width: '100%',
+            height: '100%',
+            display: ' flex',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+        }
         return (
             <>
                 {
@@ -72,17 +93,25 @@ class index extends Component {
                             props.getBooKDetail(props.ev.id)
                         }}>
                             <div className="img">
-                                <img src={props.ev.poster} alt="" className='bigIMG' />
-                                <div className='play'>
-                                    <img src={require('../../assets/images/book_thumbnail_ico.png')} alt="" className='icont' />{props.ev.play}
-                                </div>
-                                <div className="collected" onClick={(e) => {
-                                    e.stopPropagation()
-                                    this.setCollect(props.ev.id)
+                                {loaded && <div style={ActivityIndicatorStyle}>
+                                    <ActivityIndicator text='Loading...' />
+                                </div>}
+                                <img src={props.ev.poster} alt="" className={loaded ? 'bigIMGLoaded' : 'bigIMG'} onLoad={() => {
+                                    this.onLoad()
+                                }} />
+                                {!loaded&&<>
+                                    <div className='play'>
 
-                                }}>
-                                    {<img src={collectSucceed ? require('../../assets/images/like_pressed_btn.png') : require('../../assets/images/like_nomal_btn.png')} alt="" />}
-                                </div>
+                                        <img src={require('../../assets/images/book_thumbnail_ico.png')} alt="" className='icont' />{props.ev.play}
+                                    </div>
+                                    <div className="collected" onClick={(e) => {
+                                        e.stopPropagation()
+                                        this.setCollect(props.ev.id)
+
+                                    }}>
+                                        {<img src={collectSucceed ? require('../../assets/images/like_pressed_btn.png') : require('../../assets/images/like_nomal_btn.png')} alt="" />}
+                                    </div>
+                                </>}
                             </div>
                             <p className='title'>
                                 {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './index.less'
-import { Icon } from 'antd-mobile';
+import { ActivityIndicator } from 'antd-mobile';
 class index extends Component {
 	constructor(props) {
 		super(props)
@@ -17,6 +17,19 @@ class index extends Component {
 			}
 		}
 		const { loaded } = this.state
+		const ActivityIndicatorStyle = {
+			position: 'absolute',
+			top: 0,
+			bottom: 0,
+			left: 0,
+			right: 0,
+			margin: 'auto',
+			width: '100%',
+			height: '100%',
+			display: ' flex',
+			justifyContent: 'space-around',
+			alignItems: 'center',
+		}
 		return (
 			<>
 				<div className={props.rowData ? 'newVideoListContent' : `${props.rowID}Content`} onClick={() => {
@@ -31,42 +44,22 @@ class index extends Component {
 					<div className='img' style={{
 						position: 'relative'
 					}}>
-						{loaded && <div style={{
-							position: 'absolute',
-							top: 0,
-							bottom: 0,
-							left: 0,
-							right: 0,
-							margin: 'auto',
-							width:'100%',
-							height:'100%'
-						}}>
-							<Icon type='loading' style={{
-							position:'absolute',
-							top:0,
-							bottom:0,
-							left:0,
-							right:0,
-							margin:'auto',
-						}}/>
+						{loaded && <div style={ActivityIndicatorStyle}>
+							<ActivityIndicator text='Loading...' />
 						</div>}
-						{<img src={props.ev.picture || props.ev.cover_one} alt="" className={loaded ? `classTitleImg` : 'classTitleImgLoad'} onLoad={() => { this.onLoad() }} ref={(thisImg) => {
-							this.thisImg = thisImg
-						}} onError={() => {
+						<img src={props.ev.picture || props.ev.cover_one} alt="" className={loaded ? `classTitleImg` : 'classTitleImgLoad'} onLoad={() => { this.onLoad() }} onError={() => {
 							console.log('err');
 
-						}} />}
+						}} />
 					</div>
-					 <p className='title'>
-						{props.ev.picture ? (!loaded&&props.ev.class_name) : props.ev.title}
+					<p className='title'>
+						{props.ev.picture ? (!loaded && props.ev.class_name) : props.ev.title}
 					</p>
 				</div>
 			</>
 		)
 	}
 	onLoad = async () => {
-		console.log(1);
-
 		this.setState({
 			loaded: false
 		})
