@@ -14,8 +14,14 @@ const BookContent = (props) => {
         <label key={item.novel_id}>
           <CheckboxItem checked={item.isCheck ? true : false} onChange={(v) => props.selectOne(v, index, item)}>
             <div className='collectContentBook'>
-              <img style={{ width: '100%', height: '92%' }} src={item.poster} alt="" />
-              <p>{item.title}</p>
+              <ImgLoad
+                src={item.poster}
+                width={'100%'}
+                height={'92%'}
+                top={'45%'}
+                left={'25%'}
+              />
+              <p style={{ lineHeight: '.5rem' }}>{item.title}</p>
               {/* <span>昨天</span> */}
             </div>
           </CheckboxItem>
@@ -26,11 +32,10 @@ const BookContent = (props) => {
             src={item.poster}
             width={'100%'}
             height={'92%'}
-            item={item}
             top={'45%'}
             left={'25%'}
           />
-          <p>{item.title}</p>
+          <p style={{ lineHeight: '.5rem' }}>{item.title}</p>
           {/* <span>昨天</span> */}
         </div>
     )

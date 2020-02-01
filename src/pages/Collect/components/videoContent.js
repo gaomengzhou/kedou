@@ -14,8 +14,14 @@ const VideoContent = (props) => {
         <label key={item.id}>
           <CheckboxItem checked={item.isCheck ? true : false} onChange={(v) => props.selectOne2(v, index, item)}>
             <div className='collectContent'>
-              <img style={{ width: '100%', height: '78%' }} src={item.cover_one} alt="" />
-              <p>{item.title}</p>
+              <ImgLoad
+                src={item.cover_one}
+                width={'100%'}
+                height={'78%'}
+                top={'35%'}
+                left={'25%'}
+              />
+              <p style={{ lineHeight: '.5rem' }}>{item.title}</p>
               {/* <span>昨天</span> */}
             </div>
           </CheckboxItem>
@@ -26,11 +32,10 @@ const VideoContent = (props) => {
             src={item.cover_one}
             width={'100%'}
             height={'78%'}
-            item={item}
             top={'35%'}
             left={'25%'}
           />
-          <p>{item.title}</p>
+          <p style={{ lineHeight: '.5rem' }}>{item.title}</p>
           {/* <span>昨天</span> */}
         </div>
     )

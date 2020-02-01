@@ -50,3 +50,10 @@ export const comment_add = ({
         ...parameter
     })
 }
+export const novel_thumbs = ({
+    ...parameter
+} = {}) => {
+    return initAxios().post(`/v2/novel/novel_thumbs`, {
+        ...parameter
+    })
+}

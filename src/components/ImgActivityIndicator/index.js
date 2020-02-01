@@ -2,7 +2,7 @@ import { ActivityIndicator } from 'antd-mobile';
 import React, { Component } from 'react';
 import './style.less';
 /**
- * {item} 图片数据
+ * {src} 图片数据
  * {top} {left} 定位距离
  * {width} {height} css属性
  */
@@ -54,7 +54,7 @@ class ImgLoad extends Component {
             style={{
               width: '100%',
               height: '100%',
-              transition: '2s',
+              transition: '.5s',
               opacity: this.state.imgLoad ? 0 : 1,
             }}
             src={

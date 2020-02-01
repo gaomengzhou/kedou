@@ -12,12 +12,9 @@ const Content = (props) => {
     document.documentElement.scrollTop = 0
     window.sessionStorage.removeItem('goBack')
     props.router.history.push(`/detailVideo/${item.id}`);
-    props.getVideo(item.id);
-    props.getChat(item.id)
   }
   const copyAccessKey = () => {
     if (props.detailData.share_url) {
-      // copy(props.detailData.share_url)
       let shareUrl = window.location.href
       shareUrl = `${shareUrl}/${sessionStorage.getItem('invitation_code')}`
       copy(shareUrl)
@@ -39,7 +36,7 @@ const Content = (props) => {
       <div className='collect'>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
           <p onClick={props.likedClick} className={props.detailData.fabulous_video !== 0 ? 'icon1Press' : 'icon1'}><span>{props.detailData.liked_num}</span></p>  {/*点赞数量*/}
-          <p className='icon2' onClick={props.showComment}><span>{props.detailData.comment_num}</span></p>  {/*评论数量*/}
+          <p className='icon2' onClick={()=>props.showComment2('anchor')}><span>{props.comment_num}</span></p>  {/*评论数量*/}
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
           <p onClick={props.collectBtn} className={props.isCollect ? 'icon3Press' : 'icon3'}></p>{/*收藏*/}
@@ -62,7 +59,6 @@ const Content = (props) => {
               >
                 <ImgLoad
                   src={item.cover_one}
-                  item={item}
                   top={'35%'}
                   left={'25%'}
                   width={'100%'}

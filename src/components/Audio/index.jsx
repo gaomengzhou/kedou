@@ -3,7 +3,7 @@ import copy from 'copy-to-clipboard';
 import React from 'react';
 import ReactAplayer from 'react-aplayer';
 import { withRouter } from 'react-router-dom';
-import { collect, comment, comment_add } from '../../services/book';
+import { collect, comment, comment_add, novel_thumbs } from '../../services/book';
 import BookDetailGuess from '../BookDetailGuess';
 import CommentItem from '../CommentItem';
 import ListTitle from '../ListTitle';
@@ -12,20 +12,20 @@ import { connect } from 'react-redux'
 import { setOnRefresh } from '../../store/action/book'
 let iTimeout;
 let iInterval;
-let alertInstance;
+// let alertInstance;
 let changeSrcTimer
-let alertTimer
+// let alertTimer
 const stateToProps = (state) => {
-    return {
-        refresh: state.book.refresh,
-    }
+	return {
+		refresh: state.book.refresh,
+	}
 }
 const mapDispatchToProps = {
-    setOnRefresh
+	setOnRefresh
 };
 @connect(
-    stateToProps,
-    mapDispatchToProps,
+	stateToProps,
+	mapDispatchToProps,
 )
 @withRouter
 
@@ -59,7 +59,15 @@ class App extends React.Component {
 			timeNum: 1,
 			Timer: '',
 			minutes: '',
-			setTimeNum: ''
+			setTimeNum: '',
+			comment_num: '',
+			thumb_num: '',
+			loaded: true,
+			thumbed: '',
+			subMitShow: false,
+			timer: '',
+			scrollHidden: false,
+			bodyScroll: ''
 		}
 	}
 	componentDidMount() {
@@ -68,24 +76,21 @@ class App extends React.Component {
 			name: this.props.novelTitle,
 			url: this.props.player.src,
 			cover: this.props.novelPoster,
+			comment_num: this.props.detailInfo.comment_num,
+			thumb_num: this.props.detailInfo.thumb_num,
 			show: true,
 			collectedNum: this.props.detailInfo.love,
+			thumbed: this.props.detailInfo.thumbed
 		}, () => {
 			document.querySelector('.aplayer-author').innerHTML = '第1集'
 			document.querySelector('.aplayer-icon-loop').remove()
 			document.body.scrollTop = document.documentElement.scrollTop = 0
+			this.getComment()
 		})
 	}
 	componentWillUnmount() {
 		this.onPause()
 		this.props.setDetailShow()
-		
-		// document.querySelector('.playerDetail').addEventListener("touchmove", (e) => {
-		//  // 执行滚动回调
-		//  this.sidebarTouchMove(e)
-		//   }, {
-		//  passive: false //  禁止 passive 效果
-		//   })
 	}
 
 	static getDerivedStateFromProps(props, state) {
@@ -126,9 +131,9 @@ class App extends React.Component {
 			show: true,
 			serialShow: false
 		}, () => {
-			if(this.state.serialShow){
+			if (this.state.serialShow) {
 				this.props.setOnRefresh(false)
-			}else{
+			} else {
 				this.props.setOnRefresh(true)
 			}
 			document.querySelector('.aplayer-author').innerHTML = `第${num}集`
@@ -139,15 +144,12 @@ class App extends React.Component {
 				modal2: false
 			}, () => {
 				if (!this.state.play) {
-					changeSrcTimer=setTimeout(() => {
+					changeSrcTimer = setTimeout(() => {
 						this.ap.toggle()
 					}, 1000);
 				}
 			})
 		})
-	}
-	sidebarTouchMove(e) {
-		e.preventDefault();
 	}
 	setCollect = (novel_id) => {
 		collect({
@@ -172,14 +174,9 @@ class App extends React.Component {
 			}
 		})
 	}
-
-
-	 getComment = async () => {
-		if(!this.state.commentShow){
-			return false
-		}
+	getComment = async (string) => {
 		await this.setState({
-			isLoading:true
+			isLoading: true
 		})
 		await comment({
 			user_id: sessionStorage.getItem('user_id'),
@@ -187,13 +184,23 @@ class App extends React.Component {
 			page: 1,
 			rows: 10
 		}).then(res => {
+			const commentList = res.list
 			this.setState({
-				commentShow: false,
 				commentTitle: res.total,
-				commentList: res.list,
-				noMore:false,
-				isLoading:false,
-				dataSource: this.state.dataSource.cloneWithRows(res.list),
+				page: 1,
+				commentList,
+				noMore: false,
+				isLoading: false,
+				dataSource: this.state.dataSource.cloneWithRows(commentList),
+			}, () => {
+				document.body.scrollTop = document.documentElement.scrollTop = 0
+				if (string === '评论') {
+					this.setState({
+						timer: Date.now(),
+					})
+					Toast.info('评论成功', 1, null, false)
+				}
+
 			})
 		})
 	}
@@ -243,51 +250,44 @@ class App extends React.Component {
 			commentValue
 		})
 	}
-	commentSubMit = (e) => {
-		if (e.keyCode === 13) {
-			this.showAlert()
-		}
-	}
-	showAlert = () => {
-		const commentValue = this.state.commentValue
-		const alert = Modal.alert;
+	commentSubMit = async (timer) => {
+		const { commentValue, timer: oldTimer } = this.state
 		if (!commentValue) {
 			Toast.info('请输入评论内容')
 			return false
 		}
-		this.commentIpt.blur()
-		clearTimeout(alertTimer)
-		if(alertInstance){
-			alertInstance.close();
+		if (timer - oldTimer < 10000) {
+			await Toast.info('评论太快了,休息一下')
+			return false
 		}
-		alertInstance = alert('发送评论', '', [
-			{ text: '取消' },
-			{
-				text: '发送', onPress: () => {
-					comment_add({
-						user_id: sessionStorage.getItem('user_id'),
-						novel_id: this.props.detailInfo.id,
-						message: commentValue
-					}).then(res => {
-						if (res.code === 0) {
-							Toast.info(res.suc, 1, null, false)
-							this.setState({
-								commentValue: '',
-								commentShow: true
-							})
-						} else {
-							Toast.info(res.err, 1, null, false)
-						}
 
-					})
-				}
-			},
-		]);
-		alertTimer=setTimeout(() => {
-			// 可以调用close方法以在外部close
-			alertInstance.close();
-		}, 10000);
-	};
+		await this.setState({
+			commentValue: ''
+		})
+
+		await comment_add({
+			user_id: sessionStorage.getItem('user_id'),
+			novel_id: this.props.detailInfo.id,
+			message: commentValue
+		}).then(res => {
+			if (res.code === 0) {
+				this.setState({
+					commentValue: '',
+					subMit: false,
+					commentList: [],
+					page: 1,
+					noMore: true,
+					dataSource: this.state.dataSource.cloneWithRows([])
+				}, () => {
+					this.commentIpt.blur()
+					this.getComment('评论')
+				})
+			} else {
+				Toast.info(res.err, 1, null, false)
+			}
+
+		})
+	}
 	changePlay = (num) => {
 		const {
 			state: {
@@ -321,7 +321,6 @@ class App extends React.Component {
 	}
 
 	formatDuring = (mss) => {
-		// var days = parseInt(mss / (1000 * 60 * 60 * 24));
 		var hours = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 		var minutes = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
 		var seconds = (mss % (1000 * 60)) / 1000;
@@ -414,7 +413,71 @@ class App extends React.Component {
 	}
 	copyShare = () => {
 		copy(this.props.detailInfo.share_url);
-		Toast.info('已复制链接至粘贴板', 1, null, false)
+		Toast.info('分享链接已复制链接至粘贴板', 2, null, false)
+	}
+	onLoad = () => {
+		this.setState({
+			loaded: false
+		})
+	}
+	setThumbed = () => {
+		novel_thumbs({
+			user_id: sessionStorage.getItem('user_id'),
+			novel_id: this.props.detailInfo.id
+		}).then(res => {
+			const { code } = res
+			if (code === 0) {
+				Toast.info('点赞成功', 1, null, false)
+				this.setState({
+					thumbed: 1,
+					thumb_num: this.state.thumb_num + 1
+				})
+				return false
+			}
+			Toast.info('已经点过赞了', 1, null, false)
+		})
+	}
+	subMitShow = async () => {
+		await this.setState({
+			subMit: false,
+			scrollHidden: false
+		})
+		await this.scrollToAnchor('activity')
+		await setTimeout(async () => {
+			await this.setState({
+				subMit: true,
+			})
+			await this.setState({
+				scrollHidden: true,
+				bodyScroll: document.documentElement.scrollTop
+			})
+		}, 500);
+		this.commentIpt.focus()
+	}
+	scrollToAnchor = (anchorName) => {
+		if (document.documentElement.scrollTop !== 0) {
+			document.body.scrollTop = document.documentElement.scrollTop = 0
+		}
+		document.body.scrollTop = document.documentElement.scrollTop = 0
+		if (anchorName) {
+			let anchorElement = document.getElementById(anchorName);
+			if (anchorElement) {
+				setTimeout(() => {
+					anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' });
+				}, 10);
+			}
+		}
+	}
+	hiddenCommentIpt = () => {
+		const bodyScroll=this.state.bodyScroll
+		if (document.documentElement.scrollTop - bodyScroll > 100) {
+			this.commentIpt.blur()
+
+		}
+		if (bodyScroll - document.documentElement.scrollTop > 100) {
+			this.commentIpt.blur()
+		}
+		
 	}
 	render() {
 		const {
@@ -429,7 +492,6 @@ class App extends React.Component {
 				modal2,
 				collected,
 				collectedNum,
-				commentShow,
 				commentTitle,
 				dataSource,
 				noMore,
@@ -438,21 +500,32 @@ class App extends React.Component {
 				Countdown,
 				timeNum,
 				Timer,
+				loaded,
+				thumb_num,
+				thumbed,
+				subMit,
 			},
 			props: {
 				getBooKDetail
 			},
 			changeSrc,
 			setCollect,
-			getComment,
 			onEndReached,
 			changeCommentValue,
 			commentSubMit,
 			changePlay,
 			setTimePlay,
 			setTimeoutByPlay,
-			copyShare
+			copyShare,
+			onLoad,
+			setThumbed,
+			subMitShow
 		} = this
+		const guess = {
+			getBooKDetail,
+			loaded,
+			onLoad
+		}
 		const player = {
 			theme: '#F57F17',
 			lrcType: 3,
@@ -555,16 +628,26 @@ class App extends React.Component {
 						<ListTitle title={this.props.novelTitle + '-' + this.state.serial} right={this.props.detailInfo.play} />
 						<div className="itemBtn">
 							<div className="left">
-								{/* <div className="like">
-                                    <img src={require('../../assets/images/awesome_nomal_btn.png')} alt="" />
-                                    <p>{this.props.detailInfo.love}</p>
-                                </div> */}
+								<div className="like" onClick={() => {
+									setThumbed()
+								}}>
+									<img src={thumbed ? require('../../assets/images/awesome_pressed_btn.png') : require('../../assets/images/awesome_nomal_btn.png')} alt="" />
+									<p className={collected ? 'activeCollected' : ''}>{thumb_num}</p>
+								</div>
+								{/* <div className="comment_num" onClick={() => {
+									// setCollect(this.props.detailInfo.id)
+									getComment()
+
+								}}>
+									<img src={require('../../assets/images/view_comment_btn.png')} alt="" />
+									<p>{comment_num}</p>
+								</div> */}
 								<div className="comment" onClick={() => {
 									setCollect(this.props.detailInfo.id)
 
 								}}>
 									<img src={collected ? require('../../assets/images/comment_pressed_btn.png') : require('../../assets/images/comment_nomal_btn.png')} alt="" />
-									<p className={collected?'activeCollected':''}>{collectedNum}</p>
+									<p className={collected ? 'activeCollected' : ''}>{collectedNum}</p>
 								</div>
 							</div>
 							{/* <div className="right">
@@ -578,7 +661,7 @@ class App extends React.Component {
 						</div>
 						<ListTitle title={'猜你喜欢'} />
 						{
-							this.props.detailInfo.guess.map(e => <BookDetailGuess {...e} getBooKDetail={getBooKDetail} />)
+							this.props.detailInfo.guess.map(e => <BookDetailGuess {...e} {...guess} />)
 						}
 						<Modal
 							className='AudioModal'
@@ -611,55 +694,80 @@ class App extends React.Component {
 						</Modal>
 						{
 							// eslint-disable-next-line
-							modal2 || !timeClose && <div className="ipt" onClick={() => {
-								getComment()
-							}}>
+							modal2 || !timeClose && <div className="ipt" >
 								<div className="icon">
 									<img src={require('../../assets/images/comment_white_ico.png')} alt="" />
 								</div>
-								<textarea type="text" placeholder='我要说两句' name="" id="" value={commentValue} onChange={(e) => {
+								{!subMit && <div className='textarea' onClick={() => {
+									subMitShow()
+									// this.scrollToAnchor('activity')
+								}}>我要说两句...</div>}
+								<input type="text" placeholder='我要说两句' style={subMit ? { opacity: 1, flex: 1 } : { opacity: 0, width: '.1rem' }} name="" id="" value={commentValue} onChange={(e) => {
 									changeCommentValue(e)
 								}}
+									onFocus={() => {
+										// setTimeout(() => {
+										// 	this.commentIpt.scrollIntoView(false);
+										// }, 200);
+										// this.scrollToAnchor('activity')
+										// subMitShow()
+									}}
+									onBlur={() => {
+										if (commentValue) {
+											this.setState({
+												scrollHidden: false
+											})
+											return false
+										}
+										this.setState({
+											subMit: false,
+											scrollHidden: false
+										})
+									}}
 									ref={(commentIpt) => { this.commentIpt = commentIpt }}
-									onKeyDown={(e) => {
-										commentSubMit(e)
-									}} />
+								/>
+								{
+									subMit && <div className='subMitText' onClick={() => {
+										commentSubMit(Date.now())
+									}}>
+										<span>发送</span>
+									</div>
+								}
 							</div>
 						}
-						<Modal
-							className='commentModal'
-							popup
-							visible={!commentShow}
-							title={"评论 (" + commentTitle + ')'}
-							onClose={() => {
-								this.setState({
-									commentShow: !this.state.commentShow
-								})
+						<div id='activity'>
+							<ListTitle title={"热门评论 (" + commentTitle + ')'} />
+						</div>
+						<ListView
+							dataSource={dataSource}
+							renderRow={(rowData, sectionID, rowID) => {
+								const parameter = {
+									rowData,
+									type: 'book'
+								}
+								return (
+									<CommentItem {...parameter} />
+
+								)
 							}}
-							animationType="slide-up"
-						// afterClose={() => { alert('afterClose'); }}
-						>
+							useBodyScroll={true}
+							onScroll={this.state.scrollHidden ?
+								this.hiddenCommentIpt : ''}
+							// pullToRefresh={refresh ? <PullToRefresh
+							// 	refreshing={isRefreshing}
+							// 	onRefresh={onRefresh}
+							// /> : ''}
+							onEndReachedThreshold={1}
+							onEndReached={onEndReached}
+							// initialListSize={10}
+							pageSize={10}
+							renderFooter={() => {
 
-							<ListView
-								dataSource={dataSource}
-								pageSize={10}
-								renderRow={(rowData, sectionID, rowID) => {
-									const parameter = {
-										rowData,
-									}
-									return (
-										<CommentItem {...parameter} />
-
-									)
-								}}
-								// useBodyScroll={true}
-								onEndReachedThreshold={10}
-								onEndReached={onEndReached}
-								renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
+								return (<div style={{ padding: '.3rem 0 .5rem 0', textAlign: 'center' }}>
 									{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
-								</div>)}
-							/>
-						</Modal>
+								</div>)
+							}}
+						/>
 						<Modal
 							className='timeClose'
 							popup
@@ -720,13 +828,13 @@ class App extends React.Component {
 				}
 				{
 					!detailShow && <p className='select' onClick={() => {
-						
+
 						this.setState({
 							serialShow: !this.state.serialShow
-						},()=>{
-							if(this.state.serialShow){
+						}, () => {
+							if (this.state.serialShow) {
 								this.props.setOnRefresh(false)
-							}else{
+							} else {
 								this.props.setOnRefresh(true)
 							}
 						})

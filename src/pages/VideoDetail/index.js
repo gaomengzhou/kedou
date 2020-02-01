@@ -12,10 +12,10 @@ import PublicNavBar from '../../components/PublicNavBar';
 import { commentLikeApi } from '../../services/videoDetail';
 import { getChat, getVideoOnePatch } from '../../store/action/videoDetail';
 import Content from './components/content';
-import ModalPlayer from './components/ModalPlayer';
+import MyListView from './components/ViewList';
 import './player.less';
 
-let setTimer;
+let setTimer = null;
 let timeCount = 0;
 
 const mapDispatchToProps = {
@@ -42,10 +42,20 @@ class VideoDetail extends Component {
       visible: false,
       display: false,
       isLiked: false,
+      paramsId: '',
+      comment_num: '',
+      anchor: true,
+      closed: false,
+      theOne: true,
     }
   }
 
   componentDidMount() {
+    this.setState({
+      paramsId: this.props.match.params.id,
+      innerHeight: window.innerHeight
+    })
+    document.documentElement.scrollTop = 0
     const user_id = sessionStorage.getItem('user_id')
     this.getVideo()
     this.getChat()
@@ -65,6 +75,14 @@ class VideoDetail extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.match.params.id !== this.props.match.params.id) {
+      this.getVideo(this.props.match.params.id)
+      this.getChat()
+    }
+  }
+
+
   componentWillUnmount() {
     clearTimeout(this.timer)
     clearTimeout(this.setToast)
@@ -81,7 +99,7 @@ class VideoDetail extends Component {
     const { id } = this.props.match.params
     this.props.getChat({
       user_id: sessionStorage.getItem('user_id'),
-      video_id: vId === '' ? id.split('&')[0] : String(vId),
+      video_id: vId === '' ? id : String(vId),
       page: '1',
       rows: '10'
     })
@@ -101,7 +119,7 @@ class VideoDetail extends Component {
   getVideo = (videoId = '') => {
     const { id } = this.props.match.params
     const user_id = sessionStorage.getItem('user_id')  //万能ID '9652'  sessionStorage.getItem('user_id')
-    const video_id = id.split('&')[0]
+    const video_id = id
     if (user_id === null) {
       this.setState({ noLogin: true })
     } else {
@@ -119,9 +137,11 @@ class VideoDetail extends Component {
           })
         }
         if (res.video_url) {
+          const { comment_num } = res
           this.setState({
             navBarTitle: res.title.length >= 20 ? res.title.substring(0, 14).concat('...') : res.title,
-            detailData: res
+            detailData: res,
+            comment_num
           })
           this.InitDPlayer(res.video_url)
         }
@@ -174,17 +194,13 @@ class VideoDetail extends Component {
   }
   bodyScroll = (e) => { e.preventDefault(); }
 
-  showComment = () => {
-    document.getElementById('dplayer').addEventListener('touchmove', this.bodyScroll, { passive: false })
-    // const height = document.getElementById('dplayer').offsetHeight
-    // document.documentElement.scrollTop = height / 3
-    if (this.visible) {
-      return
-    } else {
-      this.setState({
-        visible: true,
-      })
-    }
+  showComment2 = (anchorName) => {
+    this.setState({
+      closed: false
+    })
+    const contentHeight = document.getElementById('contentPlayer').offsetHeight;
+    const dpHeight = document.getElementById('dplayer').offsetHeight;
+    document.documentElement.scrollTop = contentHeight + dpHeight;
   }
 
   closeLogin = () => {
@@ -193,9 +209,8 @@ class VideoDetail extends Component {
   }
 
   likedClick = () => {
-    const detailData2 = this.state.detailData
     const { id } = this.props.match.params
-    const video_id = id.split('&')[0]
+    const video_id = id
     commentLikeApi({
       user_id: sessionStorage.getItem('user_id'),
       video_id,
@@ -204,12 +219,6 @@ class VideoDetail extends Component {
       if (res.err) {
         Toast.info('请勿重复点赞', 1)
         return
-      } else {
-        detailData2.fabulous_video = 1
-        detailData2.liked_num++
-        this.setState({
-          detailData: detailData2,
-        })
       }
     })
   }
@@ -217,36 +226,41 @@ class VideoDetail extends Component {
   sendMsg = (e) => {
     const { id } = this.props.match.params
     const user_id = sessionStorage.getItem('user_id')  //万能ID '9652'  sessionStorage.getItem('user_id')
-    const video_id = id.split('&')[0]
-    if (e.keyCode === 13) {
-      if (this.state.message !== '') {
-        commentLikeApi({
-          user_id,
-          type: '2',
-          video_id,
-          message: this.state.message
-        }).then(res => {
-          if (res.suc) {
-            Toast.success(res.suc)
-            this.setState({
-              message: '',
-              isReload: true
-            })
-          }
-        })
-      } else {
-        return
-      }
+    const video_id = id
+    setTimeout(() => {
+      const contentHeight = document.getElementById('contentPlayer').offsetHeight;
+      const dpHeight = document.getElementById('dplayer').offsetHeight;
+      document.documentElement.scrollTop = contentHeight + dpHeight;
+    }, 350);
+    this.setState({
+      closed: false
+    })
+    if (this.state.message !== '') {
+      this.setState({
+        message: '',
+      })
+      commentLikeApi({
+        user_id,
+        type: '2',
+        video_id,
+        message: this.state.message
+      }).then(res => {
+        if (res.suc) {
+          Toast.success(res.suc)
+          this.setState({
+            isReload: true,
+            comment_num: this.state.comment_num + 1,
+            hiddenFootDiv: true
+          });
+        }
+      })
     }
   }
 
-  cb = () => { // 提交评论后停止重复请求,以及在前台页面模拟数据变化减少数据请求,实际上后台以更新.
-    const detailData = this.state.detailData
-    detailData.comment_num++
+  cb = () => {
     this.setState({
       isReload: false,
-      detailData
-    })
+    });
   }
 
   saveMsg = (e) => {
@@ -257,7 +271,7 @@ class VideoDetail extends Component {
     const { id } = this.props.match.params
     commentLikeApi({
       user_id: sessionStorage.getItem('user_id'),
-      video_id: id.split('&')[0],
+      video_id: id,
       type: '1'
     }).then(res => {
       switch (res.suc) {
@@ -279,7 +293,6 @@ class VideoDetail extends Component {
   setTimerFN = () => {
     setTimer = setInterval(() => {
       timeCount++
-      // console.log(timeCount)
       if (timeCount === 5) {
         document.getElementById('dplayer').classList.add('dplayer-hide-controller')
         this.setState({
@@ -316,6 +329,36 @@ class VideoDetail extends Component {
     }
   }
 
+  showComment = (anchorName) => {
+    this.setState({
+      closed: false
+    })
+    setTimeout(() => {
+      this.setState({
+        closed: true
+      })
+    }, 1000);
+    if (this.state.theOne) {
+      this.setState({
+        theOne: false
+      })
+      setTimeout(() => {
+        const contentHeight = document.getElementById('contentPlayer').offsetHeight;
+        const dpHeight = document.getElementById('dplayer').offsetHeight;
+        document.documentElement.scrollTop = contentHeight + dpHeight;
+      }, 320);
+    } else {
+      setTimeout(() => {
+        document.documentElement.scrollTop = 0
+      }, 300);
+      setTimeout(() => {
+        const contentHeight = document.getElementById('contentPlayer').offsetHeight;
+        const dpHeight = document.getElementById('dplayer').offsetHeight;
+        document.documentElement.scrollTop = contentHeight + dpHeight;
+      }, 320);
+    }
+  }
+
   render() {
     const { videoDetailReducer } = this.props;
     const { HotVideoList } = videoDetailReducer
@@ -334,26 +377,24 @@ class VideoDetail extends Component {
       getVideo: this.getVideo,
       getChat: this.getChat,
       detailData: this.state.detailData,
-      showComment: this.showComment,
+      comment_num: this.state.comment_num,
+      showComment2: this.showComment2,
       collectBtn: this.collectBtn,
-
       cb: this.cb,
       isReload: this.state.isReload,
       dataSource: this.props.videoDetailReducer.comment,
     }
-    const modalProps = {
+    const myListViewProps = {
       cb: this.cb,
+      cbClosed: () => this.setState({
+        closed: false
+      }),
       commentNum: this.state.detailData.comment_num,
-      visible: this.state.visible,
-      onClose: () => {
-        // document.documentElement.scrollTop = 0;
-        document.removeEventListener('touchmove', this.bodyScroll, { passive: false });
-        this.setState({ visible: false })
-      },
       dataSource: this.props.videoDetailReducer.comment,
       getChat: this.getChat,
       detailData: this.state.detailData,
-      isReload: this.state.isReload
+      isReload: this.state.isReload,
+      closed: this.state.closed,
     }
     return (
       <div className='playerIndex'>
@@ -367,15 +408,25 @@ class VideoDetail extends Component {
         <div className='InpBottomSay'>
           <i className='iconPhoto' />
           <textarea
+            id='textareaIput'
             onChange={this.saveMsg}
-            onKeyDown={this.sendMsg}
-            onFocus={this.showComment}
+            onFocus={() => this.showComment('anchor')}
             placeholder='我来说两句...'
             type="text"
             value={this.state.message}
           />
+          <p style={{
+            color: '#fff',
+            borderLeft: '1px solid #fff',
+            fontSize: '.3rem',
+            paddingLeft: '.1rem',
+            fontWeight: 'bolder'
+          }}
+            onClick={this.sendMsg}
+          >发送</p>
         </div>
-        <ModalPlayer {...modalProps} />
+        <p id='anchor' style={{ marginLeft: '.1rem' }} className='hotComment'>热门评论{`（${this.state.comment_num}）`}</p>
+        <MyListView {...myListViewProps} />
         {this.state.noLogin ? <IsLogin rightCallBack={this.closeLogin} /> : null}
       </div>
     )

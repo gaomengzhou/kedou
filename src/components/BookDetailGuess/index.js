@@ -1,12 +1,31 @@
 import React from 'react'
-
+import { ActivityIndicator } from 'antd-mobile'
+const ActivityIndicatorStyle = {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: 'auto',
+    width: '100%',
+    height: '100%',
+    display: ' flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+}
 function index(porps) {
+    const { loaded, onLoad } = porps
     return (
         <div className='bookDetailGuess'>
-            <div className="img" onClick={()=>{
+            <div className="img" onClick={() => {
                 porps.getBooKDetail(porps.id)
-            }}>
-                <img src={porps.poster} alt="" className='guessImg' />
+            }} style={{
+                position:'relative'
+            }} >
+                {loaded && <div style={ActivityIndicatorStyle}>
+                    <ActivityIndicator text='Loading...' />
+                </div>}
+                <img src={porps.poster} alt="" className={loaded ? 'guessImgLoaded' : 'guessImg'} onLoad={() => { onLoad() }} />
             </div>
             <div className="right">
                 <p className='rightTitle'>
