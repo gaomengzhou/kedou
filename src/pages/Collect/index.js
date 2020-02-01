@@ -29,18 +29,18 @@ class Collect extends Component {
       rowHasChanged: (row1, row2) => row1 !== row2,
     });
     this.state = {
-      isShow: true,//根据值判断是否显示带有loading的foot
-      loadingText: '加载完成',
-      videoPage: 1,
-      bookPage: 1,
-      isLoading: true,
-      isStop: false,
-      isStopBook: false,
-      dataSourceBook,
-      dataSource,
-      user_id: '',
-      ids: '',//听书id
-      isEdit: false,
+      isShow: true, // 根据值判断是否显示带有loading的foot
+      loadingText: '加载完成', //ListView 脚步的文案
+      videoPage: 1, // 请求的page参数
+      bookPage: 1, // 请求的page参数
+      isLoading: true, //根据这个字段来决定上拉加载脚步的文案
+      isStop: false, // 视频是否继续请求
+      isStopBook: false, // 听书是否继续请求
+      dataSourceBook, // 听书ListView数据源
+      dataSource, // 视频ListView数据源
+      user_id: '', // 用户id 请求的user_id参数
+      ids: '',//听书id 请求的ids参数
+      isEdit: false, // 头部是否显示编辑按钮
       checkedStatus: false, //全选为true
       page: 0,//根据tabs页面决定全选哪个版块内容
       count: 0,//选中了几个
@@ -54,8 +54,8 @@ class Collect extends Component {
       this.props.getBookCollect({
         user_id: sessionStorage.getItem('user_id'),
         resolve,
-        // rows: '10',
-        // page: '1',
+        rows: '10',
+        page: '1',
       })
     }).then(res => {
       this.setState({
@@ -422,7 +422,7 @@ class Collect extends Component {
         callBackStateVideo: this.callBackStateVideo,
         goToVideo: this.goToVideo,
         loadingText: this.state.loadingText,
-        isShow: this.state.isShow
+        isShow: this.state.isShow,
       }
       return <VideoContent {...videoPros} />
     }
@@ -440,6 +440,7 @@ class Collect extends Component {
       }
       return <BookContent {...bookPros} />
     }
+
     const tabs = [
       { title: '视频' },
       { title: '听书' },
@@ -452,6 +453,18 @@ class Collect extends Component {
           tabsContent1={videoTab}
           tabsContent2={bookTab}
           onTabChange={this.onTabChange}
+        />
+        <div
+          style={{
+            display: this.state.showFoot ? 'block' : 'none',
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            background: '#fff',
+            zIndex: 1,
+            width: '100%',
+            height: 60,
+          }}
         />
         <div style={{
           display: this.state.isEdit ? 'flex' : 'none',
@@ -467,6 +480,19 @@ class Collect extends Component {
             {this.state.checkedStatus ? '反选' : '全选'}
           </Button>
           <Button onClick={this.deleteBtn} style={{ flex: '1', borderRadius: 0, color: '#7914ee' }}>{this.state.count !== 0 ? `删除(${this.state.count})` : '删除'}</Button>
+        </div>
+        <div className='load'
+          style={{
+            textAlign: 'center',
+            lineHeight: '1rem',
+            position: 'absolute',
+            bottom: '1rem',
+            zIndex: 0,
+            left: 0,
+            width: '100%'
+          }}
+        >
+          没有更多
         </div>
       </div >
     )

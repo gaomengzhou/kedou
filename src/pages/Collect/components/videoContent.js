@@ -8,6 +8,7 @@ const VideoContent = (props) => {
     props.callBackStateVideo()
   }
   const CheckboxItem = Checkbox.CheckboxItem;
+
   const rows = (item, sectionID, index) => {
     return (
       props.isEdit ?
@@ -52,7 +53,6 @@ const VideoContent = (props) => {
       className="am-list-video"
       pageSize={4}
       useBodyScroll
-      onScroll={() => console.log('scroll')}
       scrollRenderAheadDistance={500}
       onEndReached={onEndReached}
       onEndReachedThreshold={10}

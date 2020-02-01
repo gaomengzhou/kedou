@@ -79,6 +79,7 @@ class VideoDetail extends Component {
     if (prevProps.match.params.id !== this.props.match.params.id) {
       this.getVideo(this.props.match.params.id)
       this.getChat()
+      window.location.reload() //QQ留言器BUG 跳转新的详情页 刷新一次回到顶部
     }
   }
 

@@ -67,7 +67,9 @@ class App extends React.Component {
 			subMitShow: false,
 			timer: '',
 			scrollHidden: false,
-			bodyScroll: ''
+			bodyScroll: '',
+			anchorElement: '',
+			countScrollTop: ''
 		}
 	}
 	componentDidMount() {
@@ -193,11 +195,11 @@ class App extends React.Component {
 				isLoading: false,
 				dataSource: this.state.dataSource.cloneWithRows(commentList),
 			}, () => {
-				document.body.scrollTop = document.documentElement.scrollTop = 0
 				if (string === '评论') {
 					this.setState({
 						timer: Date.now(),
 					})
+					document.body.scrollTop = document.documentElement.scrollTop = document.getElementById('activity').offsetTop
 					Toast.info('评论成功', 1, null, false)
 				}
 
@@ -438,46 +440,102 @@ class App extends React.Component {
 		})
 	}
 	subMitShow = async () => {
-		await this.setState({
+		document.body.scrollTop = document.documentElement.scrollTop = 0
+		this.setState({
 			subMit: false,
 			scrollHidden: false
 		})
-		await this.scrollToAnchor('activity')
-		await setTimeout(async () => {
-			await this.setState({
+		this.scrollToAnchor('activity')
+		setTimeout(async () => {
+			 this.setState({
 				subMit: true,
 			})
-			await this.setState({
+			 this.setState({
 				scrollHidden: true,
 				bodyScroll: document.documentElement.scrollTop
 			})
 		}, 500);
 		this.commentIpt.focus()
 	}
-	scrollToAnchor = (anchorName) => {
-		if (document.documentElement.scrollTop !== 0) {
-			document.body.scrollTop = document.documentElement.scrollTop = 0
-		}
-		document.body.scrollTop = document.documentElement.scrollTop = 0
-		if (anchorName) {
-			let anchorElement = document.getElementById(anchorName);
-			if (anchorElement) {
-				setTimeout(() => {
-					anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' });
-				}, 10);
-			}
-		}
+	// subMitShow = async () => {
+	// 	if (document.documentElement.scrollTop !== 0) {
+	// 		document.body.scrollTop = document.documentElement.scrollTop = 0
+	// 	}
+	// 	// this.setState({
+	// 	// 	subMit: false,
+	// 	// 	scrollHidden: false
+	// 	// })
+	// 	const _this = this
+	// 	this.scrollToAnchor('activity')
+	// 		.then(async () => {
+	// 			const u = navigator.userAgent, app = navigator.appVersion;
+	// 			const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+	// 			const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+	// 			const bodyListener = document.body
+	// 			bodyListener.addEventListener ('scroll',() => {
+	// 				const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+	// 				console.log(scrollTop, _this.state.anchorElement );
+					
+	// 				if (scrollTop - _this.state.anchorElement > -30 && scrollTop - _this.state.anchorElement < 30) {
+	// 					let timer
+	// 					clearTimeout(timer)
+	// 					timer = setTimeout(() => {
+	// 						_this.setState({
+	// 							subMit: true,
+	// 							bodyScroll: scrollTop,
+	// 							anchorElement: '',
+
+	// 						}, () => {
+	// 							if (isAndroid) {
+	// 								_this.commentIpt.focus()
+	// 							}
+	// 							setTimeout(() => {
+	// 								_this.setState({
+	// 									scrollHidden: true,
+	// 								})
+	// 							}, 500);
+	// 						})
+	// 					}, 20);
+
+	// 				}
+	// 			})
+	// 			if (isiOS) {
+	// 				_this.commentIpt.focus()
+	// 			}
+	// 		})
+	// }
+	scrollToAnchor = async (anchorName) => {
+		let anchorElement = document.getElementById(anchorName);
+		setTimeout(() => {
+			document.documentElement.scrollTop = document.body.scrollTop=anchorElement.offsetTop
+		}, 20);
+		// setTimeout(() => {
+		// 	anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' });
+		// 	this.setState({
+		// 		anchorElement: anchorElement.offsetTop
+		// 	}, () => console.log(anchorElement.offsetTop)
+		// 	)
+		// }, 20);
 	}
 	hiddenCommentIpt = () => {
-		const bodyScroll=this.state.bodyScroll
-		if (document.documentElement.scrollTop - bodyScroll > 100) {
-			this.commentIpt.blur()
+		// console.log(1);
+		// alert(1)
+		const bodyScroll = this.state.bodyScroll
+		const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+		const countScrollTop = this.state.countScrollTop
+		console.log(scrollTop + ' ' + bodyScroll);
 
+		if (scrollTop - bodyScroll > 10 || scrollTop - bodyScroll < 10) {
+			this.setState({
+				countScrollTop: true
+			})
 		}
-		if (bodyScroll - document.documentElement.scrollTop > 100) {
-			this.commentIpt.blur()
+		if (countScrollTop) {
+			if (scrollTop - bodyScroll < -10 || scrollTop - bodyScroll > 10) {
+				this.commentIpt.blur()
+			}
 		}
-		
+
 	}
 	render() {
 		const {
@@ -762,7 +820,6 @@ class App extends React.Component {
 							// initialListSize={10}
 							pageSize={10}
 							renderFooter={() => {
-
 								return (<div style={{ padding: '.3rem 0 .5rem 0', textAlign: 'center' }}>
 									{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
 								</div>)
