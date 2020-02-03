@@ -46,6 +46,8 @@ class VideoDetail extends Component {
       anchor: true,
       closed: false,
       theOne: true,
+      liked_num: '',
+      fabulous_video: '',
     }
   }
 
@@ -121,11 +123,43 @@ class VideoDetail extends Component {
     const user_id = sessionStorage.getItem('user_id')  //万能ID '9652'  sessionStorage.getItem('user_id')
     const video_id = id
     if (user_id === null) {
-      this.setState({ noLogin: true })
+      const code = this.props.match.params.code
+      Modal.alert('您还没有登录', null, [
+        {
+          text: code ? '去注册' : '回首页',
+          onPress: () => this.props.history.push({
+            pathname: code ? '/login' : '/video',
+            state: {
+              code,
+              id,
+              type: 1,//去注册页面
+            }
+          }),
+          style: {
+            color: code ? '#9718ec' : '#000',
+          }
+        },
+        {
+          text: '去登录',
+          onPress: () => this.props.history.push({
+            pathname: '/login',
+            state: {
+              code,
+              id,
+            }
+          }),
+          style: {
+            color: code ? '#000' : '#9718ec',
+          }
+        },
+      ])
     } else {
-      this.setState({ noLogin: false })
       new Promise((resolve) => {
-        this.props.getVideoOnePatch({ user_id, video_id: String(videoId) === '' ? video_id : String(videoId), resolve })
+        this.props.getVideoOnePatch({
+          user_id,
+          video_id: String(videoId) === '' ? video_id : String(videoId),
+          resolve,
+        })
       }).then(res => {
         if (res.user_fabulous === 0) {
           this.setState({
@@ -137,11 +171,13 @@ class VideoDetail extends Component {
           })
         }
         if (res.video_url) {
-          const { comment_num } = res
+          const { comment_num, liked_num, fabulous_video } = res
           this.setState({
             navBarTitle: res.title.length >= 20 ? res.title.substring(0, 14).concat('...') : res.title,
             detailData: res,
-            comment_num
+            comment_num,
+            liked_num,
+            fabulous_video,
           })
           this.InitDPlayer(res.video_url)
         }
@@ -219,6 +255,11 @@ class VideoDetail extends Component {
       if (res.err) {
         Toast.info('请勿重复点赞', 1)
         return
+      } else if (res.suc) {
+        this.setState({
+          liked_num: this.state.liked_num + 1,
+          fabulous_video: 1
+        })
       }
     })
   }
@@ -378,6 +419,8 @@ class VideoDetail extends Component {
       getChat: this.getChat,
       detailData: this.state.detailData,
       comment_num: this.state.comment_num,
+      liked_num: this.state.liked_num,
+      fabulous_video: this.state.fabulous_video,
       showComment2: this.showComment2,
       collectBtn: this.collectBtn,
       cb: this.cb,
@@ -396,7 +439,6 @@ class VideoDetail extends Component {
       isReload: this.state.isReload,
       closed: this.state.closed,
     }
-    const id = this.props.match.params.id //视频id
     return (
       <div className='playerIndex'>
         <PublicNavBar  {...navBarProps} />
@@ -429,11 +471,6 @@ class VideoDetail extends Component {
         <p id='anchor' style={{ marginLeft: '.1rem' }} className='hotComment'>热门评论{`（${this.state.comment_num}）`}</p>
         <MyListView {...myListViewProps} />
         {/* {this.state.noLogin ? <IsLogin rightCallBack={this.closeLogin} /> : null} */}
-        {this.state.noLogin ? this.props.history.push({
-          pathname: '/login',
-          state: { id }
-        }) : null}
-        {console.log(this.props)}
       </div>
     )
   }

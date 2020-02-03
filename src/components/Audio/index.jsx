@@ -562,6 +562,7 @@ class App extends React.Component {
 				thumb_num,
 				thumbed,
 				subMit,
+				commentList
 			},
 			props: {
 				getBooKDetail
@@ -820,6 +821,11 @@ class App extends React.Component {
 							// initialListSize={10}
 							pageSize={10}
 							renderFooter={() => {
+								if(!commentList.length){
+									return (<div style={{ padding: '.3rem 0 .5rem 0', textAlign: 'center' }}>
+										暂无评论
+								</div>)
+								}
 								return (<div style={{ padding: '.3rem 0 .5rem 0', textAlign: 'center' }}>
 									{this.state.isLoading ? 'Loading...' : (noMore ? '没有更多了' : '')}
 								</div>)

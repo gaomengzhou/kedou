@@ -136,7 +136,12 @@ class Book extends Component {
 				{ text: '取消', onPress: () =>''},
 				{
 					text: '去登录 >',
-					onPress: () => this.props.history.push('/login'),
+					onPress: () => this.props.history.push({
+                        pathname:'/login',
+                        state:{
+                            bookId
+                        }
+                    }),
 					style:{
 						color:'#9718ec'
 					}

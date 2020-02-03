@@ -142,6 +142,11 @@
                     }
                 }
             }
+            .footer {
+                padding: .3rem .3rem;
+                display: flex;
+                justify-content: space-between;
+            }
         }
         .inputBox {
             width: 100%;

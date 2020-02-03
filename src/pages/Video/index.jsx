@@ -85,7 +85,12 @@ class Video extends Component {
 				{ text: '取消', onPress: () =>''},
 				{
 					text: '去登录 >',
-					onPress: () => this.props.history.push('/login'),
+					onPress: () => this.props.history.push({
+						pathname: '/login',
+						state: {
+						  id:video_id,
+						}
+					  }),
 					style:{
 						color:'#9718ec'
 					}
