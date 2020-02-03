@@ -25,23 +25,51 @@ class index extends Component {
         }
     }
     componentDidMount() {
+        console.log(this.props);
 
-        if (this.props.match.params.invitation_code) {
-            console.log(this.props);
-            this.setState({
-                invitation_code: this.props.match.params.invitation_code
-            })
+        if (this.props.history.location.state) {
+            const { type, code } = this.props.history.location.state
+            if (type) {
+                this.setState({
+                    loginContent: false,
+                    registered: true,
+                    title: ['账户注册', 'registered'],
+                    telNumber: '',
+                    passWord: '',
+                    codeNumber: '',
+                    rePassWord: ''
+                }, () => {
+                    this.setState({
+                        invitation_code: code
+                    })
+                })
+            }
         }
     }
     goTovideoDetail = () => {
-        if (this.props.match.params.id) {
-            this.props.history.replace('/detailVideo/'+this.props.match.params.id)
+        console.log(this.props);
+
+        if (this.props.history.location.state) {
+            const { id, bookId } = this.props.history.location.state
+            if (id) {
+                this.props.history.replace('/detailVideo/' + id)
+                return false
+            }
+            if (bookId) {
+                this.props.history.replace({
+                    pathname: '/book',
+                    state: {
+                        id: bookId
+                    }
+                })
+                return false
+            }
         }
         this.props.history.goBack()
     }
     login = async (info) => {
         const { telNumber, passWord } = this.state
-        const _this=this
+        const _this = this
         if (!telNumber) {
             Toast.info('请填写手机号')
             return false
@@ -108,23 +136,24 @@ class index extends Component {
     }
     goBack = () => {
         const title = this.state.title
-        if (title[0] !== '账户登录') {
+        if (title[0] === '验证手机' || title[0] === '修改密码') {
 
-            console.log(title);
             this.setState({
                 title: ['账户登录', 'login'],
                 loginContent: true,
-                registered: false, 
+                registered: false,
                 Retrieve: false,
                 changePassWord: false,
+                telNumber: '',
+                passWord: '',
+                rePassWord: '',
+                codeNumber: '',
+                getCode: '获取验证码',
+
             })
             return false
         }
         this.props.history.goBack()
-
-        console.log(this.props);
-
-
     }
     inputItem = (obj) => {
         return (
@@ -217,7 +246,8 @@ class index extends Component {
                 Retrieve: false,
                 codeNumber: '',
                 passWord: '',
-                rePassWord: ''
+                rePassWord: '',
+                title: ['修改密码', 'changePassWord']
             })
             Toast.info(res.suc, 1, null, false)
             return false
@@ -487,7 +517,36 @@ class index extends Component {
                                 </div>
                                 {inputItem(pswIpt)}
                                 {inputItem(invitationIpt)}
-
+                                <div className='footer'>
+                                    <span onClick={() => {
+                                        this.setState({
+                                            loginContent: false,
+                                            registered: false,
+                                            Retrieve: true,
+                                            title: ['验证手机', 'Verify'],
+                                            telNumber: '',
+                                            passWord: '',
+                                            codeNumber: '',
+                                            rePassWord: ''
+                                        })
+                                    }}>
+                                        忘记密码？
+                            </span>
+                                    <span onClick={() => {
+                                        this.setState({
+                                            loginContent: true,
+                                            registered: false,
+                                            Retrieve: false,
+                                            title: ['账户登录', 'login'],
+                                            telNumber: '',
+                                            passWord: '',
+                                            codeNumber: '',
+                                            rePassWord: ''
+                                        })
+                                    }}>
+                                        快速登录
+                            </span>
+                                </div>
                             </div>
                             <Button onClick={() => {
                                 register()

@@ -20,7 +20,6 @@ class ImagePickerExample extends React.Component {
     }
   }
 
-
   onChange = (files, type, index) => {
     this.setState({
       files,

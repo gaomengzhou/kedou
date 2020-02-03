@@ -27,6 +27,7 @@ class UserFeedBack extends Component {
       telno: '',
     }
   }
+
   componentDidMount() {
     contactApi({ type: '1' }).then(res => {
       if (res) {
@@ -48,8 +49,8 @@ class UserFeedBack extends Component {
     })
   }
 
-
   onLeftClick = () => this.props.history.go(-1);
+
   sendMsg = () => {
     let what = prompt("请输入要反馈的主题: ", "意见反馈");
     let who = this.state.msgadmin
@@ -59,14 +60,17 @@ class UserFeedBack extends Component {
       }
     }
   }
+
   copyWechat = () => {
     copy(this.state.wechat);
     Toast.success('复制成功', 1, false)
   }
+
   copyQQ = () => {
     copy(this.state.qqno);
     Toast.success('复制成功', 1, false)
   }
+
   copyPotato = () => {
     copy(this.state.potato);
     Toast.success('复制成功', 1, false)
@@ -128,6 +132,5 @@ class UserFeedBack extends Component {
     )
   }
 }
-
 
 export default UserFeedBack
