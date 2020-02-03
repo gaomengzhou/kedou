@@ -5,6 +5,7 @@ import UserFeedBack from '../pages/Feedback'
 import Search from '../pages/search'
 import Video from '../pages/Video'
 import VideoDetail from '../pages/VideoDetail'
+import Login from '../pages/Login'
 const routes = [
     {
         path: '/video',
@@ -20,6 +21,11 @@ const routes = [
         path: '/search/type=:name',
         key: 'search',
         component: Search
+    },
+    {
+        path: '/login/:id?/:invitation_code?',
+        key: 'login',
+        component: Login
     },
     {
         path: '/book',

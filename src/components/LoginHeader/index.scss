@@ -1,0 +1,36 @@
+.loginHeader{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-self: auto;
+    padding:0.1rem .2rem;
+    background-color: rgba($color: #000000, $alpha: 0);
+    .goback{
+        position: absolute;
+        left: 0rem;
+        top: 0;
+        width: .6rem;
+        height: 100%;
+        padding: .1rem .08rem .1rem .3rem;
+        display: flex;
+        align-items: center;
+        // background-color: #f00;
+        img{
+            width: 100%;
+            // height: 100%;
+        }
+    }
+    .title{
+        text-align: center;
+        flex:1;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        font-weight: 800;
+        font-size: .4rem;
+    }
+}

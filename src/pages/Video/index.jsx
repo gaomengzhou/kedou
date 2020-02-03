@@ -2,9 +2,10 @@ import { getHomeLabelList, getHomeVideoList } from '../../store/action/video';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../../components/header';
-import Login from '../../components/login';
+// import Login from '../../components/login';
 import Tabs from '../../components/tabs';
 import './index.less';
+import { Modal } from 'antd-mobile';
 const stateToProps = (state) => {
 	return {
 		video: state.video,
@@ -53,15 +54,14 @@ class Video extends Component {
 		const { loginShow, my } = this.state
 		const user_id = sessionStorage.getItem('user_id')
 		if (!user_id) {
-			this.setState({
-				loginShow: !loginShow
-			})
+			this.props.history.push('/Login')
 		} else {
 			if (loginShow) {
 				this.setState({
 					loginShow: false,
 					my: false
 				})
+				// this.props.history.push('/Login')
 			} else {
 				this.setState({
 					my: !my
@@ -81,9 +81,16 @@ class Video extends Component {
 			video_id
 		} = obj
 		if (!sessionStorage.getItem('user_id')) {
-			this.setState({
-				loginShow: !this.state.loginShow
-			})
+			Modal.alert('您还没有登录', '', [
+				{ text: '取消', onPress: () =>''},
+				{
+					text: '去登录 >',
+					onPress: () => this.props.history.push('/login'),
+					style:{
+						color:'#9718ec'
+					}
+				},
+			])
 			return false
 		}
 		this.props.history.push(`/detailVideo/${video_id}`)
@@ -111,7 +118,7 @@ class Video extends Component {
 					<div key={e.goto} onClick={() => {
 						if (e.title === '退出登录') {
 							sessionStorage.removeItem('user_id')
-                            sessionStorage.removeItem('invitation_code')
+							sessionStorage.removeItem('invitation_code')
 							this.setState({
 								my: false
 							})
@@ -144,7 +151,7 @@ class Video extends Component {
 		const {
 			video
 		} = this.props
-		const { loginShow, my } = this.state
+		const { my } = this.state
 		const tabsParameter = {
 			newVideoList: video.newVideoList,
 			hotVideoList: video.hotVideoList,
@@ -165,7 +172,7 @@ class Video extends Component {
 			< div id='home-video'>
 				{this.state.headerShow && <Header {...videoHeader} />}
 				<Tabs {...tabsParameter} />
-				{loginShow && <Login rightCallBack={this.testRightCallBack} />}
+				{/* {loginShow && <Login rightCallBack={this.testRightCallBack} />} */}
 				{
 					my && <div style={{
 						position: 'fixed',

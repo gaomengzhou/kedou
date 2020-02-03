@@ -7,7 +7,6 @@ import { createForm } from 'rc-form';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import IsLogin from '../../components/login/index';
 import PublicNavBar from '../../components/PublicNavBar';
 import { commentLikeApi } from '../../services/videoDetail';
 import { getChat, getVideoOnePatch } from '../../store/action/videoDetail';
@@ -79,6 +78,7 @@ class VideoDetail extends Component {
     if (prevProps.match.params.id !== this.props.match.params.id) {
       this.getVideo(this.props.match.params.id)
       this.getChat()
+      window.location.reload() //QQ留言器BUG 跳转新的详情页 刷新一次回到顶部
     }
   }
 
@@ -90,7 +90,7 @@ class VideoDetail extends Component {
     clearInterval(setTimer)
     this.dPlayer && this.dPlayer.destroy();
     this.isLeave = true;
-    document.querySelector('.dplayer-controller').removeEventListener('click', function (e) {
+    document.querySelector('.dplayer-controller') && document.querySelector('.dplayer-controller').removeEventListener('click', function (e) {
       e.stopPropagation()
     })
   }
@@ -396,6 +396,7 @@ class VideoDetail extends Component {
       isReload: this.state.isReload,
       closed: this.state.closed,
     }
+    const id = this.props.match.params.id //视频id
     return (
       <div className='playerIndex'>
         <PublicNavBar  {...navBarProps} />
@@ -427,7 +428,12 @@ class VideoDetail extends Component {
         </div>
         <p id='anchor' style={{ marginLeft: '.1rem' }} className='hotComment'>热门评论{`（${this.state.comment_num}）`}</p>
         <MyListView {...myListViewProps} />
-        {this.state.noLogin ? <IsLogin rightCallBack={this.closeLogin} /> : null}
+        {/* {this.state.noLogin ? <IsLogin rightCallBack={this.closeLogin} /> : null} */}
+        {this.state.noLogin ? this.props.history.push({
+          pathname: '/login',
+          state: { id }
+        }) : null}
+        {console.log(this.props)}
       </div>
     )
   }
