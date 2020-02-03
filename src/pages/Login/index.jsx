@@ -114,7 +114,9 @@ class index extends Component {
             this.setState({
                 title: ['账户登录', 'login'],
                 loginContent: true,
-                registered: false,
+                registered: false, 
+                Retrieve: false,
+                changePassWord: false,
             })
             return false
         }
