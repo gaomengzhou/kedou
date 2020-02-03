@@ -6,7 +6,6 @@ import { category, setOnRefresh } from '../../store/action/book'
 import { Modal } from 'antd-mobile';
 import { bannel_list } from '../../store/action/bannel'
 import Tabs from '../../components/tabs'
-import Login from '../../components/login'
 import { detail } from '../../services/book'
 // import BooksDetail from '../../components/BooksDetail'
 import Audio from '../../components/Audio'
