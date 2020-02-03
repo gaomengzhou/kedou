@@ -3,6 +3,7 @@ import Header from '@/components/header';
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { category, setOnRefresh } from '../../store/action/book'
+import { Modal } from 'antd-mobile';
 import { bannel_list } from '../../store/action/bannel'
 import Tabs from '../../components/tabs'
 import Login from '../../components/login'
@@ -56,24 +57,23 @@ class Book extends Component {
     }
     testRightCallBack = () => {
         const { loginShow, my } = this.state
-        const user_id = sessionStorage.getItem('user_id')
-        if (!user_id) {
-            this.setState({
-                loginShow: !loginShow
-            })
-        } else {
-            if (loginShow) {
-                this.setState({
-                    loginShow: false,
-                    my: false
-                })
-            } else {
-                this.setState({
-                    my: !my
-                })
-            }
+		const user_id = sessionStorage.getItem('user_id')
+		if (!user_id) {
+			this.props.history.push('/Login')
+		} else {
+			if (loginShow) {
+				this.setState({
+					loginShow: false,
+					my: false
+				})
+				// this.props.history.push('/Login')
+			} else {
+				this.setState({
+					my: !my
+				})
+			}
 
-        }
+		}
     }
     closeMyLoginShow = () => {
         this.setState({
@@ -133,8 +133,17 @@ class Book extends Component {
     }
     getBooKDetail = async (bookId) => {
         if (!sessionStorage.getItem('user_id')) {
-            this.testRightCallBack()
-            return false
+            Modal.alert('您还没有登录', '', [
+				{ text: '取消', onPress: () =>''},
+				{
+					text: '去登录 >',
+					onPress: () => this.props.history.push('/login'),
+					style:{
+						color:'#9718ec'
+					}
+				},
+			])
+			return false
         }
         await this.setState({
             novelItem: null
@@ -222,7 +231,7 @@ class Book extends Component {
     render() {
         const {
             state: {
-                loginShow,
+                // loginShow,
                 my,
                 detailShow,
                 novelItem,
@@ -266,7 +275,7 @@ class Book extends Component {
                 <div style={!detailShow ? { height: '100%' } : { height: '0' }}>
                     <Header {...bookHeader} />
                     <Tabs {...tabsParameter} />
-                    {loginShow && <Login rightCallBack={this.testRightCallBack} />}
+                    {/* {loginShow && <Login rightCallBack={this.testRightCallBack} />} */}
                     {
                         my && <div style={{
                             position: 'fixed',

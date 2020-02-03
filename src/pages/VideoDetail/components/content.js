@@ -15,8 +15,8 @@ const Content = (props) => {
   }
   const copyAccessKey = () => {
     if (props.detailData.share_url) {
-      let shareUrl = window.location.href
-      shareUrl = `${shareUrl}/${sessionStorage.getItem('invitation_code')}`
+      let shareUrl = window.location.href.replace(/detailVideo/, `login`) + '/' + sessionStorage.getItem('invitation_code')
+      // shareUrl = `${shareUrl}/${sessionStorage.getItem('invitation_code')}`
       copy(shareUrl)
       Toast.success('已复制邀请链接,粘贴分享给好友')
     } else {
@@ -36,7 +36,7 @@ const Content = (props) => {
       <div className='collect'>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
           <p onClick={props.likedClick} className={props.detailData.fabulous_video !== 0 ? 'icon1Press' : 'icon1'}><span>{props.detailData.liked_num}</span></p>  {/*点赞数量*/}
-          <p className='icon2' onClick={()=>props.showComment2('anchor')}><span>{props.comment_num}</span></p>  {/*评论数量*/}
+          <p className='icon2' onClick={() => props.showComment2('anchor')}><span>{props.comment_num}</span></p>  {/*评论数量*/}
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
           <p onClick={props.collectBtn} className={props.isCollect ? 'icon3Press' : 'icon3'}></p>{/*收藏*/}

@@ -515,7 +515,7 @@ class index extends Component {
 
 							</div>
 							<div className="Ipt">
-								<input type="password" name="" id="" placeholder='请再次输入密码' value={rePassWord} onBlur={() => {
+								<input type="password" name="" id="" placeholder='请输入密码' value={rePassWord} onBlur={() => {
 									this.setState({
 										rePswIptFocus: false
 									})
