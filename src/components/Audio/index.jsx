@@ -93,6 +93,9 @@ class App extends React.Component {
 	componentWillUnmount() {
 		this.onPause()
 		this.props.setDetailShow()
+		clearTimeout(iTimeout)
+		clearInterval(iInterval)
+		clearTimeout(changeSrcTimer)
 	}
 
 	static getDerivedStateFromProps(props, state) {
@@ -447,10 +450,10 @@ class App extends React.Component {
 		})
 		this.scrollToAnchor('activity')
 		setTimeout(async () => {
-			 this.setState({
+			this.setState({
 				subMit: true,
 			})
-			 this.setState({
+			this.setState({
 				scrollHidden: true,
 				bodyScroll: document.documentElement.scrollTop
 			})
@@ -475,7 +478,7 @@ class App extends React.Component {
 	// 			bodyListener.addEventListener ('scroll',() => {
 	// 				const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
 	// 				console.log(scrollTop, _this.state.anchorElement );
-					
+
 	// 				if (scrollTop - _this.state.anchorElement > -30 && scrollTop - _this.state.anchorElement < 30) {
 	// 					let timer
 	// 					clearTimeout(timer)
@@ -507,7 +510,7 @@ class App extends React.Component {
 	scrollToAnchor = async (anchorName) => {
 		let anchorElement = document.getElementById(anchorName);
 		setTimeout(() => {
-			document.documentElement.scrollTop = document.body.scrollTop=anchorElement.offsetTop
+			document.documentElement.scrollTop = document.body.scrollTop = anchorElement.offsetTop
 		}, 20);
 		// setTimeout(() => {
 		// 	anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' });
@@ -523,8 +526,6 @@ class App extends React.Component {
 		const bodyScroll = this.state.bodyScroll
 		const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
 		const countScrollTop = this.state.countScrollTop
-		console.log(scrollTop + ' ' + bodyScroll);
-
 		if (scrollTop - bodyScroll > 10 || scrollTop - bodyScroll < 10) {
 			this.setState({
 				countScrollTop: true
@@ -720,7 +721,9 @@ class App extends React.Component {
 						</div>
 						<ListTitle title={'猜你喜欢'} />
 						{
-							this.props.detailInfo.guess.map(e => <BookDetailGuess {...e} {...guess} />)
+							this.props.detailInfo.guess.map(e => {
+								return <BookDetailGuess {...e} key={e.id} {...guess} />
+							})
 						}
 						<Modal
 							className='AudioModal'
@@ -736,18 +739,10 @@ class App extends React.Component {
 						// afterClose={() => { alert('afterClose'); }}
 						>
 							{playerList.map(e => {
-								if (e.serial === this.state.serialNum) {
-									return (
-										<p className='serialActive' onClick={() => {
-
-											changeSrc(e.src, e.serial)
-										}}>第{e.serial}集</p>
-									)
-								}
 								return (
-									<p className='serial' onClick={() => {
+									<p className={e.serial === this.state.serialNum ? 'serialActive' : 'serial'} onClick={() => {
 										changeSrc(e.src, e.serial)
-									}}>第{e.serial}集</p>
+									}} key={e.serial}>第{e.serial}集</p>
 								)
 							})}
 						</Modal>
@@ -811,7 +806,7 @@ class App extends React.Component {
 							}}
 							useBodyScroll={true}
 							onScroll={this.state.scrollHidden ?
-								this.hiddenCommentIpt : ''}
+								this.hiddenCommentIpt : () => { }}
 							// pullToRefresh={refresh ? <PullToRefresh
 							// 	refreshing={isRefreshing}
 							// 	onRefresh={onRefresh}
@@ -821,7 +816,7 @@ class App extends React.Component {
 							// initialListSize={10}
 							pageSize={10}
 							renderFooter={() => {
-								if(!commentList.length){
+								if (!commentList.length) {
 									return (<div style={{ padding: '.3rem 0 .5rem 0', textAlign: 'center' }}>
 										暂无评论
 								</div>)
@@ -846,18 +841,8 @@ class App extends React.Component {
 						>
 							{
 								setTimeCloseList.map(e => {
-									if (timeNum === e.key) {
-										return (
-											<p key={e.key} className='timeList timeListActive' onClick={() => {
-												setTimeoutByPlay(e.key)
-											}}>
-												{e.title}
-											</p>
-										)
-									}
-
 									return (
-										<p key={e.key} className='timeList' onClick={() => {
+										<p key={e.key} className={timeNum === e.key ? 'timeList timeListActive' : 'timeList'} onClick={() => {
 											setTimeoutByPlay(e.key)
 										}}>
 											{e.title}
@@ -879,7 +864,7 @@ class App extends React.Component {
 					this.state.serialShow && <div className='playerSerial'>
 						{
 							playerList.map(e => (
-								<p onClick={() => {
+								<p className={this.state.serialNum === e.serial ? 'activeSerial' : ''} onClick={() => {
 									this.setState({
 										serial: `第${e.serial}集`
 									})

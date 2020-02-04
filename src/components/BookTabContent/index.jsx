@@ -289,7 +289,14 @@ class index extends Component {
 						src={val.url}
 						alt="正在加载图片"
 						style={{ width: '100%', height: '100%' }}
+						key={val.url}
 						onClick={() => {
+							if (/^(http|https)/.test(val.h5_target)) {
+								// window.location.href=val.h5_target
+								const w = window.open('about:blank');
+								w.location.href = val.h5_target;
+								return false
+							}
 							// window.location.href=`https://www.baidu.com`
 							// // const w = window.open('about:blank');
 							// // w.location.href=`https://www.baidu.com`;
@@ -337,7 +344,6 @@ class index extends Component {
 			flexWrap: 'wrap'
 			// justifyContent:'left'
 		}
-
 		switch (this.props.tab.title) {
 			case this.props.tabList[0].title: {
 				return (
@@ -426,7 +432,7 @@ class index extends Component {
 			case this.props.tabList[1].title: case this.props.tabList[2].title: {
 				return (
 					<div className="tabsList" style={{
-						paddingTop:'.5rem'
+						paddingTop: '.5rem'
 					}}>
 						<ListView
 							dataSource={dataSource}
@@ -463,8 +469,8 @@ class index extends Component {
 			}
 			default: {
 				return (
-					<div className="tabsList"  style={{
-						paddingTop:'.5rem'
+					<div className="tabsList" style={{
+						paddingTop: '.5rem'
 					}}>
 						<ListView
 							dataSource={dataSource}

@@ -1,7 +1,7 @@
+import { Toast } from 'antd-mobile';
 import React, { Component } from 'react';
-import { comment_thumbs } from '../../services/book'
-import { commentLikeApi } from '../../services/videoDetail'
-import { Toast } from 'antd-mobile'
+import { comment_thumbs } from '../../services/book';
+import { commentLikeApi } from '../../services/videoDetail';
 class index extends Component {
     constructor(props) {
         super(props)
@@ -14,8 +14,6 @@ class index extends Component {
     componentDidMount() {
         const {type,rowData}= this.props
         if (type==='video') {
-            console.log(rowData.addtime);
-            
             this.setState({
                 thumbed: rowData.user_fabulous,
                 thumbs: rowData.liked_num,
@@ -92,7 +90,7 @@ class index extends Component {
                                 <img src={rowData.avatar_url} alt="" />
                             </div>
                             <div className="name">
-                                <p>{rowData.nickname}</p>   
+                                <p>{rowData.nickname}</p>
                                 <span>{created_date}</span>
                             </div>
                         </div>

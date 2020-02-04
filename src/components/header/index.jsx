@@ -94,7 +94,13 @@ class index extends Component {
 							
 						}
 					}>
-						<SearchBar placeholder="搜索" style={{
+						<span>
+							输入搜索关键字
+						</span>
+						<div className="searchBTN">
+							<img src={require('../../assets/images/search.png')} alt=""/>
+						</div>
+						{/* <SearchBar placeholder="搜索" style={{
 							padding: '.1rem',
 							backgroundColor: '#fff',
 							border: '1px solid #EEE',
@@ -111,7 +117,7 @@ class index extends Component {
 							onSubmit={() => searchSubmit()}
 							onChange={(value) => changeSearchText(value)}
 							value={searchText}
-						/>
+						/> */}
 
 					</div>
 				</div>

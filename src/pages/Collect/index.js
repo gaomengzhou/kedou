@@ -481,19 +481,6 @@ class Collect extends Component {
           </Button>
           <Button onClick={this.deleteBtn} style={{ flex: '1', borderRadius: 0, color: '#7914ee' }}>{this.state.count !== 0 ? `删除(${this.state.count})` : '删除'}</Button>
         </div>
-        <div className='load'
-          style={{
-            textAlign: 'center',
-            lineHeight: '1rem',
-            position: 'absolute',
-            bottom: '1rem',
-            zIndex: 0,
-            left: 0,
-            width: '100%'
-          }}
-        >
-          没有更多
-        </div>
       </div >
     )
   }
