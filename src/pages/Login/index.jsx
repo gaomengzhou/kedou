@@ -25,8 +25,6 @@ class index extends Component {
         }
     }
     componentDidMount() {
-        console.log(this.props);
-
         if (this.props.history.location.state) {
             const { type, code } = this.props.history.location.state
             if (type) {
@@ -47,8 +45,6 @@ class index extends Component {
         }
     }
     goTovideoDetail = () => {
-        console.log(this.props);
-
         if (this.props.history.location.state) {
             const { id, bookId } = this.props.history.location.state
             if (id) {
