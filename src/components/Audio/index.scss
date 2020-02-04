@@ -314,6 +314,15 @@
                 object-fit: cover;
                 border-radius: 50%;
             }
+            .onPoster{
+                position: absolute;
+                width: 30vw;
+                height: 30vw;
+                object-fit: cover;
+                border-radius: 50%;
+                transform: rotateZ(3600000000deg);
+                transition: 60000000s;
+            }
         }
 
     }

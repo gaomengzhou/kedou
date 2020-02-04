@@ -41,6 +41,17 @@ class index extends Component {
                         invitation_code: code
                     })
                 })
+            }else{
+                this.setState({
+                    telNumber: '',
+                    passWord: '',
+                    codeNumber: '',
+                    rePassWord: ''
+                }, () => {
+                    this.setState({
+                        invitation_code: code
+                    })
+                })
             }
         }
     }
@@ -207,12 +218,14 @@ class index extends Component {
                 event,
                 type: 'user'
             }).then(res => {
-                if (res.code === 0) {
+                const {code}=res
+                if (code === 0) {
                     Toast.info(res.suc, 1, null, false)
                     this.timeChange()
-                } else {
+                    return false
+                } 
                     Toast.info(res.err)
-                }
+                
             })
 
         }

@@ -28,12 +28,7 @@ const routes = [
         component: Login
     },
     {
-        path: '/book',
-        key: 'book',
-        component: Book,
-    },
-    {
-        path: '/book/:id',
+        path: '/book/:bookId?/:invitation_code?',
         key: 'book',
         component: Book,
     },

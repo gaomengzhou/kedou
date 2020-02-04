@@ -69,7 +69,8 @@ class App extends React.Component {
 			scrollHidden: false,
 			bodyScroll: '',
 			anchorElement: '',
-			countScrollTop: ''
+			countScrollTop: '',
+			rotateZ: ''
 		}
 	}
 	componentDidMount() {
@@ -116,6 +117,7 @@ class App extends React.Component {
 
 	onPause = () => {
 		this.ap.pause()
+		this.getTranslate('onPosterRotateZ')
 		this.setState({
 			play: false
 		})
@@ -417,7 +419,12 @@ class App extends React.Component {
 		})
 	}
 	copyShare = () => {
-		copy(this.props.detailInfo.share_url);
+
+console.log(window.location);
+
+		console.log(window.location.href+'/'+this.props.detailInfo.id);
+		
+		copy(window.location.href+'/'+this.props.detailInfo.id+'/'+sessionStorage.getItem('invitation_code'));
 		Toast.info('分享链接已复制链接至粘贴板', 2, null, false)
 	}
 	onLoad = () => {
@@ -538,6 +545,60 @@ class App extends React.Component {
 		}
 
 	}
+	// getRotate = (matrix) => {
+	// 	var aa = Math.round(180 * Math.asin(matrix[0]) / Math.PI);
+	// 	var bb = Math.round(180 * Math.acos(matrix[1]) / Math.PI);
+	// 	var cc = Math.round(180 * Math.asin(matrix[2]) / Math.PI);
+	// 	var dd = Math.round(180 * Math.acos(matrix[3]) / Math.PI);
+	// 	var deg = 0;
+	// 	if (aa == bb || -aa == bb) {
+	// 		deg = dd;
+	// 	} else if (-aa + bb == 180) {
+	// 		deg = 180 + cc;
+	// 	} else if (aa + bb == 180) {
+	// 		deg = 360 - cc || 360 - dd;
+	// 	}
+	// 	return deg >= 360 ? 0 : deg;
+
+	// }
+	getTranslate = (node) => {//获取transform值
+		var el = document.getElementById(node);
+		if (!el) {
+			return false
+		}
+		var st = window.getComputedStyle(el, null);
+		var tr = st.getPropertyValue("-webkit-transform") ||
+			st.getPropertyValue("-moz-transform") ||
+			st.getPropertyValue("-ms-transform") ||
+			st.getPropertyValue("-o-transform") ||
+			st.getPropertyValue("transform") ||
+			"FAIL";
+		if (tr === 'none' || !tr || tr === '') {
+			return false
+		}
+		// With rotate(30deg)...
+		// matrix(0.866025, 0.5, -0.5, 0.866025, 0px, 0px)
+		// console.log('Matrix: ' + tr);
+		// rotation matrix - http://en.wikipedia.org/wiki/Rotation_matrix
+		var values = tr.split('(')[1].split(')')[0].split(',');
+		var a = values[0];
+		var b = values[1];
+		// var c = values[2];
+		// var d = values[3];
+		// var scale = Math.sqrt(a * a + b * b);
+		// console.log('Scale: ' + scale);
+		// arc sin, convert from radians to degrees, round
+		// var sin = b / scale;
+		// next line works for 30deg but not 130deg (returns 50);
+		// var angle = Math.round(Math.asin(sin) * (180/Math.PI));
+		var angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+		// console.log('Rotate: ' + angle + 'deg')
+		// return 'Rotate: ' + angle + 'deg'
+		this.setState({
+			rotateZ: angle + 'deg'
+		})
+		// return angle + 'deg'
+	}
 	render() {
 		const {
 			state: {
@@ -579,7 +640,8 @@ class App extends React.Component {
 			copyShare,
 			onLoad,
 			setThumbed,
-			subMitShow
+			subMitShow,
+			// getTranslate
 		} = this
 		const guess = {
 			getBooKDetail,
@@ -652,7 +714,10 @@ class App extends React.Component {
 							<div className='record'>
 								<div className="recordImg">
 									<img src={require('../../assets/images/record_nomal.png')} alt="" />
-									<img src={this.props.novelPoster} alt="" className="Poster" />
+									<img src={this.props.novelPoster} alt="" id='onPosterRotateZ' style={!play ? {
+										color: '#fff',
+										transform: `rotateZ(${this.state.rotateZ})`
+									} : {}} className={play ? "onPoster" : "Poster"} />
 								</div>
 								<div className="playerBtn">
 									<div className="img" onClick={() => {
@@ -719,6 +784,19 @@ class App extends React.Component {
                                 </div>
                             </div> */}
 						</div>
+						<div style={{
+							width: '100%',
+							margin:'.2rem 0 .1rem 0'
+						}} onClick={() => {
+							const w = window.open('about:blank');
+							w.location.href = this.props.detailInfo.share_url;
+							return false
+						}}>
+							<img style={{
+								width: '100%',
+								borderRadius: '.1rem'
+							}} src={require('../../assets/images/banner-detail.png')} alt="下载广告" />
+						</div>
 						<ListTitle title={'猜你喜欢'} />
 						{
 							this.props.detailInfo.guess.map(e => {
@@ -742,7 +820,7 @@ class App extends React.Component {
 								return (
 									<p className={e.serial === this.state.serialNum ? 'serialActive' : 'serial'} onClick={() => {
 										changeSrc(e.src, e.serial)
-									}} key={e.serial}>第{e.serial}集</p>
+									}} key={e.serial}>第{e.serial}章</p>
 								)
 							})}
 						</Modal>
@@ -879,6 +957,13 @@ class App extends React.Component {
 						detailShow: !this.state.detailShow
 					}, () => {
 						document.body.scrollTop = document.documentElement.scrollTop = 0
+						if (play) {
+							const poster = document.getElementById('onPosterRotateZ')
+							poster.className = 'Poster'
+							setTimeout(() => {
+								poster.className = 'onPoster'
+							}, 20);
+						}
 					})
 				}}>
 				</div>
