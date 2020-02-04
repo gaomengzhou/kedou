@@ -46,6 +46,15 @@ class Book extends Component {
             type: 1
         })
         this.props.setOnRefresh(true)
+        console.log(this.props);
+        if(this.props.match.params.bookId){
+            const {bookId}=this.props.match.params
+            if(bookId){
+                this.getBooKDetail(bookId)
+                this.props.setOnRefresh(false)
+                return false
+            }
+        }
         if (this.props.history.location.state) {
             const { id } = this.props.history.location.state
             if (id) {
@@ -54,6 +63,7 @@ class Book extends Component {
             }
         }
     }
+    //点击头部用户头像回调
     testRightCallBack = () => {
         const { loginShow, my } = this.state
 		const user_id = sessionStorage.getItem('user_id')
@@ -74,11 +84,13 @@ class Book extends Component {
 
 		}
     }
+    //关闭详情页后关闭用户弹窗
     closeMyLoginShow = () => {
         this.setState({
             my: false
         })
     }
+    //登录后点击用户图标显示内容
     Popo = () => {
         const arr = [
             {
@@ -130,8 +142,40 @@ class Book extends Component {
             })
         )
     }
+    //进入详情页
     getBooKDetail = async (bookId) => {
         if (!sessionStorage.getItem('user_id')) {
+            if(this.props.match.params.bookId){
+                const {bookId,invitation_code}=this.props.match.params
+                if(bookId){
+                    Modal.alert('您还没有登录', '', [
+                        { text: '去注册', onPress: () =>this.props.history.push({
+                            pathname:'/login',
+                            state:{
+                                bookId,
+                                type:1,
+                                code:invitation_code
+                            }
+                        }),
+                        style:{
+                            color:'#9718ec'
+                        }},
+                        {
+                            text: '去登录 >',
+                            onPress: () => this.props.history.push({
+                                pathname:'/login',
+                                state:{
+                                    bookId
+                                }
+                            }),
+                            style:{
+                                color:'#000'
+                            }
+                        },
+                    ])
+                    return false
+                }
+            }
             Modal.alert('您还没有登录', '', [
 				{ text: '取消', onPress: () =>''},
 				{
@@ -219,6 +263,7 @@ class Book extends Component {
     //  })
 
     // }
+    //
     setDetailShow = (open) => {
         if(open){
             document.querySelector('.TabBer').style.display = 'none'

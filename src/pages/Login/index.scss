@@ -119,13 +119,15 @@
                     }
 
                     span {
-                        margin-left: .2rem;
+                        margin-left: .3rem;
                         color: #fff;
                         // border:1px #aaa solid ;
                         padding: 0 .2rem;
                         border-radius: .5rem;
                         display: flex;
+                        width: 35%;
                         align-items: center;
+                        justify-content: space-around;
                         background: linear-gradient(to right, rgb(151, 24, 236), rgb(104, 199, 228));
                     }
 

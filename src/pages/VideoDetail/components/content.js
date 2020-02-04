@@ -24,6 +24,11 @@ const Content = (props) => {
     }
   }
 
+  const downApp = () => {
+    const { share_url } = props.detailData
+    window.open(share_url)
+  }
+
   return (
     <div id='contentPlayer' style={{ padding: '.1rem', background: '#fff' }}>
       <div className='title'>
@@ -42,6 +47,9 @@ const Content = (props) => {
           <p onClick={props.collectBtn} className={props.isCollect ? 'icon3Press' : 'icon3'}></p>{/*收藏*/}
           <p onClick={copyAccessKey} className='icon4'></p>{/*分享*/}
         </div>
+      </div>
+      <div className="video-detail-banner">
+        <img onClick={downApp} src={require('../../../assets/images/banner-detail.png')} alt="下载广告" />
       </div>
       <div className='hotVideo'>
         <p className='hotTitle'>猜你喜欢</p>

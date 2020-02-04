@@ -42,6 +42,8 @@ class index extends Component {
 		await bannel_list({
 			type: 1
 		}).then(res => {
+			console.log(res);
+			
 			this.setState({
 				bannel: res,
 				isLoading: true,

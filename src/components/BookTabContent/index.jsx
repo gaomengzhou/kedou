@@ -276,6 +276,13 @@ class index extends Component {
 			return false
 		}
 		if (!bannelList.length) {
+			if (this.props.tab.title === this.props.tabList[0].title) {
+				if (document.querySelector('.am-pull-to-refresh-indicator')) {
+					document.querySelector('.am-pull-to-refresh-indicator').style.marginTop = 0
+				}
+			}
+			// document.querySelector('.am-pull-to-refresh-indicator').style.marginTop=0
+
 			return false
 		}
 		return (
