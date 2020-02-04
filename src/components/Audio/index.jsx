@@ -860,7 +860,29 @@ class App extends React.Component {
 						}
 					</>
 				}
-				{
+				<div className="offPlaye" onClick={() => {
+					this.onPause()
+					// this.props.setDetailShow(0)
+					clearTimeout(iTimeout)
+					clearInterval(iInterval)
+					clearTimeout(changeSrcTimer)
+					this.setState({
+						show: false
+					})
+				}}>
+					<img src={require('../../assets/images/close_btn.png')} alt="" />
+				</div>
+				<div className="changeWindow" onClick={() => {
+					this.props.setDetailShow()
+					// this.props.closeMyLoginShow()
+					this.setState({
+						detailShow: !this.state.detailShow
+					}, () => {
+						document.body.scrollTop = document.documentElement.scrollTop = 0
+					})
+				}}>
+				</div>
+				{/* {
 					this.state.serialShow && <div className='playerSerial'>
 						{
 							playerList.map(e => (
@@ -873,8 +895,8 @@ class App extends React.Component {
 							))
 						}
 					</div>
-				}
-				{
+				} */}
+				{/* {
 					!detailShow && <p className='select' onClick={() => {
 
 						this.setState({
@@ -887,7 +909,7 @@ class App extends React.Component {
 							}
 						})
 					}} >选集</p>
-				}
+				} */}
 				{show && <ReactAplayer
 					{...player}
 					onInit={this.onInit}
