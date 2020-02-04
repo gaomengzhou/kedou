@@ -219,7 +219,15 @@ class Book extends Component {
     //  })
 
     // }
-    setDetailShow = () => {
+    setDetailShow = (open) => {
+        if(open){
+            document.querySelector('.TabBer').style.display = 'none'
+            this.props.setOnRefresh(false)
+            this.setState({
+                detailShow:true
+            })
+            return false
+        }
         document.querySelector('.TabBer').style.display = 'block'
         // if (document.querySelector('.am-tabs-tab-bar-wrap') && document.querySelector('.header-search') && document.querySelector('.background') && document.querySelector('.TabBer')) {
         //     document.querySelector('.background').style.top = '0rem'

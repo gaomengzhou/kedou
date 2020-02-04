@@ -66,9 +66,38 @@
       margin: auto;
       // display: none;
       z-index: 1000;
-
+      .changeWindow{
+         position: absolute;
+         top: .2rem;
+         width: 4rem;
+         // width: 100%;
+         margin-left: 1.3rem;
+         height: .5rem;
+         background-color: rgba(255, 255, 255,0);
+         z-index: 1000;
+      }
+      .offPlaye{
+         position: absolute;
+         right: .17rem;
+         top: .17rem;
+         z-index: 1000;
+         box-shadow: 0 0 .2rem #aaa;
+         border-radius: 1rem;
+         width: .4rem;
+         height: .4rem;
+         display: flex;
+         align-items: center;
+         justify-content: space-around;
+         img{
+            width: 100%;
+            height: 100%;
+         }
+         &:active{
+            box-shadow:  none;
+         }
+      }
       .playerSerial {
-         background-color: #fff;
+         background-color: rgba(0, 0, 0, 0.8);
          position: fixed;
          right: .5rem;
          bottom: 2.5rem;
@@ -86,6 +115,7 @@
             text-align: center;
             border-radius: .1rem;
             font-size: .24rem;
+            color: #eee;
             padding: 0 0.1rem;
             box-shadow: 0 0 .1rem #aaa;
 
@@ -103,6 +133,7 @@
       .aplayer {
          box-shadow: 0 0 .1rem #111;
          padding: .1rem;
+         background-color: rgba(0, 0, 0, 0.8);
       }
 
       .select {
@@ -110,6 +141,7 @@
          right: .67rem;
          top: .2rem;
          z-index: 1001;
+         color: #aaa;
          border: 1px solid #aaa;
          padding: 0 .1rem;
          border-radius: .1rem;
@@ -137,6 +169,33 @@
          height: auto;
          margin: 0;
          padding: 0;
+         .aplayer-music{
+            margin-left: 1.2rem;
+            .aplayer-title{
+               color: #eee;
+            }
+            .aplayer-author{
+               color: #aaa;
+            }
+         }
+         .aplayer-controller{
+            margin-top: .23rem;
+            .aplayer-bar{
+               .aplayer-played{
+                  background: url(../../assets/images/progress_bar_100%.png) no-repeat !important;;
+               }
+               .aplayer-thumb {
+                  background: url(../../assets/images/play_point.png) no-repeat !important;
+                  background-size: cover !important;
+                  width: 20px !important;
+                  height: 20px !important;
+                  margin-top: -10px !important;
+                  margin-right: -10px !important;
+                  top: 0 !important;
+                  right: 0 !important;
+              }
+            }
+         }
       }
 
       .aplayer-music {
