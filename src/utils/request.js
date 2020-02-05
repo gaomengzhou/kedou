@@ -4,9 +4,6 @@ import qs from 'qs';
 import { crypt, encrypt } from './base';
 const { NODE_ENV } = process.env
 const { origin } = window.location;
-console.log(process.env)
-console.log(origin);
-
 export function initAxios() {
   const instance = axios.create({
     baseURL: NODE_ENV === 'production' ? origin:'/kedou/api' ,
