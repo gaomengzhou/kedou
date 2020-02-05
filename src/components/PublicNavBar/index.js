@@ -1,5 +1,10 @@
 /**
  * 公共NavBar
+ * @param {boolean}  isEdit           是否显示右侧编辑按钮
+ * @param {function} rightContent     右侧编辑按钮
+ * @param {function} onLeftClick      左侧返回按钮
+ * @param {boolean}  isDetail         是否是视频详情页-如果是头部会绝对定位加背景透明
+ * @param {boolean}  isCollect        是否是收藏页-如果是头部会固定定位在顶部
  */
 
 import { NavBar } from 'antd-mobile';

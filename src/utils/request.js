@@ -3,9 +3,13 @@ import axios from 'axios';
 import qs from 'qs';
 import { crypt, encrypt } from './base';
 const { NODE_ENV } = process.env
+const { origin } = window.location;
+console.log(process.env)
+console.log(origin);
+
 export function initAxios() {
   const instance = axios.create({
-    baseURL: NODE_ENV === 'development' ? '/kedou/api' : 'http://tadpole-appapi.fftechs.com:2082',
+    baseURL: NODE_ENV === 'production' ? origin:'/kedou/api' ,
     // baseURL: 'http://tadpole-appapi.fftechs.com:2082',
     timeout: 15000,
     withCredentials: NODE_ENV === 'development' ? true : false,

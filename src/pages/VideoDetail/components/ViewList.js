@@ -48,7 +48,7 @@ class MyViewList extends React.Component {
         setTimeout(() => {
           const contentHeight = document.getElementById('contentPlayer').offsetHeight;
           const dpHeight = document.getElementById('dplayer').offsetHeight;
-          document.documentElement.scrollTop = contentHeight + dpHeight;
+          document.body.scrollTop=document.documentElement.scrollTop = contentHeight + dpHeight;
         }, 300);
       })
     }

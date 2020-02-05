@@ -165,7 +165,8 @@ class Book extends Component {
                             onPress: () => this.props.history.push({
                                 pathname:'/login',
                                 state:{
-                                    bookId
+                                    bookId,
+                                    code:invitation_code
                                 }
                             }),
                             style:{
