@@ -9,7 +9,7 @@ import '../player.less';
 
 const Content = (props) => {
   const onPress = (item) => {
-    document.documentElement.scrollTop = 0
+    document.body.scrollTop = document.documentElement.scrollTop = 0
     window.sessionStorage.removeItem('goBack')
     props.router.history.push(`/detailVideo/${item.id}`);
   }

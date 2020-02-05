@@ -2,9 +2,10 @@ import { ActivityIndicator } from 'antd-mobile';
 import React, { Component } from 'react';
 import './style.less';
 /**
- * {src} 图片数据
- * {top} {left} 定位距离
- * {width} {height} css属性
+ * 图片懒加载的样式
+ * @param {string}                    src       图片地址
+ * @param {'number' or 'px' or 'rem'} [option]  传入top left 定位距离
+ * @param {'number' or 'px' or 'rem'} [option]  width height css属性
  */
 class ImgLoad extends Component {
   constructor(props) {

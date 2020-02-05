@@ -431,8 +431,8 @@ class index extends Component {
         }
         return (
             <div className={title[1] + ' userHome'} style={{
-                width: '100vw',
-                height: '100vh',
+                // width: '100vw',
+                // height: '100vh',
                 background: `url(${require('../../assets/images/BG.png')})`
             }}>
                 <LoginHeader {...loginHeader} />

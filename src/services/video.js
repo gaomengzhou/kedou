@@ -11,14 +11,14 @@ export const getHomeVideoList = ({
 export const getHomeLabelList = ({
     type
 } = {}) => {
-    return initAxios().post(`v2/video/label_list`, {
+    return initAxios().post(`/v2/video/label_list`, {
         type
     })
 }
 export const getLabelTabList = ({
     ...parameter
 } = {}) => {
-    return initAxios().post(`v2/videointerface/search_video`, {
+    return initAxios().post(`/v2/videointerface/search_video`, {
         ...parameter
     })
 }

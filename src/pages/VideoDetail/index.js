@@ -56,7 +56,7 @@ class VideoDetail extends Component {
       paramsId: this.props.match.params.id,
       innerHeight: window.innerHeight
     })
-    document.documentElement.scrollTop = 0
+    document.body.scrollTop = document.documentElement.scrollTop = 0
     const user_id = sessionStorage.getItem('user_id')
     this.getVideo()
     this.getChat()
@@ -80,7 +80,7 @@ class VideoDetail extends Component {
     if (prevProps.match.params.id !== this.props.match.params.id) {
       this.getVideo(this.props.match.params.id)
       this.getChat()
-      window.location.reload() //QQ留言器BUG 跳转新的详情页 刷新一次回到顶部
+      document.body.scrollTop = document.documentElement.scrollTop = 0 //QQ留言器BUG 跳转新的详情页 刷新一次回到顶部
     }
   }
 
@@ -236,7 +236,7 @@ class VideoDetail extends Component {
     })
     const contentHeight = document.getElementById('contentPlayer').offsetHeight;
     const dpHeight = document.getElementById('dplayer').offsetHeight;
-    document.documentElement.scrollTop = contentHeight + dpHeight;
+    document.body.scrollTop = document.documentElement.scrollTop = contentHeight + dpHeight;
   }
 
   closeLogin = () => {
@@ -271,7 +271,7 @@ class VideoDetail extends Component {
     setTimeout(() => {
       const contentHeight = document.getElementById('contentPlayer').offsetHeight;
       const dpHeight = document.getElementById('dplayer').offsetHeight;
-      document.documentElement.scrollTop = contentHeight + dpHeight;
+      document.body.scrollTop = document.documentElement.scrollTop = contentHeight + dpHeight;
     }, 350);
     this.setState({
       closed: false
@@ -386,16 +386,16 @@ class VideoDetail extends Component {
       setTimeout(() => {
         const contentHeight = document.getElementById('contentPlayer').offsetHeight;
         const dpHeight = document.getElementById('dplayer').offsetHeight;
-        document.documentElement.scrollTop = contentHeight + dpHeight;
+        document.body.scrollTop = document.documentElement.scrollTop = contentHeight + dpHeight;
       }, 320);
     } else {
       setTimeout(() => {
-        document.documentElement.scrollTop = 0
+        document.body.scrollTop = document.documentElement.scrollTop = 0
       }, 300);
       setTimeout(() => {
         const contentHeight = document.getElementById('contentPlayer').offsetHeight;
         const dpHeight = document.getElementById('dplayer').offsetHeight;
-        document.documentElement.scrollTop = contentHeight + dpHeight;
+        document.body.scrollTop = document.documentElement.scrollTop = contentHeight + dpHeight;
       }, 320);
     }
   }

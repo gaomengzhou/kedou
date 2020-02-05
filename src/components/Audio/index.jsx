@@ -419,13 +419,14 @@ class App extends React.Component {
 		})
 	}
 	copyShare = () => {
-
-console.log(window.location);
-
-		console.log(window.location.href+'/'+this.props.detailInfo.id);
-		
-		copy(window.location.href+'/'+this.props.detailInfo.id+'/'+sessionStorage.getItem('invitation_code'));
-		Toast.info('分享链接已复制链接至粘贴板', 2, null, false)
+		const {id}=this.props.detailInfo
+		const invitation_code=sessionStorage.getItem('invitation_code')
+		if(id&&invitation_code){
+			copy(window.location.href+'/'+id+'/'+invitation_code);
+			Toast.info('分享链接已复制链接至粘贴板', 2, null, false)
+			return false
+		}
+		Toast.info('请先登录')
 	}
 	onLoad = () => {
 		this.setState({
@@ -757,7 +758,7 @@ console.log(window.location);
 									setThumbed()
 								}}>
 									<img src={thumbed ? require('../../assets/images/awesome_pressed_btn.png') : require('../../assets/images/awesome_nomal_btn.png')} alt="" />
-									<p className={collected ? 'activeCollected' : ''}>{thumb_num}</p>
+									<p className={thumbed ? 'activeCollected' : ''}>{thumb_num}</p>
 								</div>
 								{/* <div className="comment_num" onClick={() => {
 									// setCollect(this.props.detailInfo.id)
