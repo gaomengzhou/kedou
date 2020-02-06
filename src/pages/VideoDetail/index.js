@@ -76,11 +76,11 @@ class VideoDetail extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, _prevState) {
     if (prevProps.match.params.id !== this.props.match.params.id) {
       this.getVideo(this.props.match.params.id)
       this.getChat()
-      document.body.scrollTop = document.documentElement.scrollTop = 0 //QQ留言器BUG 跳转新的详情页 刷新一次回到顶部
+      document.body.scrollTop = document.documentElement.scrollTop = 0
     }
   }
 
@@ -226,7 +226,7 @@ class VideoDetail extends Component {
   }
   bodyScroll = (e) => { e.preventDefault(); }
 
-  showComment2 = (anchorName) => {
+  showComment2 = (_anchorName) => {
     this.setState({
       closed: false
     })
@@ -260,7 +260,7 @@ class VideoDetail extends Component {
     })
   }
 
-  sendMsg = (e) => {
+  sendMsg = (_e) => {
     const { id } = this.props.match.params
     const user_id = sessionStorage.getItem('user_id')  //万能ID '9652'  sessionStorage.getItem('user_id')
     const video_id = id
@@ -366,7 +366,7 @@ class VideoDetail extends Component {
     }
   }
 
-  showComment = (anchorName) => {
+  showComment = (_anchorName) => {
     this.setState({
       closed: false
     })
