@@ -6,6 +6,7 @@ class index extends Component {
 		super(props)
 		this.state = {
 			loaded: true,
+			imgErr:false
 		}
 	}
 	ContentItem = (props) => {
@@ -16,7 +17,7 @@ class index extends Component {
 				...props
 			}
 		}
-		const { loaded } = this.state
+		const { loaded,imgErr } = this.state
 		const ActivityIndicatorStyle = {
 			position: 'absolute',
 			top: 0,
@@ -36,7 +37,7 @@ class index extends Component {
 					if (props.goToVideoDetail) {
 						props.goToVideoDetail({
 							video_id: props.ev.id
-						})
+						},this.props.onClickasd())
 					} else {
 						props.changeActionKey(props.ev.key)
 					}
@@ -47,9 +48,11 @@ class index extends Component {
 						{loaded && <div style={ActivityIndicatorStyle}>
 							<ActivityIndicator text='Loading...' />
 						</div>}
-						<img src={props.ev.picture || props.ev.cover_one} alt="" className={loaded ? `classTitleImg` : 'classTitleImgLoad'} onLoad={() => { this.onLoad() }} onError={() => {
-							console.log('err');
-
+						<img src={!imgErr?props.ev.picture || props.ev.cover_one:require('../../assets/images/error1_thumbnail_bg.png')} alt="" className={loaded ? `classTitleImg` : 'classTitleImgLoad'} onLoad={() => { this.onLoad() }} onError={() => {
+							console.log('图片显示错误');
+							this.setState({
+								imgErr:true
+							})
 						}} />
 					</div>
 					<p className='title'>

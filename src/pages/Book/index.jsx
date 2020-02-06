@@ -46,7 +46,6 @@ class Book extends Component {
             type: 1
         })
         this.props.setOnRefresh(true)
-        console.log(this.props);
         if(this.props.match.params.bookId){
             const {bookId}=this.props.match.params
             if(bookId){

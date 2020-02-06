@@ -2,6 +2,18 @@ import React, { Component } from 'react';
 import { Tabs } from 'antd-mobile'
 import TabContent from '../TabContent'
 import BookTabContent from '../BookTabContent'
+import { connect } from 'react-redux';
+import { goBackchangeTab,goBackList } from '../../store/action/video'
+const stateToProps = (state) => {
+	return {
+		tabAction: state.video.tabAction,
+	}
+}
+const mapDispatchToProps = {
+	goBackchangeTab,
+	goBackList
+};
+@connect(stateToProps, mapDispatchToProps)
 class index extends Component {
 	constructor(props) {
 		super(props)
@@ -9,6 +21,21 @@ class index extends Component {
 			activeKey: null
 		}
 	}
+	componentDidMount() {
+		this.setState({
+			activeKey: this.props.tabAction
+		})
+		this.goBackchangeTab(this.props.route)
+	}
+	goBackchangeTab=(route)=>{
+		const oldRoute=sessionStorage.getItem('route')
+		if(route!==oldRoute){
+			this.props.goBackchangeTab('')
+			this.props.goBackList('')
+		}
+		sessionStorage.setItem('route',this.props.route)
+	}
+
 	changeActionKey = (sty) => {
 		// console.log(sty, this.state.activeKey);
 
@@ -16,6 +43,7 @@ class index extends Component {
 		//console.log('123123123123',sty);
 
 		if (sty !== oldNum) {
+			this.props.goBackchangeTab(sty)
 			this.setState({
 				activeKey: sty
 			})
@@ -54,31 +82,34 @@ class index extends Component {
 		return <BookTabContent key={tab.key} {...tabContent} />
 
 	}
-		;
-	componentDidMount() {
-	}
+
 
 	render() {
-		const {detailShow}=this.props
+		const { detailShow } = this.props
 		const tabs = this.props.tabList || this.props.labelList
 		return (
 			<div >
 				<Tabs
 					page={this.state.activeKey}
-					tabs={!detailShow?tabs:[]}
+					tabs={!detailShow ? tabs : []}
 					renderTabBar={props => <Tabs.DefaultTabBar {...props}
 						page={5} />}
-					onTabClick={(tab, index) => this.setState({
-						activeKey: tab.key
-					})
+					onTabClick={(tab, index) => {
+						this.setState({
+							activeKey: tab.key
+						},()=>{
+							this.props.goBackchangeTab(tab.key)
+							// this.props.goBackList('')
+						})
+					}
 					}
 					swipeable={false}
 				>
 					{this.renderContent}
 				</Tabs>
-				</div>
-				);
-			}
-		}
-		
+			</div>
+		);
+	}
+}
+
 export default index;

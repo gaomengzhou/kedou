@@ -222,11 +222,7 @@ class VideoDetail extends Component {
   }
 
   onLeftClick = () => {
-    if (sessionStorage.getItem('goBack')) {
-      this.props.history.go(-1)
-    } else {
-      this.props.history.push('/video')
-    }
+    this.props.history.go(-1)
   }
   bodyScroll = (e) => { e.preventDefault(); }
 

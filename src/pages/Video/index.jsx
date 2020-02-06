@@ -1,4 +1,4 @@
-import { getHomeLabelList, getHomeVideoList } from '../../store/action/video';
+import { getHomeLabelList, getHomeVideoList,goBackchangeTab,goBackScrollTop,goBackList } from '../../store/action/video';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../../components/header';
@@ -14,6 +14,9 @@ const stateToProps = (state) => {
 const mapDispatchToProps = {
 	getHomeVideoList,
 	getHomeLabelList,
+	goBackchangeTab,
+	goBackScrollTop,
+	goBackList
 };
 
 
@@ -76,7 +79,15 @@ class Video extends Component {
 			my: false
 		})
 	}
-	goToVideoDetail = (obj) => {
+	goBackchangeTab=(parameter)=>{
+		this.props.goBackchangeTab(parameter)
+	}
+	goBackList=(list)=>{
+		this.props.goBackList(list)
+	}
+	goToVideoDetail = (obj,list='') => {
+		this.props.goBackScrollTop(document.body.scrollTop || document.documentElement.scrollTop)
+		this.goBackList(list)
 		const {
 			video_id
 		} = obj
@@ -167,6 +178,8 @@ class Video extends Component {
 			goToVideoDetail: this.goToVideoDetail,
 			headerShow: this.headerShow,
 			closeMyLoginShow: this.closeMyLoginShow,
+			goBackchangeTab:this.goBackchangeTab,
+			route:'video'
 		}
 		const videoHeader = {
 			leftCallBack: this.testCallBack,

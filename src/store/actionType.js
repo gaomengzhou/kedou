@@ -11,3 +11,6 @@ export const GET_SEARCH_BOOK = 'GET_SEARCH_BOOK';
 export const GET_BOOL_COLLECT = 'GET_BOOL_COLLECT';
 export const REFRESH='REFRESH'
 export const BANNEL_LIST='BANNEL_LIST'
+export const CHANGE_TAB='CHANGE_TAB'
+export const SCROLL_TOP='SCROLL_TOP'
+export const GO_BACK_LIST='GO_BACK_LIST'

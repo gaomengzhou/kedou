@@ -86,3 +86,21 @@ export const search_video = ({
 
     })
 }
+export const goBackchangeTab=(parameter)=>(dispatch)=>{
+    dispatch({
+        type:actionType.CHANGE_TAB,
+        tabAction:parameter
+    })
+}
+export const goBackScrollTop=(parameter)=>(dispatch)=>{
+    dispatch({
+        type:actionType.SCROLL_TOP,
+        scrollTop:parameter
+    })
+}
+export const goBackList=(parameter)=>(dispatch)=>{
+    dispatch({
+        type:actionType.GO_BACK_LIST,
+        goBackList:parameter
+    })
+}

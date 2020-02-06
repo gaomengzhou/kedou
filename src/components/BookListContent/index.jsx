@@ -9,7 +9,8 @@ class index extends Component {
 
         this.state = {
             collectSucceed: false,
-            loaded: true
+            loaded: true,
+            imgErr: false
         }
     }
     componentDidMount() {
@@ -71,7 +72,7 @@ class index extends Component {
                 ...props
             }
         }
-        const { collectSucceed, loaded } = this.state
+        const { collectSucceed, loaded, imgErr } = this.state
         const ActivityIndicatorStyle = {
             position: 'absolute',
             top: 0,
@@ -96,10 +97,16 @@ class index extends Component {
                                 {loaded && <div style={ActivityIndicatorStyle}>
                                     <ActivityIndicator text='Loading...' />
                                 </div>}
-                                <img src={props.ev.poster} alt="" className={loaded ? 'bigIMGLoaded' : 'bigIMG'} onLoad={() => {
+                                <img src={!imgErr?props.ev.poster:require('../../assets/images/error3_thumbnail_bg.png')} alt="" className={loaded ? 'bigIMGLoaded' : 'bigIMG'} onLoad={() => {
                                     this.onLoad()
-                                }} />
-                                {!loaded&&<>
+                                }} 
+                                onError={()=>{
+                                  this.setState({
+                                    imgErr:true
+                                  })
+                                }}
+                                />
+                                {!loaded && <>
                                     <div className='play'>
 
                                         <img src={require('../../assets/images/book_thumbnail_ico.png')} alt="" className='icont' />{props.ev.play}
@@ -109,7 +116,11 @@ class index extends Component {
                                         this.setCollect(props.ev.id)
 
                                     }}>
-                                        {<img src={collectSucceed ? require('../../assets/images/like_pressed_btn.png') : require('../../assets/images/like_nomal_btn.png')} alt="" />}
+                                        {<img src={(collectSucceed ? require('../../assets/images/like_pressed_btn.png') : require('../../assets/images/like_nomal_btn.png'))} alt="" onErro={() => {
+                                            this.setState({
+                                                imgErr: true
+                                            })
+                                        }} />}
                                     </div>
                                 </>}
                             </div>

@@ -325,12 +325,10 @@ class Collect extends Component {
   }
 
   goToBook = (item) => {
-    window.sessionStorage.setItem('goBack', 'true')
     this.props.history.push({ pathname: 'book', state: { id: item.novel_id } })
   }
 
   goToVideo = (item) => {
-    window.sessionStorage.setItem('goBack', 'true')
     this.props.history.push(`/detailVideo/${item.video_id}`);
   }
 
