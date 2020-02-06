@@ -22,6 +22,24 @@ const videoReducer = (state = {}, action) => {
         tabList:action.tabList
       }
     }
+    case actionType.CHANGE_TAB:{
+      return{
+        ...state,
+        tabAction:action.tabAction,
+      }
+    }
+    case actionType.SCROLL_TOP:{
+      return{
+        ...state,
+        scrollTop:action.scrollTop
+      }
+    }
+    case actionType.GO_BACK_LIST:{
+      return{
+        ...state,
+        goBackList:action.goBackList
+      }
+    }
     default: {
       return state;
     }

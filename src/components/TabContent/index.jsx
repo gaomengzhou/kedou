@@ -3,17 +3,21 @@ import { PullToRefresh, ListView, Carousel } from 'antd-mobile';
 import ListTitle from '../ListTitle'
 import ListContent from '../ListContent'
 import { connect } from 'react-redux'
-import { getHomeVideoList } from '../../store/action/video'
+import { getHomeVideoList, goBackList as goBackListFN } from '../../store/action/video'
 import { getTabList, search_video } from '../../services/video'
 import { bannel_list } from '../../services/bannel'
 import { withRouter } from 'react-router-dom';
 const stateToProps = (state) => {
 	return {
+		scrollTop: state.video.scrollTop,
 		tabList: state.video.tabList,
+		goBackList: state.video.goBackList,
+		tabAction: state.video.tabAction
 	}
 }
 const mapDispatchToProps = {
-	getHomeVideoList
+	getHomeVideoList,
+	goBackListFN
 };
 @connect(
 	stateToProps,
@@ -42,8 +46,6 @@ class index extends Component {
 		await bannel_list({
 			type: 1
 		}).then(res => {
-			console.log(res);
-			
 			this.setState({
 				bannel: res,
 				isLoading: true,
@@ -87,6 +89,29 @@ class index extends Component {
 	}
 
 	onRefresh = async () => {
+		if (this.props.tab.title === this.props.tabAction) {
+			if (this.props.goBackList && this.props.goBackList.videoList.length) {
+				await this.setState({
+					...this.props.goBackList,
+					dataSource: this.state.dataSource.cloneWithRows(this.props.goBackList.videoList),
+				}, () => {
+					document.body.scrollTop = document.documentElement.scrollTop = this.props.scrollTop
+					this.props.goBackListFN('')
+				})
+				// const videoList = await JSON.parse(JSON.stringify(this.state.videoList))
+				// await this.setState({
+				// 	videoList,
+				// 	page: 1,
+				// 	isRefreshing: false,
+				// 	dataSource: this.state.dataSource.cloneWithRows(videoList),
+				// 	noMore: false,
+				// 	data: Date.now()
+				// })
+				return false
+			}
+		}
+
+		// document.body.scrollTop= document.documentElement.scrollTop=0
 		await this.setState({
 			isRefreshing: true,
 			isLoading: true,
@@ -297,7 +322,7 @@ class index extends Component {
 							if (/^(http|https)/.test(val.h5_target)) {
 								// window.location.href=val.h5_target
 								const w = window.open('about:blank');
-								w.location.href=val.h5_target;
+								w.location.href = val.h5_target;
 								return false
 							}
 
@@ -307,6 +332,15 @@ class index extends Component {
 				))}
 			</Carousel>
 		)
+	}
+	onClickasd=()=>{
+		return this.props.tab.title === this.props.tabAction?{
+			title:this.props.tab.title,
+			isLoading: this.state.isLoading,
+			videoList:this.state.videoList,
+			isRefreshing:this.state.isRefreshing,
+			noMore:this.state.noMore,
+		}:null
 	}
 	throttle = (fn, delay) => {
 		var lastTime = 0
@@ -324,7 +358,7 @@ class index extends Component {
 			state: {
 				dataSource,
 				isRefreshing,
-				noMore
+				noMore,
 			},
 			onRefresh,
 			onEndReached,
@@ -337,6 +371,7 @@ class index extends Component {
 			flexDirection: 'row'
 			// justifyContent:'left'
 		}
+		
 		switch (this.props.tab.title) {
 			case this.props.labelList[0].title: {
 				return (
@@ -403,6 +438,7 @@ class index extends Component {
 															ev,
 															rowID,
 															goToVideoDetail: this.props.goToVideoDetail,
+															onClickasd:this.onClickasd,
 															title: this.props.tab.title
 														}
 														return (<ListContent key={i} {...info} />)
@@ -450,6 +486,7 @@ class index extends Component {
 									rowData,
 									rowID,
 									goToVideoDetail: this.props.goToVideoDetail,
+									onClickasd:this.onClickasd,
 									title: this.props.tab.title
 								}
 								return (
@@ -490,6 +527,7 @@ class index extends Component {
 									rowData,
 									rowID,
 									goToVideoDetail: this.props.goToVideoDetail,
+									onClickasd:this.onClickasd,
 									title: this.props.tab.title
 								}
 								return (
@@ -520,12 +558,14 @@ class index extends Component {
 				return (
 					<div className="tabsList">
 						<ListView
+							initialListSize={(this.props.goBackList && this.props.goBackList.videoList.length) ? this.props.goBackList.videoList.length : 20}
 							dataSource={dataSource}
 							renderRow={(rowData, sectionID, rowID) => {
 								const info = {
 									rowData,
 									rowID,
 									goToVideoDetail: this.props.goToVideoDetail,
+									onClickasd:this.onClickasd,
 									title: this.props.tab.title
 								}
 								return (

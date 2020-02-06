@@ -66,7 +66,6 @@ class SearchBarExample extends React.Component {
   }
 
   goPlayer = (item) => {
-    sessionStorage.setItem('goBack', 'true')
     this.props.history.push(`/detailVideo/${item.id}`)
   }
 

@@ -12,7 +12,8 @@ class ImgLoad extends Component {
     super(props)
 
     this.state = {
-      imgLoad: true
+      imgLoad: true,
+      imgErr:false
     }
   }
   componentDidMount() {
@@ -59,13 +60,19 @@ class ImgLoad extends Component {
               opacity: this.state.imgLoad ? 0 : 1,
             }}
             src={
-              this.props.src ? this.props.src : ''
+              !this.state.imgErr?(this.props.src ? this.props.src : ''):require('../../assets/images/error1_thumbnail_bg.png')
             }
             alt={
               this.props.src
                 ? ''
                 : '暂无图片'
             }
+            onError={()=>{
+              this.setState({
+                imgErr:true
+              })
+              
+            }}
           />
         </div>
       </>

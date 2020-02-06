@@ -5,6 +5,7 @@ module.exports = function (app) {
         proxy(
             '/kedou/api',
             {
+                // target: 'https://kdsp9.xyz',  
                 target: 'http://tadpole-appapi.fftechs.com:2082/',  
                 // target: 'https://api.sgdd02.com:443/',  
                 changeOrigin: true, 
@@ -13,5 +14,5 @@ module.exports = function (app) {
                 }
             }
         )
-    )  
+    )
 }
