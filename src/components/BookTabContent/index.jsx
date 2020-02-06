@@ -29,6 +29,7 @@ class index extends Component {
 				rowHasChanged: (row1, row2) => row1 !== row2,
 			}),
 			bookList: [],
+			headerImg: true
 		}
 	}
 
@@ -331,7 +332,8 @@ class index extends Component {
 			state: {
 				dataSource,
 				isRefreshing,
-				noMore
+				noMore,
+				headerImg
 			},
 			props: {
 				getBooKDetail,
@@ -354,7 +356,35 @@ class index extends Component {
 		switch (this.props.tab.title) {
 			case this.props.tabList[0].title: {
 				return (
-					<div id="bookHomeList">
+					<div id="bookHomeList" style={{
+						paddingTop: '.5rem'
+					}}>
+						{headerImg && <div style={{
+							width: '100%',
+							// padding: '.5rem 0 0 0',
+							position: 'relative'
+						}} className="headerImg" onClick={()=>{
+							const w = window.open('about:blank');
+								w.location.href = 'https://www.baidu.com/';
+						}}>
+							<img style={{
+								width: '100%'
+							}} src={require('../../assets/images/banner-detail.png')} alt="" />
+							<div className="closeBtn" style={{
+								width: '.3rem',
+								position: 'absolute',
+								right: '0',
+								top: '0'
+							}} onClick={() => {
+								this.setState({
+									headerImg: false
+								})
+							}}>
+								<img style={{
+									width: '100%'
+								}} src={require('../../assets/images/close_btn.png')} alt="" />
+							</div>
+						</div>}
 						{
 							listHeader()
 						}

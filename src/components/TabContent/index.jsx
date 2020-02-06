@@ -38,7 +38,7 @@ class index extends Component {
 			page: 1,
 			data: '',
 			scroll: false,
-			bannel: []
+			bannel: [],
 
 		}
 	}
@@ -52,6 +52,7 @@ class index extends Component {
 			})
 
 		})
+
 		await this.onRefresh()
 	}
 	static getDerivedStateFromProps(props, state) {
@@ -98,19 +99,12 @@ class index extends Component {
 					document.body.scrollTop = document.documentElement.scrollTop = this.props.scrollTop
 					this.props.goBackListFN('')
 				})
-				// const videoList = await JSON.parse(JSON.stringify(this.state.videoList))
-				// await this.setState({
-				// 	videoList,
-				// 	page: 1,
-				// 	isRefreshing: false,
-				// 	dataSource: this.state.dataSource.cloneWithRows(videoList),
-				// 	noMore: false,
-				// 	data: Date.now()
-				// })
 				return false
 			}
 		}
-
+		if (this.state.noRe) {
+			return false
+		}
 		// document.body.scrollTop= document.documentElement.scrollTop=0
 		await this.setState({
 			isRefreshing: true,
@@ -150,6 +144,7 @@ class index extends Component {
 					rows: 20,
 					id: this.props.tab.id
 				}).then(res => {
+
 					this.setState({
 						videoList: res,
 						isLoading: false,
@@ -191,6 +186,7 @@ class index extends Component {
 					rows: 20,
 					id: this.props.tab.id
 				}).then(res => {
+
 					if (res.length === 0) {
 						this.setState({
 							noMore: true
@@ -234,6 +230,11 @@ class index extends Component {
 
 	}
 	onEndReached = () => {
+		if (this.props.tab.title === this.props.tabAction) {
+			if (this.props.goBackList && this.props.goBackList.videoList.length) {
+				return false
+			}
+		}
 		let loading = true
 		if (this.state.noMore) {
 			return false
@@ -333,14 +334,15 @@ class index extends Component {
 			</Carousel>
 		)
 	}
-	onClickasd=()=>{
-		return this.props.tab.title === this.props.tabAction?{
-			title:this.props.tab.title,
+	onClickasd = () => {
+		return this.props.tab.title === this.props.tabAction ? {
+			title: this.props.tab.title,
 			isLoading: this.state.isLoading,
-			videoList:this.state.videoList,
-			isRefreshing:this.state.isRefreshing,
-			noMore:this.state.noMore,
-		}:null
+			videoList: this.state.videoList,
+			isRefreshing: this.state.isRefreshing,
+			noMore: this.state.noMore,
+			page: this.state.page
+		} : null
 	}
 	throttle = (fn, delay) => {
 		var lastTime = 0
@@ -371,7 +373,6 @@ class index extends Component {
 			flexDirection: 'row'
 			// justifyContent:'left'
 		}
-		
 		switch (this.props.tab.title) {
 			case this.props.labelList[0].title: {
 				return (
@@ -438,7 +439,7 @@ class index extends Component {
 															ev,
 															rowID,
 															goToVideoDetail: this.props.goToVideoDetail,
-															onClickasd:this.onClickasd,
+															onClickasd: this.onClickasd,
 															title: this.props.tab.title
 														}
 														return (<ListContent key={i} {...info} />)
@@ -486,7 +487,7 @@ class index extends Component {
 									rowData,
 									rowID,
 									goToVideoDetail: this.props.goToVideoDetail,
-									onClickasd:this.onClickasd,
+									onClickasd: this.onClickasd,
 									title: this.props.tab.title
 								}
 								return (
@@ -527,7 +528,7 @@ class index extends Component {
 									rowData,
 									rowID,
 									goToVideoDetail: this.props.goToVideoDetail,
-									onClickasd:this.onClickasd,
+									onClickasd: this.onClickasd,
 									title: this.props.tab.title
 								}
 								return (
@@ -558,14 +559,16 @@ class index extends Component {
 				return (
 					<div className="tabsList">
 						<ListView
-							initialListSize={(this.props.goBackList && this.props.goBackList.videoList.length) ? this.props.goBackList.videoList.length : 20}
+							initialListSize={
+								1000
+							}
 							dataSource={dataSource}
 							renderRow={(rowData, sectionID, rowID) => {
 								const info = {
 									rowData,
 									rowID,
 									goToVideoDetail: this.props.goToVideoDetail,
-									onClickasd:this.onClickasd,
+									onClickasd: this.onClickasd,
 									title: this.props.tab.title
 								}
 								return (
