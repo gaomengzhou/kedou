@@ -1,4 +1,5 @@
 import { Button, ImagePicker, Toast } from 'antd-mobile';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { userFeedBacks } from '../../../store/action/feedBack';
@@ -70,6 +71,18 @@ class ImagePickerExample extends React.Component {
       </div>
     );
   }
+}
+
+ImagePickerExample.propTypes = {
+  userFeedBack: PropTypes.string,
+  userFeedBacks: PropTypes.func,
+  setFieldsValue: PropTypes.func,
+}
+
+ImagePickerExample.defaultProps = {
+  userFeedBack: '',
+  userFeedBacks: () => console.log('没有传入userFeedBacks这个props'),
+  setFieldsValue: () => console.log('没有传入setFieldsValue这个props'),
 }
 
 export default ImagePickerExample;

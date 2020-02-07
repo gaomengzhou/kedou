@@ -1,3 +1,10 @@
+/**
+ * @component Login
+ * @description 注册|登录|找回密码
+ * @time 2020/2/3
+ * @author Aiden
+ */
+
 import React, { Component } from 'react';
 import { Button, Toast } from 'antd-mobile'
 import { sendCode, auth_mobile, change_pwd, login, user_info_no, register } from '../../services/user'
@@ -110,6 +117,19 @@ class index extends Component {
 
         })
     }
+    client= ()=> {
+        var u = navigator.userAgent
+        // app = navigator.appVersion;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+        var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if (isAndroid) {
+           return 'android'
+        }
+        if (isIOS) {
+            return 'ios'
+        }
+        return '其它'
+    }
     register = () => {
         const { telNumber, codeNumber, passWord, invitation_code } = this.state
         if (!telNumber) {
@@ -128,7 +148,8 @@ class index extends Component {
             mobile: telNumber,
             password: passWord,
             code: codeNumber,
-            invite: invitation_code || ''
+            invite: invitation_code || '',
+            client:this.client()
         }).then(res => {
             const { code } = res
             if (code) {

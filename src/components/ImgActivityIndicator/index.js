@@ -1,4 +1,5 @@
 import { ActivityIndicator } from 'antd-mobile';
+import PropTypes, { oneOfType } from 'prop-types';
 import React, { Component } from 'react';
 import './style.less';
 /**
@@ -13,7 +14,7 @@ class ImgLoad extends Component {
 
     this.state = {
       imgLoad: true,
-      imgErr:false
+      imgErr: false
     }
   }
   componentDidMount() {
@@ -60,23 +61,51 @@ class ImgLoad extends Component {
               opacity: this.state.imgLoad ? 0 : 1,
             }}
             src={
-              !this.state.imgErr?(this.props.src ? this.props.src : ''):require('../../assets/images/error1_thumbnail_bg.png')
+              !this.state.imgErr ? (this.props.src ? this.props.src : '') : require('../../assets/images/error1_thumbnail_bg.png')
             }
             alt={
               this.props.src
                 ? ''
                 : '暂无图片'
             }
-            onError={()=>{
+            onError={() => {
               this.setState({
-                imgErr:true
+                imgErr: true
               })
-              
+
             }}
           />
         </div>
       </>
     )
   }
+}
+ImgLoad.propTypes = {
+  top: oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  left: oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  width: oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  height: oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  onClick: PropTypes.func,
+  src: PropTypes.string,
+}
+ImgLoad.defaultProps = {
+  top: 0,
+  left: 0,
+  width: '3rem',
+  height: '2rem',
+  onClick: () => console.log('暂未传入props'),
+  src: '',
 }
 export default ImgLoad

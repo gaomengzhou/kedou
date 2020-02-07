@@ -1,4 +1,5 @@
 import { ListView } from 'antd-mobile';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImgLoad from '../../../components/ImgActivityIndicator';
 import '../index.less';
@@ -58,4 +59,21 @@ const VideoSearch = (props) => {
     />
   );
 }
+
+VideoSearch.protoType = {
+  onScrollData: PropTypes.func,
+  goPlayer: PropTypes.func,
+  dataSource: PropTypes.object,
+  isLoading: PropTypes.bool,
+  loadingText: PropTypes.string,
+}
+
+VideoSearch.defaultProps = {
+  onScrollData: () => console.log('没有传入onScrollData这个props'),
+  goPlayer: () => console.log('没有传入goPlayer这个props'),
+  dataSource: [],
+  isLoading: false,
+  loadingText: '',
+}
+
 export default VideoSearch

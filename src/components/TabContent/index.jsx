@@ -1,3 +1,9 @@
+ /**
+ * @component TabContent
+ * @description video页面 list组件 基于ant tab组件 包含下拉刷新 上拉加载
+ * @time 2020/1/7
+ * @author Aiden
+ */
 import React, { Component } from 'react';
 import { PullToRefresh, ListView, Carousel } from 'antd-mobile';
 import ListTitle from '../ListTitle'
@@ -7,6 +13,7 @@ import { getHomeVideoList, goBackList as goBackListFN } from '../../store/action
 import { getTabList, search_video } from '../../services/video'
 import { bannel_list } from '../../services/bannel'
 import { withRouter } from 'react-router-dom';
+import HomeSettimeoutClose from '../HomeSettimeoutClose'
 const stateToProps = (state) => {
 	return {
 		scrollTop: state.video.scrollTop,
@@ -309,29 +316,32 @@ class index extends Component {
 			return false
 		}
 		return (
-			<Carousel
-				autoplay={true}
-				infinite={true}
-				selectedIndex={0}
-			>
-				{this.state.bannel.map(val => (
-					<img
-						src={val.url}
-						alt="正在加载图片"
-						style={{ width: '100%', height: '100%' }}
-						onClick={() => {
-							if (/^(http|https)/.test(val.h5_target)) {
-								// window.location.href=val.h5_target
-								const w = window.open('about:blank');
-								w.location.href = val.h5_target;
-								return false
-							}
+			<>
+				<HomeSettimeoutClose /> 
+				<Carousel
+					autoplay={true}
+					infinite={true}
+					selectedIndex={0}
+				>
+					{this.state.bannel.map(val => (
+						<img
+							src={val.url}
+							alt="正在加载图片"
+							style={{ width: '100%', height: '100%' }}
+							onClick={() => {
+								if (/^(http|https)/.test(val.h5_target)) {
+									// window.location.href=val.h5_target
+									const w = window.open('about:blank');
+									w.location.href = val.h5_target;
+									return false
+								}
 
-							this.props.history.push(val.h5_target)
-						}}
-					/>
-				))}
-			</Carousel>
+								this.props.history.push(val.h5_target)
+							}}
+						/>
+					))}
+				</Carousel>
+			</>
 		)
 	}
 	onClickasd = () => {

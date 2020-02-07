@@ -8,11 +8,11 @@
  */
 
 import { NavBar } from 'antd-mobile';
+import PropTypes from 'prop-types';
 import React from 'react';
 import BackArrow from './components/backIcon';
 import './index.less';
-
-export default function PublicNavBar(props) {
+const PublicNavBar = (props) => {
   return (
     <div style={{ boxShadow: '1px 1px 1px #e2e1e1' }}>
       <NavBar
@@ -43,3 +43,21 @@ export default function PublicNavBar(props) {
   )
 }
 
+PublicNavBar.propTypes = {
+  edit: PropTypes.bool,
+  isDetail: PropTypes.bool,
+  isCollect: PropTypes.bool,
+  onLeftClick: PropTypes.func,
+  onRightClick: PropTypes.func,
+}
+
+PublicNavBar.defaultProps = {
+  edit: false,
+  isDetail: false,
+  isCollect: false,
+  onLeftClick: () => console.log('没有传入onLeftClick这个props'),
+  onRightClick: () => console.log('没有传入onRightClick这个props'),
+}
+
+
+export default PublicNavBar

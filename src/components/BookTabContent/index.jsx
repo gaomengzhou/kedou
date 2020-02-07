@@ -1,3 +1,9 @@
+/**
+ * @component TabContent
+ * @description  book页面 list组件 基于ant tab组件 包含下拉刷新 上拉加载
+ * @time 2020/1/31
+ * @author Aiden
+ */
 import React, { Component } from 'react';
 import { PullToRefresh, ListView, Carousel } from 'antd-mobile';
 // import { PullToRefresh, ListView } from 'antd-mobile';
@@ -7,6 +13,7 @@ import ListTitle from '../ListTitle'
 // import { bannel_list } from '../../services/bannel'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
+import HomeSettimeoutClose from '../HomeSettimeoutClose'
 const stateToProps = (state) => {
 	return {
 		refresh: state.book.refresh,
@@ -268,6 +275,25 @@ class index extends Component {
 	// 		beforeScrollTop = afterScrollTop;
 	// 	}, false);
 	// }
+	// settimeoutClose=(e)=>{
+	// 	e.stopPropagation()
+	// 	const date=localStorage.getItem('settimeoutClose')
+	// 	const oldDate=Date.now()
+	// 	if(date){
+	// 		if(date-oldDate>7200000){
+	// 			this.setState({
+	// 				headerImg:true
+	// 			})
+	// 			return false
+	// 		}
+	// 		this.setState({
+	// 			headerImg:false
+	// 		})
+	// 		return false
+	// 	}
+	// 	localStorage.setItem('settimeoutClose',Date.now())
+	// 	return false
+	// }
 	listHeader = () => {
 		const {
 			bannelList
@@ -287,6 +313,8 @@ class index extends Component {
 			return false
 		}
 		return (
+			<>
+			<HomeSettimeoutClose type={'book'} hour={3} />
 			<Carousel
 				autoplay={true}
 				infinite={true}
@@ -313,6 +341,7 @@ class index extends Component {
 					/>
 				))}
 			</Carousel>
+			</>
 		)
 	}
 	throttle = (fn, delay) => {
@@ -333,7 +362,6 @@ class index extends Component {
 				dataSource,
 				isRefreshing,
 				noMore,
-				headerImg
 			},
 			props: {
 				getBooKDetail,
@@ -359,32 +387,6 @@ class index extends Component {
 					<div id="bookHomeList" style={{
 						paddingTop: '.5rem'
 					}}>
-						{headerImg && <div style={{
-							width: '100%',
-							// padding: '.5rem 0 0 0',
-							position: 'relative'
-						}} className="headerImg" onClick={()=>{
-							const w = window.open('about:blank');
-								w.location.href = 'https://www.baidu.com/';
-						}}>
-							<img style={{
-								width: '100%'
-							}} src={require('../../assets/images/banner-detail.png')} alt="" />
-							<div className="closeBtn" style={{
-								width: '.3rem',
-								position: 'absolute',
-								right: '0',
-								top: '0'
-							}} onClick={() => {
-								this.setState({
-									headerImg: false
-								})
-							}}>
-								<img style={{
-									width: '100%'
-								}} src={require('../../assets/images/close_btn.png')} alt="" />
-							</div>
-						</div>}
 						{
 							listHeader()
 						}

@@ -1,17 +1,15 @@
+/**
+ * 用户注册登录找回密码 相关
+ */
+
 import {
     initAxios
 } from '../utils/request'
 export const register = ({
-    mobile,
-    password,
-    code,
-    invite
+    ...parameter
 } = {}) => {
     return initAxios().post(`/v2/api/h5_register`, {
-        mobile,
-        password,
-        code,
-        invite
+        ...parameter
     })
 }
 export const sendCode = ({

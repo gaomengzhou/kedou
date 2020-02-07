@@ -1,3 +1,10 @@
+/**
+ * @component CommentItem
+ * @description  视频|听书 评论项组件 基于ListView 需传入rowData 
+ * @parameter type={str} video|book 区分详情页 
+ * @time 2020/1/31
+ * @author Aiden
+ */
 import { Toast } from 'antd-mobile';
 import React, { Component } from 'react';
 import { comment_thumbs } from '../../services/book';

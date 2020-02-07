@@ -1,4 +1,5 @@
 import { Checkbox, ListView } from 'antd-mobile';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImgLoad from '../../../components/ImgActivityIndicator';
 import '../style.less';
@@ -60,4 +61,23 @@ const VideoContent = (props) => {
   )
 }
 
+VideoContent.propTypes = {
+  isEdit: PropTypes.bool,
+  callBackStateVideo: PropTypes.func,
+  selectOne2: PropTypes.func,
+  goToVideo: PropTypes.func,
+  dataSource: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool,
+  loadingText: PropTypes.string,
+}
+
+VideoContent.defaultProps = {
+  isEdit: false,
+  callBackStateVideo: () => console.log('没有传入callBackStateVideo这个props'),
+  selectOne2: () => console.log('没有传入selectOne2这个props'),
+  goToVideo: () => console.log('没有传入goToVideo这个props'),
+  dataSource: [],
+  isLoading: false,
+  loadingText: '',
+}
 export default VideoContent

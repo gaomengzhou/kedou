@@ -1,3 +1,11 @@
+/**
+ * @component ListContent
+ * @description  video 页面 列表项组件
+ * @parameter 基于ListView组件 需传入 rowData
+ * @time 2020/1/9
+ * @author Aiden
+ */
+
 import React, { Component } from 'react';
 import './index.less'
 import { ActivityIndicator } from 'antd-mobile';

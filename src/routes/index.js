@@ -1,3 +1,6 @@
+/**
+ * 路由配置文件
+ */
 import NotFound from '../pages/404'
 import Book from '../pages/Book'
 import Collect from '../pages/Collect'

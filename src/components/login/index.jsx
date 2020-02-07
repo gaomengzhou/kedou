@@ -1,3 +1,10 @@
+ /**
+ * @component login(以废除)
+ * @description 登录|注册|忘记密码 弹窗
+ * @time 2020/1/8
+ * @author Aiden
+ */
+
 import React, { Component } from 'react';
 import { Button, Toast } from 'antd-mobile'
 import { register, sendCode, login, auth_mobile, change_pwd, user_info_no } from '../../services/user'

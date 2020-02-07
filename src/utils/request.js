@@ -1,3 +1,9 @@
+/**
+ * @component request.js
+ * @description axios 组件封装
+ * @time 2020/1/8
+ * @author Aiden
+ */
 import { Toast } from 'antd-mobile';
 import axios from 'axios';
 import qs from 'qs';
@@ -58,7 +64,7 @@ export function initAxios() {
     }
     return JSON.parse(crypt(result));
   }, async (err) => {
-    console.log(err);
+    return err
   });
 
   return instance;

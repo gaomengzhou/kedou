@@ -1,3 +1,11 @@
+/**
+ * @component header
+ * @description  首页头部组件 包含 我的 搜索
+ * @parameter rightCallBack={fn} 头像点击回调  detailShow={boolean} 显示隐藏
+ * @time 2020/1/7
+ * @author Aiden
+ */
+
 import React from 'react'
 import './index.less'
 import { theme } from '../../utils/theme'
