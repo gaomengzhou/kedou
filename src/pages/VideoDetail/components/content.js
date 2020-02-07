@@ -1,8 +1,6 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-script-url */
-
 import { Toast } from 'antd-mobile';
 import copy from 'copy-to-clipboard';
+import PropTypes, { oneOfType } from 'prop-types';
 import React from 'react';
 import ImgLoad from '../../../components/ImgActivityIndicator';
 import '../player.less';
@@ -56,7 +54,6 @@ const Content = (props) => {
           {
             props.dataList && props.dataList.map(item => (
               <div
-                onClick={() => onPress(item)}
                 style={{
                   width: '3.5rem',
                   height: '2.5rem',
@@ -65,6 +62,7 @@ const Content = (props) => {
                 key={item.id}
               >
                 <ImgLoad
+                  onClick={() => onPress(item)}
                   src={item.cover_one}
                   top={'35%'}
                   left={'25%'}
@@ -80,4 +78,39 @@ const Content = (props) => {
     </div>
   )
 }
+
+Content.propTypes = {
+  fabulous_video: oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  liked_num: oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  comment_num: oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  detailData: PropTypes.object,
+  likedClick: PropTypes.func,
+  showComment2: PropTypes.func,
+  collectBtn: PropTypes.func,
+  isCollect: PropTypes.bool,
+  dataList: PropTypes.array,
+}
+
+Content.defaultProps = {
+  fabulous_video: 0,
+  liked_num: 0,
+  comment_num: 0,
+  detailData: {},
+  likedClick: () => console.log('没有传入likedClick这个props'),
+  showComment2: () => console.log('没有传入showComment2这个props'),
+  collectBtn: () => console.log('没有传入collectBtn这个props'),
+  isCollect: false,
+  dataList: [],
+}
+
+
 export default Content

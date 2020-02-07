@@ -1,3 +1,10 @@
+
+/**
+ * @component store
+ * @description redux 入口
+ * @time 2020/1/8
+ * @author Aiden
+ */
 import { createStore, applyMiddleware, compose } from 'redux'
 import reducer from './reducer'
 import thunk from 'redux-thunk'

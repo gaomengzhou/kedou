@@ -1,9 +1,17 @@
+/**
+ * @component Book
+ * @description 听书首页
+ * @time 2020/1/15
+ * @author Aiden
+ */
+
+
 import Header from '@/components/header';
 // import { category } from '@/store/action/book';
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { category, setOnRefresh } from '../../store/action/book'
-import { Modal } from 'antd-mobile';
+import { Modal, Toast } from 'antd-mobile';
 import { bannel_list } from '../../store/action/bannel'
 import Tabs from '../../components/tabs'
 import { detail } from '../../services/book'
@@ -46,9 +54,9 @@ class Book extends Component {
             type: 1
         })
         this.props.setOnRefresh(true)
-        if(this.props.match.params.bookId){
-            const {bookId}=this.props.match.params
-            if(bookId){
+        if (this.props.match.params.bookId) {
+            const { bookId } = this.props.match.params
+            if (bookId) {
                 this.getBooKDetail(bookId)
                 this.props.setOnRefresh(false)
                 return false
@@ -65,23 +73,23 @@ class Book extends Component {
     //点击头部用户头像回调
     testRightCallBack = () => {
         const { loginShow, my } = this.state
-		const user_id = sessionStorage.getItem('user_id')
-		if (!user_id) {
-			this.props.history.push('/Login')
-		} else {
-			if (loginShow) {
-				this.setState({
-					loginShow: false,
-					my: false
-				})
-				// this.props.history.push('/Login')
-			} else {
-				this.setState({
-					my: !my
-				})
-			}
+        const user_id = sessionStorage.getItem('user_id')
+        if (!user_id) {
+            this.props.history.push('/Login')
+        } else {
+            if (loginShow) {
+                this.setState({
+                    loginShow: false,
+                    my: false
+                })
+                // this.props.history.push('/Login')
+            } else {
+                this.setState({
+                    my: !my
+                })
+            }
 
-		}
+        }
     }
     //关闭详情页后关闭用户弹窗
     closeMyLoginShow = () => {
@@ -144,32 +152,34 @@ class Book extends Component {
     //进入详情页
     getBooKDetail = async (bookId) => {
         if (!sessionStorage.getItem('user_id')) {
-            if(this.props.match.params.bookId){
-                const {bookId,invitation_code}=this.props.match.params
-                if(bookId){
+            if (this.props.match.params.bookId) {
+                const { bookId, invitation_code } = this.props.match.params
+                if (bookId) {
                     Modal.alert('您还没有登录', '', [
-                        { text: '去注册', onPress: () =>this.props.history.push({
-                            pathname:'/login',
-                            state:{
-                                bookId,
-                                type:1,
-                                code:invitation_code
+                        {
+                            text: '去注册', onPress: () => this.props.history.push({
+                                pathname: '/login',
+                                state: {
+                                    bookId,
+                                    type: 1,
+                                    code: invitation_code
+                                }
+                            }),
+                            style: {
+                                color: '#9718ec'
                             }
-                        }),
-                        style:{
-                            color:'#9718ec'
-                        }},
+                        },
                         {
                             text: '去登录 >',
                             onPress: () => this.props.history.push({
-                                pathname:'/login',
-                                state:{
+                                pathname: '/login',
+                                state: {
                                     bookId,
-                                    code:invitation_code
+                                    code: invitation_code
                                 }
                             }),
-                            style:{
-                                color:'#000'
+                            style: {
+                                color: '#000'
                             }
                         },
                     ])
@@ -177,21 +187,21 @@ class Book extends Component {
                 }
             }
             Modal.alert('您还没有登录', '', [
-				{ text: '取消', onPress: () =>''},
-				{
-					text: '去登录 >',
-					onPress: () => this.props.history.push({
-                        pathname:'/login',
-                        state:{
+                { text: '取消', onPress: () => '' },
+                {
+                    text: '去登录 >',
+                    onPress: () => this.props.history.push({
+                        pathname: '/login',
+                        state: {
                             bookId
                         }
                     }),
-					style:{
-						color:'#9718ec'
-					}
-				},
-			])
-			return false
+                    style: {
+                        color: '#9718ec'
+                    }
+                },
+            ])
+            return false
         }
         await this.setState({
             novelItem: null
@@ -200,10 +210,14 @@ class Book extends Component {
             user_id: sessionStorage.getItem('user_id'),
             novel_id: bookId
         }).then(res => {
-
+            if (/Error/.test(res)) {
+                Toast.info('休想骗我,你没有登录')
+                return false
+            }
             const serials = res.video
             const novelPoster = res.poster
             const novelTitle = res.title
+
             const novelItem = {
                 serials,
                 novelPoster,
@@ -265,11 +279,11 @@ class Book extends Component {
     // }
     //
     setDetailShow = (open) => {
-        if(open){
+        if (open) {
             document.querySelector('.TabBer').style.display = 'none'
             this.props.setOnRefresh(false)
             this.setState({
-                detailShow:true
+                detailShow: true
             })
             return false
         }

@@ -1,3 +1,9 @@
+/**
+ * @component actionType.js
+ * @description redux 常量
+ * @time 2020/1/8
+ * @author Aiden
+ */
 export const HOME_LIST = 'HOME_LIST';
 export const LABEL_LIST = 'LABEL_LIST';
 export const LABEL_TAB_LIST = 'LABEL_TAB_LIST';

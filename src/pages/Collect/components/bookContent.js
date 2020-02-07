@@ -1,8 +1,8 @@
 import { Checkbox, ListView } from 'antd-mobile';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImgLoad from '../../../components/ImgActivityIndicator';
 import '../style.less';
-
 const BookContent = (props) => {
   const onEndReached = (event) => {
     // props.callBackStateBook()
@@ -59,5 +59,17 @@ const BookContent = (props) => {
     />
   )
 }
+BookContent.propTypes = {
+  isEdit: PropTypes.bool,
+  selectOne: PropTypes.func,
+  goToBook: PropTypes.func,
+  dataSourceBook: PropTypes.object.isRequired
+}
 
+BookContent.defaultProps = {
+  isEdit: false,
+  selectOne: () => console.log('没有传入selectOne这个props'),
+  goToBook: () => console.log('没有传入goToBook这个props'),
+  dataSourceBook: [],
+}
 export default BookContent

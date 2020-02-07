@@ -1,3 +1,6 @@
+/**
+ * 首页bannel相关
+ */
 import {
     initAxios
 } from '../utils/request'

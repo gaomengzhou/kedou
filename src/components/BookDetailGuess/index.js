@@ -1,3 +1,10 @@
+/**
+ * @component BookDetailGuess
+ * @description <猜你喜欢> 
+ * @parameter ''
+ * @time 2020/1/23
+ * @author Aiden
+ */
 import React from 'react'
 import { ActivityIndicator } from 'antd-mobile'
 const ActivityIndicatorStyle = {

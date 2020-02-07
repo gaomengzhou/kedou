@@ -1,3 +1,10 @@
+/**
+ * @component Video
+ * @description 首页
+ * @time 2020/1/6
+ * @author Aiden
+ */
+
 import { getHomeLabelList, getHomeVideoList,goBackchangeTab,goBackScrollTop,goBackList } from '../../store/action/video';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';

@@ -1,9 +1,10 @@
 import { ListView } from 'antd-mobile';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImgLoad from '../../../components/ImgActivityIndicator';
 import '../index.less';
 
-const bookSearch = (props) => {
+const BookSearch = (props) => {
   const onEndReached = (event) => {
     props.onScrollData()
   }
@@ -56,4 +57,21 @@ const bookSearch = (props) => {
     />
   );
 }
-export default bookSearch
+
+BookSearch.protoType = {
+  onScrollData: PropTypes.func,
+  goBook: PropTypes.func,
+  dataSource: PropTypes.object,
+  isLoading: PropTypes.bool,
+  loadingText: PropTypes.string,
+}
+
+BookSearch.defaultProps = {
+  onScrollData: () => console.log('没有传入onScrollData这个props'),
+  goBook: () => console.log('没有传入goBook这个props'),
+  dataSource: [],
+  isLoading: false,
+  loadingText: '',
+}
+
+export default BookSearch

@@ -1,3 +1,7 @@
+
+/**
+ * video 相关
+ */
 import { initAxios } from '../utils/request'
 export const getHomeVideoList = ({
     rows

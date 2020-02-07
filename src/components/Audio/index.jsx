@@ -1,3 +1,10 @@
+/**
+ * @component Audio
+ * @description 听书播放器&听书详情组件
+ * @parameter ''
+ * @time 2020/1/23
+ * @author Aiden
+ */
 import { ListView, Modal, Toast } from 'antd-mobile';
 import copy from 'copy-to-clipboard';
 import React from 'react';

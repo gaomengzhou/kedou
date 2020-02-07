@@ -1,3 +1,7 @@
+/**
+ * 加密|解密组件
+ */
+
 import CryptoJS  from "crypto-js";
 
 

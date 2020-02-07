@@ -471,4 +471,5 @@ class VideoDetail extends Component {
     )
   }
 }
+
 export default VideoDetail

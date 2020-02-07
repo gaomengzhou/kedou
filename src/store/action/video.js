@@ -1,3 +1,7 @@
+
+/**
+ * video 相关
+ */
 import * as video from '../../services/video'
 import * as actionType from '../actionType'
 export const getHomeVideoList = ({

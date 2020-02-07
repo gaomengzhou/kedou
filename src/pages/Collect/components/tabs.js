@@ -1,4 +1,5 @@
 import { Tabs } from 'antd-mobile';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { theme } from '../../../utils/theme';
 import './tabs.less';
@@ -15,7 +16,7 @@ const TabExample = (props) => (
       useOnPan={false}
       tabBarActiveTextColor={theme.hitActiveColor}
       tabBarInactiveTextColor='#e0d7d7'
-      tabBarUnderlineStyle={{width:'1rem',marginLeft:'1.3rem',borderColor:theme.hitActiveColor,}}
+      tabBarUnderlineStyle={{ width: '1rem', marginLeft: '1.3rem', borderColor: theme.hitActiveColor, }}
     >
       <div className='content'>
         {props.tabsContent1()}
@@ -27,4 +28,17 @@ const TabExample = (props) => (
   </div>
 );
 
+TabExample.propTypes = {
+  tabs: PropTypes.array.isRequired,
+  onTabChange: PropTypes.func,
+  tabsContent1: PropTypes.func,
+  tabsContent2: PropTypes.func,
+}
+
+TabExample.defaultProps = {
+  tabs: [
+    { title: '视频' },
+    { title: '听书' },
+  ]
+}
 export default TabExample

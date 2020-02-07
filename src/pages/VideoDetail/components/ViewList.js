@@ -1,4 +1,5 @@
 import { ListView } from 'antd-mobile';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import CommentItem from '../../../components/CommentItem';
@@ -42,13 +43,13 @@ class MyViewList extends React.Component {
         dataSource: this.state.dataSource.cloneWithRows([]),
         isLoading: true,
         noMore: true
-      },()=>{
-       this.getDataInit()
-       this.props.cb()
+      }, () => {
+        this.getDataInit()
+        this.props.cb()
         setTimeout(() => {
           const contentHeight = document.getElementById('contentPlayer').offsetHeight;
           const dpHeight = document.getElementById('dplayer').offsetHeight;
-          document.body.scrollTop=document.documentElement.scrollTop = contentHeight + dpHeight;
+          document.body.scrollTop = document.documentElement.scrollTop = contentHeight + dpHeight;
         }, 300);
       })
     }
@@ -151,5 +152,18 @@ class MyViewList extends React.Component {
   }
 }
 
+MyViewList.propTypes = {
+  isReload: PropTypes.bool,
+  closed: PropTypes.bool,
+  cb: PropTypes.func,
+  cbClosed: PropTypes.func,
+}
+
+MyViewList.defaultProps = {
+  isReload: false,
+  closed: false,
+  cb: () => console.log('没有传入cb这个props'),
+  cbClosed: () => console.log('没有传入cbClosed这个props'),
+}
 
 export default MyViewList

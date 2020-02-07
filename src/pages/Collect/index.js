@@ -199,7 +199,7 @@ class Collect extends Component {
   }
   //切换Tab取消勾选的项目
   onTabChange = (v, i) => {
-    document.body.scrollTop=document.documentElement.scrollTop = 0
+    document.body.scrollTop = document.documentElement.scrollTop = 0
     this.setState({ page: i })
     const data = JSON.parse(JSON.stringify(this.state.bookCollectList))
     const data2 = JSON.parse(JSON.stringify(this.state.videoCollectList))

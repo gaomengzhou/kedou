@@ -1,3 +1,10 @@
+ /**
+ * @component tabs
+ * @description 需传入标签列表 并赋值给tabs变量
+ * @time 2020/1/7
+ * @author Aiden
+ */
+
 import React, { Component } from 'react';
 import { Tabs } from 'antd-mobile'
 import TabContent from '../TabContent'

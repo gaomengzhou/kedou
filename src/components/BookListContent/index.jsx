@@ -1,3 +1,10 @@
+/**
+ * @component ListContent
+ * @description  book 页面 列表项组件
+ * @parameter 基于ListView组件 需传入 rowData
+ * @time 2020/1/16
+ * @author Aiden
+ */
 import React, { Component } from 'react';
 import './index.less'
 import { collect } from '../../services/book'
@@ -114,13 +121,8 @@ class index extends Component {
                                     <div className="collected" onClick={(e) => {
                                         e.stopPropagation()
                                         this.setCollect(props.ev.id)
-
                                     }}>
-                                        {<img src={(collectSucceed ? require('../../assets/images/like_pressed_btn.png') : require('../../assets/images/like_nomal_btn.png'))} alt="" onErro={() => {
-                                            this.setState({
-                                                imgErr: true
-                                            })
-                                        }} />}
+                                        {<img src={(collectSucceed ? require('../../assets/images/like_pressed_btn.png') : require('../../assets/images/like_nomal_btn.png'))} alt="" />}
                                     </div>
                                 </>}
                             </div>
