@@ -69,8 +69,8 @@ VideoSearch.protoType = {
 }
 
 VideoSearch.defaultProps = {
-  onScrollData: () => console.log('没有传入onScrollData这个props'),
-  goPlayer: () => console.log('没有传入goPlayer这个props'),
+  onScrollData: () => null,
+  goPlayer: () => null,
   dataSource: [],
   isLoading: false,
   loadingText: '',

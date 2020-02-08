@@ -39,6 +39,9 @@ TabExample.defaultProps = {
   tabs: [
     { title: '视频' },
     { title: '听书' },
-  ]
+  ],
+  onTabChange: () => null,
+  tabsContent1: () => null,
+  tabsContent2: () => null,
 }
 export default TabExample

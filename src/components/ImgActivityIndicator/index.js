@@ -5,8 +5,8 @@ import './style.less';
 /**
  * 图片懒加载的样式
  * @param {string}                    src       图片地址
- * @param {'number' or 'string'} [option]  传入top left 定位距离
- * @param {'number' or 'string'} [option]  width height css属性
+ * @param {'number' or 'px' or 'rem'} [option]  传入top left 定位距离
+ * @param {'number' or 'px' or 'rem'} [option]  width height css属性
  */
 class ImgLoad extends Component {
   constructor(props) {
@@ -58,6 +58,7 @@ class ImgLoad extends Component {
               width: '100%',
               height: '100%',
               transition: '.5s',
+              objectFit:'cover',
               opacity: this.state.imgLoad ? 0 : 1,
             }}
             src={
@@ -72,7 +73,6 @@ class ImgLoad extends Component {
               this.setState({
                 imgErr: true
               })
-
             }}
           />
         </div>

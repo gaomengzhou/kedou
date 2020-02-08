@@ -68,8 +68,8 @@ BookContent.propTypes = {
 
 BookContent.defaultProps = {
   isEdit: false,
-  selectOne: () => console.log('没有传入selectOne这个props'),
-  goToBook: () => console.log('没有传入goToBook这个props'),
+  selectOne: () => null,
+  goToBook: () => null,
   dataSourceBook: [],
 }
 export default BookContent

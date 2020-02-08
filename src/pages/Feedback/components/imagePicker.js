@@ -81,8 +81,8 @@ ImagePickerExample.propTypes = {
 
 ImagePickerExample.defaultProps = {
   userFeedBack: '',
-  userFeedBacks: () => console.log('没有传入userFeedBacks这个props'),
-  setFieldsValue: () => console.log('没有传入setFieldsValue这个props'),
+  userFeedBacks: () => null,
+  setFieldsValue: () => null,
 }
 
 export default ImagePickerExample;
