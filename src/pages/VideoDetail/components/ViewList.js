@@ -162,8 +162,8 @@ MyViewList.propTypes = {
 MyViewList.defaultProps = {
   isReload: false,
   closed: false,
-  cb: () => console.log('没有传入cb这个props'),
-  cbClosed: () => console.log('没有传入cbClosed这个props'),
+  cb: () => null,
+  cbClosed: () => null,
 }
 
 export default MyViewList

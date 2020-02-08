@@ -105,9 +105,9 @@ Content.defaultProps = {
   liked_num: 0,
   comment_num: 0,
   detailData: {},
-  likedClick: () => console.log('没有传入likedClick这个props'),
-  showComment2: () => console.log('没有传入showComment2这个props'),
-  collectBtn: () => console.log('没有传入collectBtn这个props'),
+  likedClick: () => null,
+  showComment2: () => null,
+  collectBtn: () => null,
   isCollect: false,
   dataList: [],
 }

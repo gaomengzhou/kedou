@@ -67,8 +67,8 @@ BookSearch.protoType = {
 }
 
 BookSearch.defaultProps = {
-  onScrollData: () => console.log('没有传入onScrollData这个props'),
-  goBook: () => console.log('没有传入goBook这个props'),
+  onScrollData: () => null,
+  goBook: () => null,
   dataSource: [],
   isLoading: false,
   loadingText: '',

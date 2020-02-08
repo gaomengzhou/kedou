@@ -73,9 +73,9 @@ VideoContent.propTypes = {
 
 VideoContent.defaultProps = {
   isEdit: false,
-  callBackStateVideo: () => console.log('没有传入callBackStateVideo这个props'),
-  selectOne2: () => console.log('没有传入selectOne2这个props'),
-  goToVideo: () => console.log('没有传入goToVideo这个props'),
+  callBackStateVideo: null,
+  selectOne2: () => null,
+  goToVideo: () => null,
   dataSource: [],
   isLoading: false,
   loadingText: '',
