@@ -1,7 +1,11 @@
 /**
- * @component ListTitel
  * @description 列表头部展示
- * @parameter title={str} 标题 more={str}} 是否显示更多 right={number} 详情页播放数量 changeActionKey={fn} 跳转tab标签函数
+ * @memberof BookTabContent
+ * @memberof TabContent
+ * @param {string} title - 标题
+ * @param {string} more-是否显示<更多>
+ * @callback requestCallback
+ * @param {requestCallback} changeActionKey-跳转tab标签函数
  * @time 2020/1/9
  * @author Aiden
  */

@@ -1,6 +1,7 @@
 /**
- * @component actionType.js
  * @description redux 常量
+ * @constant
+ * @type {string}
  * @time 2020/1/8
  * @author Aiden
  */

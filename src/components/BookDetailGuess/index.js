@@ -1,6 +1,6 @@
 /**
- * @component BookDetailGuess
  * @description <猜你喜欢> 
+ * @memberof Audio
  * @parameter ''
  * @time 2020/1/23
  * @author Aiden

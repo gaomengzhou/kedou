@@ -1,10 +1,12 @@
 /**
- * @component CommentItem
  * @description  视频|听书 评论项组件 基于ListView 需传入rowData 
- * @parameter type={str} video|book 区分详情页 
+ * @memberof Audio
+ * @memberof VideoDetail/components/ViewList.js
+ * @param type={str} video 区分详情页 
  * @time 2020/1/31
- * @author Aiden
+ * @author Aiden <y1-aiden@ik8s.com>
  */
+import {crypt} from '../../utils/base'
 import { Toast } from 'antd-mobile';
 import React, { Component } from 'react';
 import { comment_thumbs } from '../../services/book';
@@ -19,62 +21,70 @@ class index extends Component {
         }
     }
     componentDidMount() {
-        const {type,rowData}= this.props
-        if (type==='video') {
-            this.setState({
-                thumbed: rowData.user_fabulous,
-                thumbs: rowData.liked_num,
-                id: rowData.id,
-                created_date:rowData.addtime
-            })
-        }
-        if (type==='book') {
-            this.setState({
-                thumbed: rowData.thumbed,
-                thumbs: rowData.thumbs,
-                id: rowData.id,
-                created_date:rowData.created_date
-            })
+        this.initialization()
+    }
+    initialization = () => {
+        const { type, rowData } = this.props
+        switch (type) {
+            case 'video':
+                this.setState({
+                    thumbed: rowData.user_fabulous,
+                    thumbs: rowData.liked_num,
+                    id: rowData.id,
+                    created_date: rowData.addtime
+                })
+                break;
+
+            default:
+                this.setState({
+                    thumbed: rowData.thumbed,
+                    thumbs: rowData.thumbs,
+                    id: rowData.id,
+                    created_date: rowData.created_date
+                })
+                break;
         }
     }
-
     setThumbed = () => {
-        const {type}= this.props
-        if (type==='video') {
-            commentLikeApi({
-                user_id: sessionStorage.getItem('user_id'),
-                type: '3',
-                comment_id: this.state.id
-            }).then(res => {
-                if (res.code === 0) {
-                    Toast.info(res.suc, 1, null, false)
-                    this.setState({
-                        thumbed: 1,
-                        thumbs: this.state.thumbs + 1
-                    })
-                } else {
-                    Toast.info(res.err, 1, null, false)
-                }
+        const { type } = this.props
+        switch (type) {
+            case 'video':
+                commentLikeApi({
+                    user_id: crypt(sessionStorage.getItem('user_id')),
+                    type: '3',
+                    comment_id: this.state.id
+                }).then(res => {
+                    if (res.code === 0) {
+                        Toast.info(res.suc, 1, null, false)
+                        this.setState({
+                            thumbed: 1,
+                            thumbs: this.state.thumbs + 1
+                        })
+                    } else {
+                        Toast.info(res.err, 1, null, false)
+                    }
 
-            })
-            return false
+                })
+                break;
+            default:
+                comment_thumbs({
+                    user_id: crypt(sessionStorage.getItem('user_id')),
+                    comment_id: this.state.id
+                }).then(res => {
+                    if (res.code === 0) {
+                        Toast.info(res.suc, 1, null, false)
+                        this.setState({
+                            thumbed: 1,
+                            thumbs: this.state.thumbs + 1
+                        })
+                    } else {
+                        Toast.info(res.err, 1, null, false)
+                    }
+
+                })
+                break;
         }
 
-        comment_thumbs({
-            user_id: sessionStorage.getItem('user_id'),
-            comment_id: this.state.id
-        }).then(res => {
-            if (res.code === 0) {
-                Toast.info(res.suc, 1, null, false)
-                this.setState({
-                    thumbed: 1,
-                    thumbs: this.state.thumbs + 1
-                })
-            } else {
-                Toast.info(res.err, 1, null, false)
-            }
-
-        })
     }
     render() {
         const {
@@ -107,7 +117,7 @@ class index extends Component {
                             }}>
                                 <img src={thumbed ? require('../../assets/images/comment_like_pressed.png') : require('../../assets/images/comment_like_nomal.png')} alt="" />
                             </div>
-                            <span className={thumbed&&'thumbed'}>
+                            <span className={thumbed && 'thumbed'}>
                                 {
                                     thumbs
                                 }

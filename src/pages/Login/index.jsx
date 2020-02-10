@@ -1,10 +1,9 @@
 /**
- * @component Login
  * @description 注册|登录|找回密码
  * @time 2020/2/3
  * @author Aiden
  */
-
+import {encrypt} from '../../utils/base'
 import React, { Component } from 'react';
 import { Button, Toast } from 'antd-mobile'
 import { sendCode, auth_mobile, change_pwd, login, user_info_no, register } from '../../services/user'
@@ -104,8 +103,7 @@ class index extends Component {
                     return false
                 }
             }
-            sessionStorage.setItem('user_id', res.user_id)
-            sessionStorage.setItem('mobile', res.mobile)
+            sessionStorage.setItem('user_id', encrypt(res.user_id))
             user_info_no({
                 user_id: res.user_id
             }).then(ret => {
@@ -119,7 +117,6 @@ class index extends Component {
     }
     client= ()=> {
         var u = navigator.userAgent
-        // app = navigator.appVersion;
         var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
         var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
         if (isAndroid) {
@@ -194,16 +191,9 @@ class index extends Component {
 
                 }} onFocus={(e) => {
                     obj.onFocus()
-                    // e.stopPropagation()
-                    // this.setState({
-                    //     pswIptFocus: true
-                    // })
 
                 }} onChange={(e) => {
                     obj.onChange(e)
-                    // this.setState({
-                    //     passWord: e.target.value
-                    // })
                 }} />
                 <div className="iconBox">
                     <img src={obj.focus ? require(`../../assets/images/${obj.focusPng}.png`) : require(`../../assets/images/${obj.blurPng}.png`)} alt="" className="icont" />

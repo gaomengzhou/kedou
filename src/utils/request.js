@@ -1,5 +1,4 @@
 /**
- * @component request.js
  * @description axios 组件封装
  * @time 2020/1/8
  * @author Aiden

@@ -1,3 +1,4 @@
+import {crypt} from '../../../utils/base'
 import { ListView } from 'antd-mobile';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -61,7 +62,7 @@ class MyViewList extends React.Component {
     getChatApi({
       page: '1',
       rows: '10',
-      user_id: sessionStorage.getItem('user_id'),
+      user_id: sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')):'',
       video_id: id
     }).then(res => {
       this.setState({
@@ -85,7 +86,7 @@ class MyViewList extends React.Component {
     getChatApi({
       page: String(this.state.page + 1),
       rows: '10',
-      user_id: sessionStorage.getItem('user_id'),
+      user_id: crypt(sessionStorage.getItem('user_id')),
       video_id: id
     }).then(res => {
       if (res.comment.length === 0) {

@@ -52,7 +52,6 @@ const BookContent = (props) => {
       className="am-list-video"
       pageSize={4}
       useBodyScroll
-      // onScroll={() => { console.log('scroll'); }}
       scrollRenderAheadDistance={500}
       onEndReached={onEndReached}
       onEndReachedThreshold={10}

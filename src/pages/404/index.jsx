@@ -1,5 +1,4 @@
 /**
- * @component 404 
  * @description 找不到页面 路由
  * @time 2020/1/6
  * @author Aiden

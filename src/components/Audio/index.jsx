@@ -1,10 +1,10 @@
 /**
- * @component Audio
  * @description 听书播放器&听书详情组件
- * @parameter ''
+ * @memberof book
  * @time 2020/1/23
  * @author Aiden
  */
+import { crypt } from '../../utils/base'
 import { ListView, Modal, Toast } from 'antd-mobile';
 import copy from 'copy-to-clipboard';
 import React from 'react';
@@ -167,7 +167,7 @@ class App extends React.Component {
 	}
 	setCollect = (novel_id) => {
 		collect({
-			user_id: sessionStorage.getItem('user_id'),
+			user_id: crypt(sessionStorage.getItem('user_id')),
 			novel_id: novel_id
 		}).then(res => {
 			if (res.code === 0) {
@@ -193,7 +193,7 @@ class App extends React.Component {
 			isLoading: true
 		})
 		await comment({
-			user_id: sessionStorage.getItem('user_id'),
+			user_id: crypt(sessionStorage.getItem('user_id')),
 			novel_id: this.props.detailInfo.id,
 			page: 1,
 			rows: 10
@@ -221,7 +221,7 @@ class App extends React.Component {
 	concatList = () => {
 		const list = this.state.commentList
 		comment({
-			user_id: sessionStorage.getItem('user_id'),
+			user_id: crypt(sessionStorage.getItem('user_id')),
 			novel_id: this.props.detailInfo.id,
 			page: this.state.page + 1,
 			rows: 10
@@ -280,7 +280,7 @@ class App extends React.Component {
 		})
 
 		await comment_add({
-			user_id: sessionStorage.getItem('user_id'),
+			user_id: crypt(sessionStorage.getItem('user_id')),
 			novel_id: this.props.detailInfo.id,
 			message: commentValue
 		}).then(res => {
@@ -442,7 +442,7 @@ class App extends React.Component {
 	}
 	setThumbed = () => {
 		novel_thumbs({
-			user_id: sessionStorage.getItem('user_id'),
+			user_id: crypt(sessionStorage.getItem('user_id')),
 			novel_id: this.props.detailInfo.id
 		}).then(res => {
 			const { code } = res

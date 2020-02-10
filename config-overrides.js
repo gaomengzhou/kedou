@@ -1,5 +1,4 @@
 /**
- * @configuration config-overrides.js
  * @description webpack配置覆盖
  * @time 2020/1/6
  * @author Aiden

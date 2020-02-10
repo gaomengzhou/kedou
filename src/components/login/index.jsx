@@ -1,10 +1,10 @@
  /**
- * @component login(以废除)
+ * @deprecated (废弃)
  * @description 登录|注册|忘记密码 弹窗
  * @time 2020/1/8
  * @author Aiden
  */
-
+import {encrypt} from '../../utils/base'
 import React, { Component } from 'react';
 import { Button, Toast } from 'antd-mobile'
 import { register, sendCode, login, auth_mobile, change_pwd, user_info_no } from '../../services/user'
@@ -146,7 +146,7 @@ class index extends Component {
 					return false
 				}
 			}
-			sessionStorage.setItem('user_id', res.user_id)
+			sessionStorage.setItem('user_id', encrypt(res.user_id))
 			sessionStorage.setItem('mobile', res.mobile)
 			user_info_no({
 				user_id: res.user_id

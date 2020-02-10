@@ -1,11 +1,10 @@
 /**
- * @component Book
  * @description 听书首页
  * @time 2020/1/15
  * @author Aiden
  */
 
-
+import {crypt} from '../../utils/base'
 import Header from '@/components/header';
 // import { category } from '@/store/action/book';
 import React, { Component } from 'react';
@@ -47,6 +46,9 @@ class Book extends Component {
         }
     }
     componentDidMount() {
+        this.initialization()
+    }
+    initialization = () => {
         this.props.category({
             page: 1
         })
@@ -207,7 +209,7 @@ class Book extends Component {
             novelItem: null
         })
         await detail({
-            user_id: sessionStorage.getItem('user_id'),
+            user_id: crypt(sessionStorage.getItem('user_id')),
             novel_id: bookId
         }).then(res => {
             if (/Error/.test(res)) {
