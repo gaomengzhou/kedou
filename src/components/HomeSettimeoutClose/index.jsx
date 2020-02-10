@@ -1,7 +1,9 @@
 /**
- * @component HomeSettimeoutClose
  * @description  video 页面 列表项组件
- * @parameter type={str} video||book 区分视频和听书 默认video  hour={number} 设置时间重新显示 默认2 (单位小时 可传小数)
+ * @memberof TabContent
+ * @memberof BookTabContent
+ * @param {str} type video||book区分视频和听书 默认video 
+ * @param {number} hour 设置时间重新显示 默认2 (单位小时 可传小数)
  * @time 2020/2/7
  * @author Aiden
  */
@@ -18,6 +20,9 @@ class index extends Component {
         }
     }
     componentDidMount() {
+        this.initialization()
+    }
+    initialization = () => {
         const type = this.props.type || 'video'
         const oldDate = localStorage.getItem(type + 'HomeSettimeoutClose')
         const date = Date.now()
@@ -60,7 +65,9 @@ class index extends Component {
                     fontSize: '0'
                 }} className="headerImg" onClick={() => {
                     const w = window.open('about:blank');
-                    w.location.href = `https://kdsp1.xyz/${sessionStorage.getItem('invitation_code') ? `?invite_code=${sessionStorage.getItem('invitation_code')}` : ''}`;
+                    w.location.href = `https://kdsp1.xyz/${
+                        sessionStorage.getItem('invitation_code') ? `?invite_code=${sessionStorage.getItem('invitation_code')}` : ''
+                        }`;
                 }}>
                     <img style={{
                         width: '100%',

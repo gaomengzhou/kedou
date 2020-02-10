@@ -52,7 +52,6 @@ const VideoSearch = (props) => {
       className="am-list-search"
       pageSize={4}
       useBodyScroll
-      // onScroll={() => { console.log('scroll'); }}
       scrollRenderAheadDistance={500}
       onEndReached={onEndReached}
       onEndReachedThreshold={10}

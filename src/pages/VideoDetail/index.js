@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom';
 import PublicNavBar from '../../components/PublicNavBar';
 import { commentLikeApi } from '../../services/videoDetail';
 import { getChat, getVideoOnePatch } from '../../store/action/videoDetail';
+import { crypt } from '../../utils/base';
 import Content from './components/content';
 import MyListView from './components/ViewList';
 import './player.less';
@@ -100,7 +101,7 @@ class VideoDetail extends Component {
   getChat = (vId = '') => {
     const { id } = this.props.match.params
     this.props.getChat({
-      user_id: sessionStorage.getItem('user_id'),
+      user_id: sessionStorage.getItem('user_id') ? crypt(sessionStorage.getItem('user_id')) : '',
       video_id: vId === '' ? id : String(vId),
       page: '1',
       rows: '10'
@@ -156,7 +157,7 @@ class VideoDetail extends Component {
     } else {
       new Promise((resolve) => {
         this.props.getVideoOnePatch({
-          user_id,
+          user_id: crypt(sessionStorage.getItem('user_id')),
           video_id: String(videoId) === '' ? video_id : String(videoId),
           resolve,
         })
@@ -244,7 +245,7 @@ class VideoDetail extends Component {
     const { id } = this.props.match.params
     const video_id = id
     commentLikeApi({
-      user_id: sessionStorage.getItem('user_id'),
+      user_id: crypt(sessionStorage.getItem('user_id')),
       video_id,
       type: '4'
     }).then(res => {
@@ -262,7 +263,7 @@ class VideoDetail extends Component {
 
   sendMsg = (_e) => {
     const { id } = this.props.match.params
-    const user_id = sessionStorage.getItem('user_id')  //万能ID '9652'  sessionStorage.getItem('user_id')
+    // const user_id = sessionStorage.getItem('user_id')  //万能ID '9652'  sessionStorage.getItem('user_id')
     const video_id = id
     setTimeout(() => {
       const contentHeight = document.getElementById('contentPlayer').offsetHeight;
@@ -277,7 +278,7 @@ class VideoDetail extends Component {
         message: '',
       })
       commentLikeApi({
-        user_id,
+        user_id: crypt(sessionStorage.getItem('user_id')),
         type: '2',
         video_id,
         message: this.state.message
@@ -307,7 +308,7 @@ class VideoDetail extends Component {
   collectBtn = () => {
     const { id } = this.props.match.params
     commentLikeApi({
-      user_id: sessionStorage.getItem('user_id'),
+      user_id: crypt(sessionStorage.getItem('user_id')),
       video_id: id,
       type: '1'
     }).then(res => {

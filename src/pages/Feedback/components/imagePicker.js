@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { userFeedBacks } from '../../../store/action/feedBack';
+import { crypt } from '../../../utils/base';
 import '../index.less';
 import './imgpicker.less';
 const mapDispatchToProps = {
@@ -37,7 +38,7 @@ class ImagePickerExample extends React.Component {
     } else {
       try {
         let res = await this.props.userFeedBacks({
-          user_id: sessionStorage.getItem('user_id'),
+          user_id: crypt(sessionStorage.getItem('user_id')),
           role: 'user',
           message: userFeedBack,
           images: imgs,
@@ -60,7 +61,6 @@ class ImagePickerExample extends React.Component {
           files={files}
           multiple
           onChange={this.onChange}
-          // onImageClick={(index, fs) => console.log(index, fs)}
           selectable={files.length < 3}
           accept="image/gif,image/jpeg,image/jpg,image/png"
         />

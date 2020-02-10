@@ -1,4 +1,5 @@
 import { Button, ListView } from 'antd-mobile';
+import {crypt} from '../../utils/base'
 import 'dplayer/dist/DPlayer.min.css';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -52,7 +53,7 @@ class Collect extends Component {
   componentDidMount() {
     new Promise(resolve => {
       this.props.getBookCollect({
-        user_id: sessionStorage.getItem('user_id'),
+        user_id: crypt(sessionStorage.getItem('user_id')),
         resolve,
         rows: '10',
         page: '1',
@@ -67,7 +68,7 @@ class Collect extends Component {
 
     new Promise(resolve => {
       this.props.getVideoCollect({
-        user_id: sessionStorage.getItem('user_id'),
+        user_id: crypt(sessionStorage.getItem('user_id')),
         type: '2',
         resolve,
         rows: '10',
@@ -108,13 +109,13 @@ class Collect extends Component {
         new Promise(resolve => {
           this.props.delBoolCollect({
             ids: this.state.ids,
-            user_id: sessionStorage.getItem('user_id'),
+            user_id: crypt(sessionStorage.getItem('user_id')),
             resolve
           })
         }).then(res => {
           if (res.suc) {
             new Promise(resolve => {
-              this.props.getBookCollect({ user_id: sessionStorage.getItem('user_id'), resolve })
+              this.props.getBookCollect({ user_id: crypt(sessionStorage.getItem('user_id')), resolve })
             }).then(res => {
               if (res.length === 0) {
                 this.setState({
@@ -138,14 +139,14 @@ class Collect extends Component {
         new Promise(resolve => {
           this.props.delVideo({
             ids: this.state.ids,
-            user_id: sessionStorage.getItem('user_id'),
+            user_id: crypt(sessionStorage.getItem('user_id')),
             resolve
           })
         }).then(res => {
           if (res.suc) {
             new Promise(resolve => {
               this.props.getVideoCollect({
-                user_id: sessionStorage.getItem('user_id'),
+                user_id: crypt(sessionStorage.getItem('user_id')),
                 type: '2',
                 resolve,
                 rows: '10',
@@ -340,7 +341,7 @@ class Collect extends Component {
     } else {
       new Promise(resolve => {
         this.props.getVideoCollect({
-          user_id: sessionStorage.getItem('user_id'),
+          user_id: crypt(sessionStorage.getItem('user_id')),
           type: '2',
           resolve,
           rows: '10',
@@ -375,7 +376,7 @@ class Collect extends Component {
     } else {
       new Promise(resolve => {
         this.props.getBookCollect({
-          user_id: sessionStorage.getItem('user_id'),
+          user_id: crypt(sessionStorage.getItem('user_id')),
           resolve,
           rows: '10',
           page: String(this.state.bookPage + 1),

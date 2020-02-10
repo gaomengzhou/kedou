@@ -1,5 +1,4 @@
 /**
- * @component Video
  * @description 首页
  * @time 2020/1/6
  * @author Aiden

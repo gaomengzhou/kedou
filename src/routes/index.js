@@ -1,5 +1,7 @@
 /**
- * 路由配置文件
+ * @description 路由配置项
+ * @time 2020/1/6
+ * @author Aiden
  */
 import NotFound from '../pages/404'
 import Book from '../pages/Book'

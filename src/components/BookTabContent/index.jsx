@@ -1,9 +1,10 @@
 /**
- * @component TabContent
  * @description  book页面 list组件 基于ant tab组件 包含下拉刷新 上拉加载
+ * @memberof tabs
  * @time 2020/1/31
  * @author Aiden
  */
+import { crypt } from '../../utils/base'
 import React, { Component } from 'react';
 import { PullToRefresh, ListView, Carousel } from 'antd-mobile';
 // import { PullToRefresh, ListView } from 'antd-mobile';
@@ -64,7 +65,7 @@ class index extends Component {
 				let hotList;
 				let obj;
 				await getBookList({
-					user_id: sessionStorage.getItem('user_id') || '',
+					user_id: sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) :'',
 					page: 1,
 					rows: 18,
 					order: "created_date",
@@ -73,7 +74,7 @@ class index extends Component {
 					newList = res
 				})
 				await getBookList({
-					user_id: sessionStorage.getItem('user_id') || '',
+					user_id:  sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) :'',
 					page: 1,
 					rows: 18,
 					order: "play",
@@ -92,7 +93,7 @@ class index extends Component {
 			}
 			case this.props.tabList[1].title: {
 				await getBookList({
-					user_id: sessionStorage.getItem('user_id') || '',
+					user_id: sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) :'',
 					page: 1,
 					rows: 21,
 					order: "created_date",
@@ -107,7 +108,7 @@ class index extends Component {
 			}
 			case this.props.tabList[2].title: {
 				await getBookList({
-					user_id: sessionStorage.getItem('user_id') || '',
+					user_id: crypt(sessionStorage.getItem('user_id')) || '',
 					page: 1,
 					rows: 21,
 					order: "play",
@@ -121,7 +122,7 @@ class index extends Component {
 			}
 			default: {
 				await getBookList({
-					user_id: sessionStorage.getItem('user_id') || '',
+					user_id: crypt(sessionStorage.getItem('user_id')) || '',
 					page: 1,
 					rows: 21,
 					category_id: this.props.tab.category_id
@@ -149,7 +150,7 @@ class index extends Component {
 		switch (this.props.tab.title) {
 			case this.props.tabList[1].title: {
 				getBookList({
-					user_id: sessionStorage.getItem('user_id') || '',
+					user_id:  sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) :'',
 					page: this.state.page + 1,
 					rows: 18,
 					order: "created_date",
@@ -172,7 +173,7 @@ class index extends Component {
 			}
 			case this.props.tabList[2].title: {
 				getBookList({
-					user_id: sessionStorage.getItem('user_id') || '',
+					user_id:  sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) :'',
 					page: this.state.page + 1,
 					rows: 18,
 					order: "play",
@@ -194,7 +195,7 @@ class index extends Component {
 			}
 			default: {
 				getBookList({
-					user_id: sessionStorage.getItem('user_id') || '',
+					user_id:  sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) :'',
 					page: this.state.page + 1,
 					rows: 18,
 					category_id: this.props.tab.category_id
@@ -387,12 +388,12 @@ class index extends Component {
 					<div id="bookHomeList" style={{
 						paddingTop: '.5rem'
 					}}>
-						{
+						{/* {
 							listHeader()
-						}
+						} */}
 						<ListView
 							dataSource={dataSource}
-							// renderHeader={() => listHeader()}
+							renderHeader={() => listHeader()}
 							renderRow={(rowData, sectionID, rowID) => {
 								return (
 									<>

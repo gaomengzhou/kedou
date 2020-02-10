@@ -1,6 +1,6 @@
 /**
- * @component ListContent
  * @description  video 页面 列表项组件
+ * @memberof ListContent
  * @parameter 基于ListView组件 需传入 rowData
  * @time 2020/1/9
  * @author Aiden

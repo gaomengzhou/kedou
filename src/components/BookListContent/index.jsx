@@ -1,10 +1,12 @@
 /**
- * @component ListContent
  * @description  book 页面 列表项组件
- * @parameter 基于ListView组件 需传入 rowData
+ * @memberof BookTabContent
+ * @requires ListView
+ * @param {Array} rowData 基于ListView组件 需传入 rowData
  * @time 2020/1/16
  * @author Aiden
  */
+import { crypt } from '../../utils/base'
 import React, { Component } from 'react';
 import './index.less'
 import { collect } from '../../services/book'
@@ -42,7 +44,7 @@ class index extends Component {
             return false
         }
         collect({
-            user_id: sessionStorage.getItem('user_id'),
+            user_id: crypt(sessionStorage.getItem('user_id')),
             novel_id: novel_id
         }).then(res => {
             if (res.code === 0) {

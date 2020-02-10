@@ -1,5 +1,4 @@
 /**
- * @configuration setupProxy.js
  * @description 反向代理配置项
  * @time 2020/1/8
  * @author Aiden

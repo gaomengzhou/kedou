@@ -1,6 +1,6 @@
  /**
- * @component TabContent
  * @description video页面 list组件 基于ant tab组件 包含下拉刷新 上拉加载
+ * @memberof TabContent
  * @time 2020/1/7
  * @author Aiden
  */
