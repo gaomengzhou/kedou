@@ -19,9 +19,9 @@ import VideoDetail from '../pages/VideoDetail'
 // }
 
 const routesItem = (item, component) => ({
-        path: `/${item}`,
-        key: `${item.split('/')[0]}`,
-        component
+	path: `/${item}`,
+	key: `${item.split('/')[0]}`,
+	component
 })
 const routes = [
     routesItem('video', Video),

@@ -1,9 +1,9 @@
- /**
- * @description video页面 list组件 基于ant tab组件 包含下拉刷新 上拉加载
- * @memberof tabs
- * @time 2020/1/7
- * @author Aiden
- */
+/**
+* @description video页面 list组件 基于ant tab组件 包含下拉刷新 上拉加载
+* @memberof tabs
+* @time 2020/1/7
+* @author Aiden
+*/
 import React, { Component } from 'react';
 import { PullToRefresh, ListView, Carousel } from 'antd-mobile';
 import ListTitle from '../ListTitle'
@@ -322,7 +322,7 @@ class index extends Component {
 		}
 		return (
 			<>
-				<HomeSettimeoutClose /> 
+				<HomeSettimeoutClose />
 				<Carousel
 					autoplay={true}
 					infinite={true}
