@@ -35,6 +35,7 @@ class index extends Component {
 		})
 		this.goBackchangeTab(this.props.route)
 	}
+	//返回列表时回到上次tab
 	goBackchangeTab=(route)=>{
 		const oldRoute=sessionStorage.getItem('route')
 		if(route!==oldRoute){
@@ -43,7 +44,7 @@ class index extends Component {
 		}
 		sessionStorage.setItem('route',this.props.route)
 	}
-
+	//跳转指定tab
 	changeActionKey = (sty) => {
 		// console.log(sty, this.state.activeKey);
 
@@ -58,6 +59,7 @@ class index extends Component {
 		}
 		return false
 	}
+	//tab内容渲染
 	renderContent = tab => {
 		//console.log('renderContent',tab);
 		if (this.props.labelList && this.props.hotVideoList) {
@@ -70,7 +72,6 @@ class index extends Component {
 				hotLabel: this.props.hotLabel,
 				getHomeLabelList: this.props.getHomeLabelList,
 				goToVideoDetail: this.props.goToVideoDetail,
-				headerShow: this.props.headerShow,
 				labelList: this.props.labelList,
 				closeMyLoginShow: this.props.closeMyLoginShow,
 

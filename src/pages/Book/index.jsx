@@ -280,6 +280,7 @@ class Book extends Component {
 
     // }
     //
+    //进入详情页后隐藏列表首页
     setDetailShow = (open) => {
         if (open) {
             document.querySelector('.TabBer').style.display = 'none'

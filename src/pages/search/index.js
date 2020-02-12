@@ -66,7 +66,7 @@ class SearchBarExample extends React.Component {
   }
 
   goPlayer = (item) => {
-    this.props.history.push(`/detailVideo/${item.id}`)
+    this.props.history.push(`/videoDetail/${item.id}`)
   }
 
   onChange = (e) => {

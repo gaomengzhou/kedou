@@ -4,14 +4,14 @@
  * @author Aiden
  */
 
-import { getHomeLabelList, getHomeVideoList,goBackchangeTab,goBackScrollTop,goBackList } from '../../store/action/video';
+import { Modal } from 'antd-mobile';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../../components/header';
 // import Login from '../../components/login';
 import Tabs from '../../components/tabs';
+import { getHomeLabelList, getHomeVideoList, goBackchangeTab, goBackList, goBackScrollTop } from '../../store/action/video';
 import './index.less';
-import { Modal } from 'antd-mobile';
 const stateToProps = (state) => {
 	return {
 		video: state.video,
@@ -40,6 +40,10 @@ class Video extends Component {
 			my: false
 		}
 	}
+	componentDidMount() {
+		this.getHomeLabelList(0)
+	}
+	//获取首页tabs标签
 	getHomeLabelList = async (num) => {
 		await this.props.getHomeVideoList({
 			rows: 20
@@ -48,17 +52,11 @@ class Video extends Component {
 			type: num
 		})
 	}
-	headerShow = (b) => {
-		this.setState({
-			headerShow: b
-		})
-	}
-	componentDidMount() {
-		this.getHomeLabelList(0)
-	}
+	//原头部下载APP按钮
 	testCallBack = () => {
 		//console.log(123);
 	}
+	//头部头像按钮
 	testRightCallBack = () => {
 		const { loginShow, my } = this.state
 		const user_id = sessionStorage.getItem('user_id')
@@ -79,18 +77,22 @@ class Video extends Component {
 
 		}
 	}
+	//滑动隐藏头像气泡
 	closeMyLoginShow = () => {
 		this.setState({
 			// loginShow: false,
 			my: false
 		})
 	}
+	//进入详情页前保存当前tab
 	goBackchangeTab=(parameter)=>{
 		this.props.goBackchangeTab(parameter)
 	}
+	//进入详情前保存当前列表
 	goBackList=(list)=>{
 		this.props.goBackList(list)
 	}
+	//进入视频详情页
 	goToVideoDetail = (obj,list='') => {
 		this.props.goBackScrollTop(document.body.scrollTop || document.documentElement.scrollTop)
 		this.goBackList(list)
@@ -115,8 +117,9 @@ class Video extends Component {
 			])
 			return false
 		}
-		this.props.history.push(`/detailVideo/${video_id}`)
+		this.props.history.push(`/videoDetail/${video_id}`)
 	}
+	//登录后点击头像气泡
 	Popo = () => {
 		const arr = [
 			{
@@ -182,7 +185,6 @@ class Video extends Component {
 			hotLabel: video.hotLabel,
 			getHomeLabelList: this.props.getHomeLabelList,
 			goToVideoDetail: this.goToVideoDetail,
-			headerShow: this.headerShow,
 			closeMyLoginShow: this.closeMyLoginShow,
 			goBackchangeTab:this.goBackchangeTab,
 			route:'video'

@@ -1,5 +1,5 @@
 /**
- * @description  video 页面 列表项组件
+ * @description 首页广告
  * @memberof TabContent
  * @memberof BookTabContent
  * @param {str} type video||book区分视频和听书 默认video 
@@ -22,6 +22,7 @@ class index extends Component {
     componentDidMount() {
         this.initialization()
     }
+    //初始化获取参数
     initialization = () => {
         const type = this.props.type || 'video'
         const oldDate = localStorage.getItem(type + 'HomeSettimeoutClose')
@@ -44,9 +45,11 @@ class index extends Component {
             headerImg: true
         })
     }
+    //时间戳转换小时
     countTimer = (hour) => {
         return hour * 60 * 60 * 1000
     }
+    //定时开启
     settimeoutClose = (e) => {
         const type = this.props.type || 'video'
         e.stopPropagation()

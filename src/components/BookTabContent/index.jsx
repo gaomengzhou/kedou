@@ -54,6 +54,7 @@ class index extends Component {
 		// })
 		this.onRefresh()
 	}
+	//下拉
 	onRefresh = async () => {
 		await this.setState({
 			isRefreshing: true,
@@ -108,7 +109,7 @@ class index extends Component {
 			}
 			case this.props.tabList[2].title: {
 				await getBookList({
-					user_id: crypt(sessionStorage.getItem('user_id')) || '',
+					user_id: sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) : '',
 					page: 1,
 					rows: 21,
 					order: "play",
@@ -122,7 +123,7 @@ class index extends Component {
 			}
 			default: {
 				await getBookList({
-					user_id: crypt(sessionStorage.getItem('user_id')) || '',
+					user_id: sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) : '',
 					page: 1,
 					rows: 21,
 					category_id: this.props.tab.category_id
@@ -145,6 +146,7 @@ class index extends Component {
 			noMore: false,
 		})
 	}
+	//拼接
 	concatList = () => {
 		const list = this.state.bookList
 		switch (this.props.tab.title) {
@@ -220,6 +222,7 @@ class index extends Component {
 		}
 
 	}
+	//上拉加载更多
 	onEndReached = () => {
 		let loading = true
 		if (this.state.noMore) {
@@ -295,6 +298,7 @@ class index extends Component {
 	// 	localStorage.setItem('settimeoutClose',Date.now())
 	// 	return false
 	// }
+	//头部bannel和广告
 	listHeader = () => {
 		const {
 			bannelList
@@ -345,6 +349,7 @@ class index extends Component {
 			</>
 		)
 	}
+	//防抖
 	throttle = (fn, delay) => {
 		var lastTime = 0
 		return function () {

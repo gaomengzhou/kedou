@@ -48,7 +48,7 @@ class App extends React.Component {
 			show: false,
 			detailShow: true,
 			play: false,
-			serial: '第1集',
+			serial: '第1章',
 			modal2: false,
 			commentShow: true,
 			commentTitle: '',
@@ -81,6 +81,7 @@ class App extends React.Component {
 		}
 	}
 	componentDidMount() {
+		//获取详情页数据
 		this.setState({
 			collected: this.props.detailInfo.collected,
 			name: this.props.novelTitle,
@@ -92,12 +93,13 @@ class App extends React.Component {
 			collectedNum: this.props.detailInfo.love,
 			thumbed: this.props.detailInfo.thumbed
 		}, () => {
-			document.querySelector('.aplayer-author').innerHTML = '第1集'
+			document.querySelector('.aplayer-author').innerHTML = '第1章'
 			document.querySelector('.aplayer-icon-loop').remove()
 			document.body.scrollTop = document.documentElement.scrollTop = 0
 			this.getComment()
 		})
 	}
+	//关闭组件
 	componentWillUnmount() {
 		this.onPause()
 		this.props.setDetailShow()
@@ -105,7 +107,7 @@ class App extends React.Component {
 		clearInterval(iInterval)
 		clearTimeout(changeSrcTimer)
 	}
-
+	//改变集数
 	static getDerivedStateFromProps(props, state) {
 		if (props.serials) {
 			return {
@@ -115,13 +117,14 @@ class App extends React.Component {
 		return null
 	}
 	// event binding example
+	//播放执行函数
 	onPlay = () => {
 		this.setState({
 			play: true
 		})
 		console.log('on play');
 	};
-
+	//暂停执行函数
 	onPause = () => {
 		this.ap.pause()
 		this.getTranslate('onPosterRotateZ')
@@ -134,6 +137,7 @@ class App extends React.Component {
 	onInit = ap => {
 		this.ap = ap;
 	};
+	//切换播放url
 	changeSrc = async (url, num) => {
 		this.onPause()
 		clearTimeout(changeSrcTimer)
@@ -150,11 +154,11 @@ class App extends React.Component {
 			} else {
 				this.props.setOnRefresh(true)
 			}
-			document.querySelector('.aplayer-author').innerHTML = `第${num}集`
+			document.querySelector('.aplayer-author').innerHTML = `第${num}章`
 			document.querySelector('.aplayer-icon-loop').remove()
 			this.setState({
 				serialNum: num,
-				serial: `第${num}集`,
+				serial: `第${num}章`,
 				modal2: false
 			}, () => {
 				if (!this.state.play) {
@@ -165,6 +169,7 @@ class App extends React.Component {
 			})
 		})
 	}
+	//收藏
 	setCollect = (novel_id) => {
 		collect({
 			user_id: crypt(sessionStorage.getItem('user_id')),
@@ -188,6 +193,7 @@ class App extends React.Component {
 			}
 		})
 	}
+	//获取评论列表
 	getComment = async (string) => {
 		await this.setState({
 			isLoading: true
@@ -218,6 +224,7 @@ class App extends React.Component {
 			})
 		})
 	}
+	//拼接评论列表
 	concatList = () => {
 		const list = this.state.commentList
 		comment({
@@ -242,6 +249,7 @@ class App extends React.Component {
 		})
 
 	}
+	//上拉加载跟多
 	onEndReached = () => {
 		let loading = true
 		if (this.state.noMore) {
@@ -258,12 +266,14 @@ class App extends React.Component {
 		})
 		loading = false
 	}
+	//评论input
 	changeCommentValue = (e) => {
 		const commentValue = e.target.value
 		this.setState({
 			commentValue
 		})
 	}
+	//发送
 	commentSubMit = async (timer) => {
 		const { commentValue, timer: oldTimer } = this.state
 		if (!commentValue) {
@@ -302,6 +312,7 @@ class App extends React.Component {
 
 		})
 	}
+	//上一集或下一集
 	changePlay = (num) => {
 		const {
 			state: {
@@ -311,12 +322,12 @@ class App extends React.Component {
 			changeSrc
 		} = this
 		if (serialNum === 1 && num === -1) {
-			Toast.info('已经是第一集了', 1, null, false)
+			Toast.info('已经是第一章了', 1, null, false)
 			this.onPause()
 			return false
 		}
 		if (serialNum === playerList.length && num === 1) {
-			Toast.info('已经是最后一集了', 1, null, false)
+			Toast.info('已经是最后一章了', 1, null, false)
 			this.onPause()
 			return false
 		}
@@ -327,13 +338,14 @@ class App extends React.Component {
 		})
 
 	}
+	//打开定时器列表
 	setTimePlay = () => {
 		this.setState({
 			timeClose: true
 		})
 
 	}
-
+	//格式化时间戳
 	formatDuring = (mss) => {
 		var hours = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 		var minutes = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
@@ -351,6 +363,7 @@ class App extends React.Component {
 			Timer: hours + ":" + minutes + ":" + seconds
 		})
 	}
+	//设置关闭时间
 	setTimeoutByPlay = (key) => {
 		let keyNum = key * 60000
 		switch (key) {
@@ -376,6 +389,7 @@ class App extends React.Component {
 		}
 
 	}
+	//设置自定义关闭时间
 	alertTime = (key) => {
 		const prompt = Modal.prompt;
 		prompt('自定义关闭时间(分钟)', '', [
@@ -395,6 +409,7 @@ class App extends React.Component {
 			},
 		], 'default', '')
 	}
+	//自定义关闭时间执行函数
 	setTime = (key, keyNum) => {
 		clearTimeout(iTimeout)
 		clearInterval(iInterval)
@@ -425,6 +440,7 @@ class App extends React.Component {
 			// }, key*6000);
 		})
 	}
+	//点击分享执行函数
 	copyShare = () => {
 		const {id}=this.props.detailInfo
 		const invitation_code=sessionStorage.getItem('invitation_code')
@@ -435,11 +451,13 @@ class App extends React.Component {
 		}
 		Toast.info('请先登录')
 	}
+	//图片加载完毕执行函数
 	onLoad = () => {
 		this.setState({
 			loaded: false
 		})
 	}
+	//点赞
 	setThumbed = () => {
 		novel_thumbs({
 			user_id: crypt(sessionStorage.getItem('user_id')),
@@ -457,6 +475,7 @@ class App extends React.Component {
 			Toast.info('已经点过赞了', 1, null, false)
 		})
 	}
+	//点击评论跳转评论列表锚点
 	subMitShow = async () => {
 		document.body.scrollTop = document.documentElement.scrollTop = 0
 		this.setState({
@@ -522,6 +541,7 @@ class App extends React.Component {
 	// 			}
 	// 		})
 	// }
+	//跳转锚点
 	scrollToAnchor = async (anchorName) => {
 		let anchorElement = document.getElementById(anchorName);
 		setTimeout(() => {
@@ -535,6 +555,7 @@ class App extends React.Component {
 		// 	)
 		// }, 20);
 	}
+	//滚动视图 并关闭软键盘
 	hiddenCommentIpt = () => {
 		// console.log(1);
 		// alert(1)
@@ -569,6 +590,7 @@ class App extends React.Component {
 	// 	return deg >= 360 ? 0 : deg;
 
 	// }
+	//获取元素旋转角度
 	getTranslate = (node) => {//获取transform值
 		var el = document.getElementById(node);
 		if (!el) {
@@ -981,10 +1003,10 @@ class App extends React.Component {
 							playerList.map(e => (
 								<p className={this.state.serialNum === e.serial ? 'activeSerial' : ''} onClick={() => {
 									this.setState({
-										serial: `第${e.serial}集`
+										serial: `第${e.serial}章`
 									})
 									changeSrc(e.src, e.serial)
-								}}>第{e.serial}集</p>
+								}}>第{e.serial}章</p>
 							))
 						}
 					</div>
@@ -1001,7 +1023,7 @@ class App extends React.Component {
 								this.props.setOnRefresh(true)
 							}
 						})
-					}} >选集</p>
+					}} >选章</p>
 				} */}
 				{show && <ReactAplayer
 					{...player}

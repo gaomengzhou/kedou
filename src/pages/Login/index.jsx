@@ -3,12 +3,12 @@
  * @time 2020/2/3
  * @author Aiden
  */
-import {encrypt} from '../../utils/base'
+import { Button, Toast } from 'antd-mobile';
 import React, { Component } from 'react';
-import { Button, Toast } from 'antd-mobile'
-import { sendCode, auth_mobile, change_pwd, login, user_info_no, register } from '../../services/user'
-import './index.scss'
-import LoginHeader from '../../components/LoginHeader'
+import LoginHeader from '../../components/LoginHeader';
+import { auth_mobile, change_pwd, login, register, sendCode, user_info_no } from '../../services/user';
+import { encrypt } from '../../utils/base';
+import './index.scss';
 class index extends Component {
     constructor(props) {
         super(props)
@@ -31,6 +31,7 @@ class index extends Component {
         }
     }
     componentDidMount() {
+        //判断TYPE跳转至注册页
         if (this.props.history.location.state) {
             const { type, code } = this.props.history.location.state
             if (type) {
@@ -48,6 +49,7 @@ class index extends Component {
                     })
                 })
             }else{
+                //执行默认显示登录
                 this.setState({
                     telNumber: '',
                     passWord: '',
@@ -61,11 +63,12 @@ class index extends Component {
             }
         }
     }
+    //有video或book ID传入再提交后跳转至详情页函数
     goTovideoDetail = () => {
         if (this.props.history.location.state) {
             const { id, bookId } = this.props.history.location.state
             if (id) {
-                this.props.history.replace('/detailVideo/' + id)
+                this.props.history.replace('/videoDetail/' + id)
                 return false
             }
             if (bookId) {
@@ -80,6 +83,7 @@ class index extends Component {
         }
         this.props.history.goBack()
     }
+    //登录
     login = async (info) => {
         const { telNumber, passWord } = this.state
         const _this = this
@@ -115,6 +119,7 @@ class index extends Component {
 
         })
     }
+    //判断用户使用机型
     client= ()=> {
         var u = navigator.userAgent
         var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
@@ -127,6 +132,7 @@ class index extends Component {
         }
         return '其它'
     }
+    //注册
     register = () => {
         const { telNumber, codeNumber, passWord, invitation_code } = this.state
         if (!telNumber) {
@@ -159,6 +165,7 @@ class index extends Component {
             this.login('注册成功')
         })
     }
+    //返回上一层
     goBack = () => {
         const title = this.state.title
         if (title[0] === '验证手机' || title[0] === '修改密码') {
@@ -180,6 +187,7 @@ class index extends Component {
         }
         this.props.history.goBack()
     }
+    //input元素
     inputItem = (obj) => {
         return (
             <div className="Ipt">
@@ -202,6 +210,7 @@ class index extends Component {
             </div>
         )
     }
+    //验证码倒计时
     timeChange = () => {
         let num = 60
         const time = setInterval(() => {
@@ -217,6 +226,7 @@ class index extends Component {
             }
         }, 1000)
     }
+    //发送验证码
     geiCodeNumber = (event = 'register') => {
         const { telNumber, getCode } = this.state
         if (telNumber.length !== 11) {
@@ -234,13 +244,14 @@ class index extends Component {
                     Toast.info(res.suc, 1, null, false)
                     this.timeChange()
                     return false
-                } 
+                }
                     Toast.info(res.err)
-                
+
             })
 
         }
     }
+    //验证手机
     registeredSubMit = async () => {
         const { telNumber, codeNumber } = this.state
         if (!telNumber) {
@@ -275,6 +286,7 @@ class index extends Component {
 
         })
     }
+    //修改密码
     changePSWSubMit = async () => {
         const { telNumber, passWord, rePassWord } = this.state
         if (!telNumber && telNumber.length !== 11) {

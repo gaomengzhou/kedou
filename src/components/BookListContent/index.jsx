@@ -2,7 +2,7 @@
  * @description  book 页面 列表项组件
  * @memberof BookTabContent
  * @requires ListView
- * @param {Array} rowData 基于ListView组件 需传入 rowData
+ * @param {Array} rowData-基于ListView组件 需传入 rowData
  * @time 2020/1/16
  * @author Aiden
  */
@@ -23,6 +23,7 @@ class index extends Component {
         }
     }
     componentDidMount() {
+        //获取collected
         let props = this.props
         if (!props.ev) {
             const ev = { ...props.rowData }
@@ -37,7 +38,7 @@ class index extends Component {
             })
         }
     }
-
+    //收藏
     setCollect = (novel_id) => {
         if (!sessionStorage.getItem('user_id')) {
             this.props.testRightCallBack()
@@ -65,6 +66,7 @@ class index extends Component {
         })
 
     }
+    //图片加载完毕
     onLoad = async () => {
         this.setState({
             loaded: false
@@ -73,6 +75,7 @@ class index extends Component {
 
     };
     render() {
+        //格式化props
         let props = this.props
         if (!props.ev) {
             const ev = { ...props.rowData }
@@ -106,14 +109,14 @@ class index extends Component {
                                 {loaded && <div style={ActivityIndicatorStyle}>
                                     <ActivityIndicator text='Loading...' />
                                 </div>}
-                                <img src={!imgErr?props.ev.poster:require('../../assets/images/error3_thumbnail_bg.png')} alt="" className={loaded ? 'bigIMGLoaded' : 'bigIMG'} onLoad={() => {
+                                <img src={!imgErr ? props.ev.poster : require('../../assets/images/error3_thumbnail_bg.png')} alt="" className={loaded ? 'bigIMGLoaded' : 'bigIMG'} onLoad={() => {
                                     this.onLoad()
-                                }} 
-                                onError={()=>{
-                                  this.setState({
-                                    imgErr:true
-                                  })
                                 }}
+                                    onError={() => {
+                                        this.setState({
+                                            imgErr: true
+                                        })
+                                    }}
                                 />
                                 {!loaded && <>
                                     <div className='play'>

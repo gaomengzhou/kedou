@@ -8,7 +8,7 @@ import '../player.less';
 const Content = (props) => {
   const onPress = (item) => {
     document.body.scrollTop = document.documentElement.scrollTop = 0
-    props.router.history.replace(`/detailVideo/${item.id}`);
+    props.router.history.replace(`/videoDetail/${item.id}`);
   }
   const copyAccessKey = () => {
     if (props.detailData.share_url) {
