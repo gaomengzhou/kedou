@@ -1,6 +1,6 @@
  /**
  * @description video页面 list组件 基于ant tab组件 包含下拉刷新 上拉加载
- * @memberof TabContent
+ * @memberof tabs
  * @time 2020/1/7
  * @author Aiden
  */
@@ -50,6 +50,7 @@ class index extends Component {
 		}
 	}
 	async componentDidMount() {
+		//获取首页轮播图
 		await bannel_list({
 			type: 1
 		}).then(res => {
@@ -62,6 +63,7 @@ class index extends Component {
 
 		await this.onRefresh()
 	}
+	//获取首页列表
 	static getDerivedStateFromProps(props, state) {
 		let {
 			recommend,
@@ -95,7 +97,7 @@ class index extends Component {
 			}
 		}
 	}
-
+	//下拉
 	onRefresh = async () => {
 		if (this.props.tab.title === this.props.tabAction) {
 			if (this.props.goBackList && this.props.goBackList.videoList.length) {
@@ -184,6 +186,7 @@ class index extends Component {
 			data: Date.now()
 		})
 	}
+	//拼接
 	concatList = () => {
 		const list = this.state.videoList
 		switch (this.props.tab.title) {
@@ -236,6 +239,7 @@ class index extends Component {
 		}
 
 	}
+	//上拉
 	onEndReached = () => {
 		if (this.props.tab.title === this.props.tabAction) {
 			if (this.props.goBackList && this.props.goBackList.videoList.length) {
@@ -311,6 +315,7 @@ class index extends Component {
 	// 		beforeScrollTop = afterScrollTop;
 	// 	}, false);
 	// }
+	//首页bannel和广告
 	listHeader = () => {
 		if (this.state.bannel.length === 0) {
 			return false
@@ -344,6 +349,7 @@ class index extends Component {
 			</>
 		)
 	}
+	//获取当前列表页状态 详情页返回时//缓存
 	onClickasd = () => {
 		return this.props.tab.title === this.props.tabAction ? {
 			title: this.props.tab.title,
@@ -354,6 +360,7 @@ class index extends Component {
 			page: this.state.page
 		} : null
 	}
+	//防抖
 	throttle = (fn, delay) => {
 		var lastTime = 0
 		return function () {

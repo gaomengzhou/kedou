@@ -1,10 +1,10 @@
 import { Button, ListView } from 'antd-mobile';
-import {crypt} from '../../utils/base'
 import 'dplayer/dist/DPlayer.min.css';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PublicNavBar from '../../components/PublicNavBar';
 import { delBoolCollect, delVideo, getBookCollect, getVideoCollect } from '../../store/action/collect';
+import { crypt } from '../../utils/base';
 import BookContent from './components/bookContent.js';
 import TabExample from './components/tabs';
 import VideoContent from './components/videoContent';
@@ -330,7 +330,7 @@ class Collect extends Component {
   }
 
   goToVideo = (item) => {
-    this.props.history.push(`/detailVideo/${item.video_id}`);
+    this.props.history.push(`/videoDetail/${item.video_id}`);
   }
 
   callBackStateVideo = () => {

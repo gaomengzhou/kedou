@@ -3,7 +3,7 @@
  * @memberof BookTabContent
  * @memberof TabContent
  * @param {string} title - 标题
- * @param {string} more-是否显示<更多>
+ * @param {boolean} more-是否显示<更多>
  * @callback requestCallback
  * @param {requestCallback} changeActionKey-跳转tab标签函数
  * @time 2020/1/9

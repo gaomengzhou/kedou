@@ -23,6 +23,7 @@ class index extends Component {
     componentDidMount() {
         this.initialization()
     }
+    //初始化获取参数
     initialization = () => {
         const { type, rowData } = this.props
         switch (type) {
@@ -45,6 +46,7 @@ class index extends Component {
                 break;
         }
     }
+    //评论点赞
     setThumbed = () => {
         const { type } = this.props
         switch (type) {
