@@ -106,25 +106,35 @@ class UserFeedBack extends Component {
             <p className='feedbackimg'>更多反馈方式</p>
             <div className='feedBackStyles'>
               <p className='feedBackText'>联系管理员: {this.state.msgadmin}</p>
-              <Button onClick={this.sendMsg} className='feedBackBtn'>发送消息</Button>
+              <div className='btn'>
+                <Button onClick={this.sendMsg} className='feedBackBtn'>发送消息</Button>
+              </div>
             </div>
             <div className='feedBackStyles'>
               <p className='feedBackText'>微信客服: {this.state.wechat}</p>
+              <div className="btn">
               <Button onClick={this.copyWechat} className='feedBackBtn'>复制微信号</Button>
+              </div>
             </div>
             <div className='feedBackStyles'>
               <p className='feedBackText'>客服QQ: {this.state.qqno}</p>
+              <div className="btn">
               <Button onClick={this.copyQQ} className='feedBackBtn'>复制QQ号</Button>
+              </div>
             </div>
             <div className='feedBackStyles'>
               <p className='feedBackText'>Potato：{this.state.potato}</p>
+              <div className="btn">
               <Button onClick={this.copyPotato} className='feedBackBtn'>复制号码</Button>
+              </div>
             </div>
             <div className='feedBackStyles'>
               <p className='feedBackText'>客服电话: {this.state.telno}</p>
+              <div className="btn">
               <Button onClick={() => window.location.href = `tel:${this.state.telno}`} className='feedBackBtn'>
                 拨打电话
               </Button>
+              </div>
             </div>
           </div>
         </div>

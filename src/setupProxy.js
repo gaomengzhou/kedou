@@ -6,18 +6,17 @@
 const proxy = require('http-proxy-middleware')
 
 module.exports = function (app) {
-    app.use(
-        proxy(
-            '/kedou/api',
-            {
-                // target: 'https://kdsp9.xyz',  
-                target: 'http://tadpole-appapi.fftechs.com:2082/',  
-                // target: 'https://api.sgdd02.com:443/',  
-                changeOrigin: true, 
-                pathRewrite: { 
-                    '^/kedou/api': ''
-                }
-            }
-        )
-    )
+	app.use(
+		proxy(
+			'/kedou/api', {
+				// target: 'https://kdsp9.xyz',  
+				target: 'http://tadpole-appapi.fftechs.com:2082/',
+				// target: 'https://api.sgdd02.com:443/',  
+				changeOrigin: true,
+				pathRewrite: {
+					'^/kedou/api': ''
+				}
+			}
+		)
+	)
 }

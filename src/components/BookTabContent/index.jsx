@@ -66,7 +66,7 @@ class index extends Component {
 				let hotList;
 				let obj;
 				await getBookList({
-					user_id: sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) :'',
+					user_id: sessionStorage.getItem('user_id') ? crypt(sessionStorage.getItem('user_id')) : '',
 					page: 1,
 					rows: 18,
 					order: "created_date",
@@ -75,7 +75,7 @@ class index extends Component {
 					newList = res
 				})
 				await getBookList({
-					user_id:  sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) :'',
+					user_id: sessionStorage.getItem('user_id') ? crypt(sessionStorage.getItem('user_id')) : '',
 					page: 1,
 					rows: 18,
 					order: "play",
@@ -94,7 +94,7 @@ class index extends Component {
 			}
 			case this.props.tabList[1].title: {
 				await getBookList({
-					user_id: sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) :'',
+					user_id: sessionStorage.getItem('user_id') ? crypt(sessionStorage.getItem('user_id')) : '',
 					page: 1,
 					rows: 21,
 					order: "created_date",
@@ -109,7 +109,7 @@ class index extends Component {
 			}
 			case this.props.tabList[2].title: {
 				await getBookList({
-					user_id: sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) : '',
+					user_id: sessionStorage.getItem('user_id') ? crypt(sessionStorage.getItem('user_id')) : '',
 					page: 1,
 					rows: 21,
 					order: "play",
@@ -123,7 +123,7 @@ class index extends Component {
 			}
 			default: {
 				await getBookList({
-					user_id: sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) : '',
+					user_id: sessionStorage.getItem('user_id') ? crypt(sessionStorage.getItem('user_id')) : '',
 					page: 1,
 					rows: 21,
 					category_id: this.props.tab.category_id
@@ -152,7 +152,7 @@ class index extends Component {
 		switch (this.props.tab.title) {
 			case this.props.tabList[1].title: {
 				getBookList({
-					user_id:  sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) :'',
+					user_id: sessionStorage.getItem('user_id') ? crypt(sessionStorage.getItem('user_id')) : '',
 					page: this.state.page + 1,
 					rows: 18,
 					order: "created_date",
@@ -175,7 +175,7 @@ class index extends Component {
 			}
 			case this.props.tabList[2].title: {
 				getBookList({
-					user_id:  sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) :'',
+					user_id: sessionStorage.getItem('user_id') ? crypt(sessionStorage.getItem('user_id')) : '',
 					page: this.state.page + 1,
 					rows: 18,
 					order: "play",
@@ -197,7 +197,7 @@ class index extends Component {
 			}
 			default: {
 				getBookList({
-					user_id:  sessionStorage.getItem('user_id')?crypt(sessionStorage.getItem('user_id')) :'',
+					user_id: sessionStorage.getItem('user_id') ? crypt(sessionStorage.getItem('user_id')) : '',
 					page: this.state.page + 1,
 					rows: 18,
 					category_id: this.props.tab.category_id
@@ -319,33 +319,33 @@ class index extends Component {
 		}
 		return (
 			<>
-			<HomeSettimeoutClose type={'book'} hour={3} />
-			<Carousel
-				autoplay={true}
-				infinite={true}
-				selectedIndex={0}
-			>
-				{bannelList.map(val => (
-					<img
-						src={val.url}
-						alt="正在加载图片"
-						style={{ width: '100%', height: '100%' }}
-						key={val.url}
-						onClick={() => {
-							if (/^(http|https)/.test(val.h5_target)) {
-								// window.location.href=val.h5_target
-								const w = window.open('about:blank');
-								w.location.href = val.h5_target;
-								return false
-							}
-							// window.location.href=`https://www.baidu.com`
-							// // const w = window.open('about:blank');
-							// // w.location.href=`https://www.baidu.com`;
-							this.props.history.push(val.h5_target)
-						}}
-					/>
-				))}
-			</Carousel>
+				<HomeSettimeoutClose type={'book'} hour={3} />
+				<Carousel
+					autoplay={true}
+					infinite={true}
+					selectedIndex={0}
+				>
+					{bannelList.map(val => (
+						<img
+							src={val.url}
+							alt="正在加载图片"
+							style={{ width: '100%', height: '100%' }}
+							key={val.url}
+							onClick={() => {
+								if (/^(http|https)/.test(val.h5_target)) {
+									// window.location.href=val.h5_target
+									const w = window.open('about:blank');
+									w.location.href = val.h5_target;
+									return false
+								}
+								// window.location.href=`https://www.baidu.com`
+								// // const w = window.open('about:blank');
+								// // w.location.href=`https://www.baidu.com`;
+								this.props.history.push(val.h5_target)
+							}}
+						/>
+					))}
+				</Carousel>
 			</>
 		)
 	}

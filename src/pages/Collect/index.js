@@ -444,14 +444,18 @@ class Collect extends Component {
       { title: '视频' },
       { title: '听书' },
     ];
+    const tabProps = {
+      page: this.state.page,
+      tabsContent1: videoTab,
+      tabsContent2: bookTab,
+      onTabChange: this.onTabChange
+    }
     return (
       <div style={{ backgroundColor: '#fff' }}>
         <PublicNavBar {...navBarProps} />
         <TabExample
           tabs={tabs}
-          tabsContent1={videoTab}
-          tabsContent2={bookTab}
-          onTabChange={this.onTabChange}
+          {...tabProps}
         />
         <div
           style={{
@@ -484,4 +488,5 @@ class Collect extends Component {
     )
   }
 }
+
 export default Collect
