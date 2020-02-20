@@ -6,7 +6,7 @@ import './tabs.less';
 
 const TabExample = (props) => (
   <div className='tabsStyle'>
-    {/* <WhiteSpace /> */}
+    {console.log(props)}
     <Tabs
       tabs={props.tabs}
       initialPage={0}
@@ -19,10 +19,11 @@ const TabExample = (props) => (
       tabBarUnderlineStyle={{ width: '1rem', marginLeft: '1.3rem', borderColor: theme.hitActiveColor, }}
     >
       <div className='content'>
-        {props.tabsContent1()}
-      </div>
-      <div className='content'>
-        {props.tabsContent2()}
+        {
+          props.page === 0
+            ? props.tabsContent1()
+            : props.tabsContent2()
+        }
       </div>
     </Tabs>
   </div>

@@ -22,11 +22,11 @@ function index(props) {
 					title
 				}
 			</div>
-			{more && <span className="more" onClick={() => {
+			{more && <p className="more" onClick={() => {
 				changeActionKey(title)
 			}}>
-				更多
-           </span>}
+				<span>更多</span>
+           </p>}
 			{right && <span className='right'>
 				{right} <span className="textRight">
 					听过

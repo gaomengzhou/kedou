@@ -121,7 +121,7 @@ class VideoDetail extends Component {
 
   getVideo = (videoId = '') => {
     const { id } = this.props.match.params
-    const user_id = sessionStorage.getItem('user_id')  //万能ID '9652'  sessionStorage.getItem('user_id')
+    const user_id = sessionStorage.getItem('user_id')  //万能ID '9652'  sessionStorage.getItem
     const video_id = id
     if (user_id === null) {
       const code = this.props.match.params.code
@@ -223,40 +223,43 @@ class VideoDetail extends Component {
   }
 
   onLeftClick = () => {
-    this.props.history.go(-1)
+    this.props.history.go(-1);
   }
-  bodyScroll = (e) => { e.preventDefault(); }
+
+  bodyScroll = (e) => {
+    e.preventDefault();
+  }
 
   showComment2 = (_anchorName) => {
     this.setState({
       closed: false
-    })
+    });
     const contentHeight = document.getElementById('contentPlayer').offsetHeight;
     const dpHeight = document.getElementById('dplayer').offsetHeight;
     document.body.scrollTop = document.documentElement.scrollTop = contentHeight + dpHeight;
   }
 
   closeLogin = () => {
-    this.setState({ noLogin: false })
-    window.location.reload()
+    this.setState({ noLogin: false });
+    window.location.reload();
   }
 
   likedClick = () => {
-    const { id } = this.props.match.params
-    const video_id = id
+    const { id } = this.props.match.params;
+    const video_id = id;
     commentLikeApi({
       user_id: crypt(sessionStorage.getItem('user_id')),
       video_id,
       type: '4'
     }).then(res => {
       if (res.err) {
-        Toast.info('请勿重复点赞', 1)
+        Toast.info('请勿重复点赞', 1);
         return
       } else if (res.suc) {
         this.setState({
           liked_num: this.state.liked_num + 1,
           fabulous_video: 1
-        })
+        });
       }
     })
   }
@@ -264,7 +267,7 @@ class VideoDetail extends Component {
   sendMsg = (_e) => {
     const { id } = this.props.match.params
     // const user_id = sessionStorage.getItem('user_id')  //万能ID '9652'  sessionStorage.getItem('user_id')
-    const video_id = id
+    const video_id = id;
     setTimeout(() => {
       const contentHeight = document.getElementById('contentPlayer').offsetHeight;
       const dpHeight = document.getElementById('dplayer').offsetHeight;
@@ -272,11 +275,11 @@ class VideoDetail extends Component {
     }, 350);
     this.setState({
       closed: false
-    })
+    });
     if (this.state.message !== '') {
       this.setState({
         message: '',
-      })
+      });
       commentLikeApi({
         user_id: crypt(sessionStorage.getItem('user_id')),
         type: '2',
@@ -284,7 +287,7 @@ class VideoDetail extends Component {
         message: this.state.message
       }).then(res => {
         if (res.suc) {
-          Toast.success(res.suc)
+          Toast.success(res.suc);
           this.setState({
             isReload: true,
             comment_num: this.state.comment_num + 1,
@@ -299,11 +302,11 @@ class VideoDetail extends Component {
     this.setState({
       isReload: false,
     });
-  }
+  };
 
   saveMsg = (e) => {
     this.setState({ message: e.target.value })
-  }
+  };
 
   collectBtn = () => {
     const { id } = this.props.match.params
@@ -341,7 +344,7 @@ class VideoDetail extends Component {
         timeCount = 0
       }
     }, 1000);
-  }
+  };
 
   controlView = () => {
     clearTimeout(this.timer)
@@ -365,21 +368,21 @@ class VideoDetail extends Component {
       dplayer.classList.remove('dplayer-hide-controller')
       this.setTimerFN()
     }
-  }
+  };
 
   showComment = (_anchorName) => {
     this.setState({
       closed: false
-    })
+    });
     setTimeout(() => {
       this.setState({
         closed: true
-      })
+      });
     }, 1000);
     if (this.state.theOne) {
       this.setState({
         theOne: false
-      })
+      });
       setTimeout(() => {
         const contentHeight = document.getElementById('contentPlayer').offsetHeight;
         const dpHeight = document.getElementById('dplayer').offsetHeight;
@@ -399,13 +402,13 @@ class VideoDetail extends Component {
 
   render() {
     const { videoDetailReducer } = this.props;
-    const { HotVideoList } = videoDetailReducer
+    const { HotVideoList } = videoDetailReducer;
     const navBarProps = {
       title: this.state.navBarTitle,
       isDetail: true,
       onLeftClick: this.onLeftClick,
       display: this.state.display
-    }
+    };
     const contentProps = {
       likedClick: this.likedClick,
       isLiked: this.state.isLiked,
@@ -423,7 +426,7 @@ class VideoDetail extends Component {
       cb: this.cb,
       isReload: this.state.isReload,
       dataSource: this.props.videoDetailReducer.comment,
-    }
+    };
     const myListViewProps = {
       cb: this.cb,
       cbClosed: () => this.setState({
@@ -435,7 +438,7 @@ class VideoDetail extends Component {
       detailData: this.state.detailData,
       isReload: this.state.isReload,
       closed: this.state.closed,
-    }
+    };
     return (
       <div className='playerIndex'>
         <PublicNavBar  {...navBarProps} />
@@ -467,7 +470,6 @@ class VideoDetail extends Component {
         </div>
         <p id='anchor' style={{ marginLeft: '.1rem' }} className='hotComment'>热门评论{`（${this.state.comment_num}）`}</p>
         <MyListView {...myListViewProps} />
-        {/* {this.state.noLogin ? <IsLogin rightCallBack={this.closeLogin} /> : null} */}
       </div>
     )
   }

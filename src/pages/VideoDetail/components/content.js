@@ -112,5 +112,4 @@ Content.defaultProps = {
   dataList: [],
 }
 
-
 export default Content

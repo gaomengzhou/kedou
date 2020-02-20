@@ -1,17 +1,17 @@
- /**
- * @description 需传入标签列表 并赋值给tabs变量
- * @memberof Video
- * @memberof Book
- * @time 2020/1/7
- * @author Aiden
- */
+/**
+* @description 需传入标签列表 并赋值给tabs变量
+* @memberof Video
+* @memberof Book
+* @time 2020/1/7
+* @author Aiden
+*/
 
 import React, { Component } from 'react';
 import { Tabs } from 'antd-mobile'
 import TabContent from '../TabContent'
 import BookTabContent from '../BookTabContent'
 import { connect } from 'react-redux';
-import { goBackchangeTab,goBackList } from '../../store/action/video'
+import { goBackchangeTab, goBackList } from '../../store/action/video'
 const stateToProps = (state) => {
 	return {
 		tabAction: state.video.tabAction,
@@ -36,13 +36,13 @@ class index extends Component {
 		this.goBackchangeTab(this.props.route)
 	}
 	//返回列表时回到上次tab
-	goBackchangeTab=(route)=>{
-		const oldRoute=sessionStorage.getItem('route')
-		if(route!==oldRoute){
+	goBackchangeTab = (route) => {
+		const oldRoute = sessionStorage.getItem('route')
+		if (route !== oldRoute) {
 			this.props.goBackchangeTab('')
 			this.props.goBackList('')
 		}
-		sessionStorage.setItem('route',this.props.route)
+		sessionStorage.setItem('route', this.props.route)
 	}
 	//跳转指定tab
 	changeActionKey = (sty) => {
@@ -103,10 +103,11 @@ class index extends Component {
 					tabs={!detailShow ? tabs : []}
 					renderTabBar={props => <Tabs.DefaultTabBar {...props}
 						page={5} />}
+					prerenderingSiblingsNumber={false}
 					onTabClick={(tab, index) => {
 						this.setState({
 							activeKey: tab.key
-						},()=>{
+						}, () => {
 							this.props.goBackchangeTab(tab.key)
 							// this.props.goBackList('')
 						})

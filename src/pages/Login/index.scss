@@ -46,30 +46,47 @@
                 input {
                     width: 100%;
                     // height: .7rem;
-                    margin: 0.2rem 0;
-                    border: 1px solid #aaa;
+                    // margin: 0.2rem 0;
+                    // border: 1px solid #aaa;
                     border-radius: .5rem;
                     padding: .3rem .2rem .3rem .8rem;
-                    border-top-color: #38b6e7;
-                    border-bottom-color: #38b6e7;
-                    border-left-color: #9718ec;
-                    border-right-color: #9718ec;
+                    border: none;
+                    // border-top-color: #38b6e7;
+                    // border-bottom-color: #38b6e7;
+                    // border-left-color: #9718ec;
+                    // border-right-color: #9718ec;
                 }
 
                 .Ipt {
                     position: relative;
+                    padding: .02rem .02rem;
+                    background-image: linear-gradient(180deg, #38b6e7, #9718ec, #9718ec, #38b6e7);
+                    border-radius: 1rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    margin: 0.2rem 0;
 
                     .iconBox {
                         position: absolute;
                         left: .4rem;
-                        top: .4rem;
+                        top: 0.23rem;
+                        // left: .4rem;
+                        // top: .4rem;
                         width: .35rem;
+                        top: calc(50% - .275rem);
+                        height: .55rem;
 
                         img {
                             width: 100%;
                             height: 100%;
                         }
                     }
+                }
+
+                .inputNotActive {
+                    position: relative;
+                    background: #aaa !important;
                 }
             }
 
@@ -97,11 +114,21 @@
 
                 .Ipt {
                     position: relative;
+                    padding: .02rem .02rem;
+                    background: linear-gradient(180deg, #38b6e7, #9718ec, #9718ec, #38b6e7);
+                    border-radius: 1rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    margin: 0.2rem 0;
 
                     .iconBox {
                         position: absolute;
                         left: .4rem;
-                        top: .4rem;
+                        top: calc(50% - .275rem);
+                        height: .55rem;
+                        // left: .4rem;
+                        // top: .4rem;
                         width: .35rem;
 
                         img {
@@ -111,8 +138,25 @@
                     }
                 }
 
+                .inputNotActive {
+                    position: relative;
+                    background: #aaa !important;
+                }
+
                 .codeIpt {
                     position: relative;
+                    display: flex;
+
+                    .input {
+                        padding: .02rem .02rem;
+                        background: linear-gradient(180deg, #38b6e7, #9718ec, #9718ec, #38b6e7);
+                        border-radius: 1rem;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-around;
+                        margin: 0.2rem 0;
+                        flex:6.5;
+                    }
 
                     .codeNumber {
                         margin: 0;
@@ -125,6 +169,8 @@
                     }
 
                     span {
+                        margin: 0.2rem 0;
+                        flex:3.5;
                         margin-left: .3rem;
                         color: #fff;
                         // border:1px #aaa solid ;
@@ -140,8 +186,12 @@
                     .iconBox {
                         position: absolute;
                         left: .4rem;
-                        top: .23rem;
+                        top: 0.4rem;
+                        // left: .4rem;
+                        // top: .4rem;
                         width: .35rem;
+                        top: calc(50% - .275rem);
+                        height: .55rem;
 
                         img {
                             width: 100%;
@@ -150,40 +200,42 @@
                     }
                 }
             }
+
             .footer {
                 padding: .3rem .3rem;
                 display: flex;
                 justify-content: space-between;
             }
         }
+
         .inputBox {
             width: 100%;
-    
+
             input {
                 width: 100%;
                 // height: .7rem;
-                margin: 0.2rem 0;
-                border: 1px solid #aaa;
+                // margin: 0.2rem 0;
+                // border: 1px solid #aaa;
                 border-radius: .5rem;
-                padding:.3rem .2rem .3rem .8rem;
-                border-top-color: #38b6e7;
-                border-bottom-color: #38b6e7;
-                border-left-color: #9718ec;
-                border-right-color: #9718ec;
+                padding: .3rem .2rem .3rem .8rem;
+                border: none;
             }
-            .inputNotActive{
-                border-top-color: #aaa !important;
-                border-bottom-color: #aaa !important;
-                border-left-color: #aaaaaa !important;
-                border-right-color: #aaa !important;
-            }
-    
+
+
+            // .inputNotActive {
+            //     border-top-color: #aaa !important;
+            //     border-bottom-color: #aaa !important;
+            //     border-left-color: #aaaaaa !important;
+            //     border-right-color: #aaa !important;
+            // }
+
             // .codeNumber {
             //     border: none;
             //     margin: 0;
             //     padding: 0;
             // }
         }
+
         .am-button {
             position: fixed;
             left: 0;

@@ -12,110 +12,110 @@ import './index.scss';
 class index extends Component {
 	constructor(props) {
 		super(props)
-		
-        this.state = {
-            title: ['账户登录', 'login'],
-            loginContent: true,
-            registered: false,
-            Retrieve: false,
-            changePassWord: false,
-            userIptFocus: false,
-            pswIptFocus: false,
-            telNumber: '',
-            passWord: '',
-            rePassWord: '',
-            codeNumber: '',
-            getCode: '获取验证码',
-            invitation_code: '',
-            invitationIptFocus: false
-        }
-    }
-    componentDidMount() {
-        //判断TYPE跳转至注册页
-        if (this.props.history.location.state) {
-            const { type, code } = this.props.history.location.state
-            if (type) {
-                this.setState({
-                    loginContent: false,
-                    registered: true,
-                    title: ['账户注册', 'registered'],
-                    telNumber: '',
-                    passWord: '',
-                    codeNumber: '',
-                    rePassWord: ''
-                }, () => {
-                    this.setState({
-                        invitation_code: code
-                    })
-                })
-            }else{
-                //执行默认显示登录
-                this.setState({
-                    telNumber: '',
-                    passWord: '',
-                    codeNumber: '',
-                    rePassWord: ''
-                }, () => {
-                    this.setState({
-                        invitation_code: code
-                    })
-                })
-            }
-        }
-    }
-    //有video或book ID传入再提交后跳转至详情页函数
-    goTovideoDetail = () => {
-        if (this.props.history.location.state) {
-            const { id, bookId } = this.props.history.location.state
-            if (id) {
-                this.props.history.replace('/videoDetail/' + id)
-                return false
-            }
-            if (bookId) {
-                this.props.history.replace({
-                    pathname: '/book',
-                    state: {
-                        id: bookId
-                    }
-                })
-                return false
-            }
-        }
-        this.props.history.goBack()
-    }
-    //登录
-    login = async (info) => {
-        const { telNumber, passWord } = this.state
-        const _this = this
-        if (!telNumber) {
-            Toast.info('请填写手机号')
-            return false
-        }
-        if (!passWord) {
-            Toast.info('请填写密码')
-            return false
-        }
-        await login({
-            mobile: telNumber,
-            password: passWord,
-            mold: 'pwd'
-        }).then(res => {
-            const { code } = res
-            if (code) {
-                if (res.code !== 0) {
-                    Toast.info('请正确填写用户名和密码')
-                    return false
-                }
-            }
-            sessionStorage.setItem('user_id', encrypt(res.user_id))
-            user_info_no({
-                user_id: res.user_id
-            }).then(ret => {
-                sessionStorage.setItem('invitation_code', ret.invitation_code)
-                Toast.info(info || '登录成功', 1, () => {
-                    _this.goTovideoDetail()
-                }, false)
-            })
+
+		this.state = {
+			title: ['账户登录', 'login'],
+			loginContent: true,
+			registered: false,
+			Retrieve: false,
+			changePassWord: false,
+			userIptFocus: false,
+			pswIptFocus: false,
+			telNumber: '',
+			passWord: '',
+			rePassWord: '',
+			codeNumber: '',
+			getCode: '获取验证码',
+			invitation_code: '',
+			invitationIptFocus: false
+		}
+	}
+	componentDidMount() {
+		//判断TYPE跳转至注册页
+		if (this.props.history.location.state) {
+			const { type, code } = this.props.history.location.state
+			if (type) {
+				this.setState({
+					loginContent: false,
+					registered: true,
+					title: ['账户注册', 'registered'],
+					telNumber: '',
+					passWord: '',
+					codeNumber: '',
+					rePassWord: ''
+				}, () => {
+					this.setState({
+						invitation_code: code
+					})
+				})
+			} else {
+				//执行默认显示登录
+				this.setState({
+					telNumber: '',
+					passWord: '',
+					codeNumber: '',
+					rePassWord: ''
+				}, () => {
+					this.setState({
+						invitation_code: code
+					})
+				})
+			}
+		}
+	}
+	//有video或book ID传入再提交后跳转至详情页函数
+	goTovideoDetail = () => {
+		if (this.props.history.location.state) {
+			const { id, bookId } = this.props.history.location.state
+			if (id) {
+				this.props.history.replace('/videoDetail/' + id)
+				return false
+			}
+			if (bookId) {
+				this.props.history.replace({
+					pathname: '/book',
+					state: {
+						id: bookId
+					}
+				})
+				return false
+			}
+		}
+		this.props.history.goBack()
+	}
+	//登录
+	login = async (info) => {
+		const { telNumber, passWord } = this.state
+		const _this = this
+		if (!telNumber) {
+			Toast.info('请填写手机号')
+			return false
+		}
+		if (!passWord) {
+			Toast.info('请填写密码')
+			return false
+		}
+		await login({
+			mobile: telNumber,
+			password: passWord,
+			mold: 'pwd'
+		}).then(res => {
+			const { code } = res
+			if (code) {
+				if (res.code !== 0) {
+					Toast.info('请正确填写用户名和密码')
+					return false
+				}
+			}
+			sessionStorage.setItem('user_id', encrypt(res.user_id))
+			user_info_no({
+				user_id: res.user_id
+			}).then(ret => {
+				sessionStorage.setItem('invitation_code', ret.invitation_code)
+				Toast.info(info || '登录成功', 1, () => {
+					_this.goTovideoDetail()
+				}, false)
+			})
 
 		})
 	}
@@ -190,8 +190,8 @@ class index extends Component {
 	//input元素
 	inputItem = (obj) => {
 		return (
-			<div className="Ipt">
-				<input className={!obj.focus && 'inputNotActive'} type={obj.type} name="" id="" maxLength={obj.tel ? 11 : ''} placeholder={obj.placeholder} value={obj.value} onBlur={() => {
+			<div className={!obj.focus ? 'inputNotActive Ipt' : "Ipt"}>
+				<input type={obj.type} name="" id="" maxLength={obj.tel ? 11 : ''} placeholder={obj.placeholder} value={obj.value} onBlur={() => {
 					obj.onBlur()
 					// this.setState({
 					//     pswIptFocus: false
@@ -519,7 +519,8 @@ class index extends Component {
 									// height: ' .7rem',
 									margin: '0.2rem 0'
 								}}>
-									<input className={!this.state.codeIptFocus ? 'inputNotActive codeNumber' : 'codeNumber'} type="text" name="" placeholder='请输入验证码' onBlur={() => {
+									<div className={!this.state.codeIptFocus ?'inputNotActive input':"input"}>
+									<input className='codeNumber' type="text" name="" placeholder='请输入验证码' onBlur={() => {
 										this.setState({
 											codeIptFocus: false
 										})
@@ -536,6 +537,7 @@ class index extends Component {
 											codeNumber: e.target.value
 										})
 									}} />
+									</div>
 									<span onClick={
 										() => {
 											geiCodeNumber()
@@ -598,23 +600,25 @@ class index extends Component {
 									// height: ' .7rem',
 									margin: '0.2rem 0'
 								}}>
-									<input type="text" name="" placeholder='请输入验证码' className={!this.state.codeIptFocus ? 'inputNotActive codeNumber' : 'codeNumber'} onBlur={() => {
-										this.setState({
-											codeIptFocus: false
-										})
+									<div className={!this.state.codeIptFocus?'inputNotActive input':"input"}>
+										<input type="text" name="" placeholder='请输入验证码' className='codeNumber' onBlur={() => {
+											this.setState({
+												codeIptFocus: false
+											})
 
-									}} onFocus={() => {
-										this.setState({
-											codeIptFocus: true
-										})
+										}} onFocus={() => {
+											this.setState({
+												codeIptFocus: true
+											})
 
-									}} style={{
-										flex: 1
-									}} value={codeNumber} onChange={(e) => {
-										this.setState({
-											codeNumber: e.target.value
-										})
-									}} />
+										}} style={{
+											flex: 1
+										}} value={codeNumber} onChange={(e) => {
+											this.setState({
+												codeNumber: e.target.value
+											})
+										}} />
+									</div>
 									<span onClick={
 										() => {
 											geiCodeNumber('auth_mobile')

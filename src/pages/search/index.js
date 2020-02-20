@@ -51,7 +51,7 @@ class SearchBarExample extends React.Component {
     this.props.searchVideoData.data = []
     this.props.searchVideoData.bookData = []
     clearTimeout(setRequst)
-    this.setState({keyword:''})
+    this.setState({ keyword: '' })
   }
 
   goback = () => {
@@ -286,8 +286,5 @@ class SearchBarExample extends React.Component {
     }
   }
 }
+
 export default SearchBarExample
-
-
-
-
