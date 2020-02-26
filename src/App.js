@@ -1,9 +1,9 @@
 import React from 'react';
+import { BrowserRouter, HashRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './App.scss';
 import TabBar from './components/TabBer';
 import routes from './routes';
-import './style/globalStyle.scss'
-import { HashRouter, Route, Redirect, Switch, BrowserRouter, Link } from 'react-router-dom'
+import './style/globalStyle.scss';
 function App() {
   return (
     <BrowserRouter>

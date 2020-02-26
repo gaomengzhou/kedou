@@ -34,19 +34,19 @@ class Collect extends Component {
       loadingText: '加载完成', //ListView 脚步的文案
       videoPage: 1, // 请求的page参数
       bookPage: 1, // 请求的page参数
-      isLoading: true, //根据这个字段来决定上拉加载脚步的文案
+      isLoading: true, // 根据这个字段来决定上拉加载脚步的文案
       isStop: false, // 视频是否继续请求
       isStopBook: false, // 听书是否继续请求
       dataSourceBook, // 听书ListView数据源
       dataSource, // 视频ListView数据源
       user_id: '', // 用户id 请求的user_id参数
-      ids: '',//听书id 请求的ids参数
+      ids: '', // 听书id 请求的ids参数
       isEdit: false, // 头部是否显示编辑按钮
       checkedStatus: false, //全选为true
-      page: 0,//根据tabs页面决定全选哪个版块内容
-      count: 0,//选中了几个
-      bookCollectList: [],//听书收藏数据
-      videoCollectList: [],//视频收藏数据
+      page: 0, // 根据tabs页面决定全选哪个版块内容
+      count: 0, // 选中了几个
+      bookCollectList: [], // 听书收藏数据
+      videoCollectList: [], // 视频收藏数据
     }
   }
 
@@ -172,11 +172,11 @@ class Collect extends Component {
       }
     }
   }
-
+  // 头部左边返回按钮
   onLeftClick = () => {
     this.props.history.go(-1)
   }
-  // 编辑按钮
+  // 头部右边编辑按钮
   onRightClick = () => {
     const data = JSON.parse(JSON.stringify(this.state.bookCollectList))
     const data2 = JSON.parse(JSON.stringify(this.state.videoCollectList))
@@ -198,7 +198,7 @@ class Collect extends Component {
       ids: '',
     });
   }
-  //切换Tab取消勾选的项目
+  // 切换Tab取消勾选的项目
   onTabChange = (v, i) => {
     document.body.scrollTop = document.documentElement.scrollTop = 0
     this.setState({ page: i })
@@ -221,12 +221,12 @@ class Collect extends Component {
       isLoading: false
     })
   }
-  //全选
+  // 全选
   selectAll = () => {
     const data = JSON.parse(JSON.stringify(this.state.bookCollectList))
     const data2 = JSON.parse(JSON.stringify(this.state.videoCollectList))
     const checkedStatus = this.state.checkedStatus
-    if (this.state.page === 0) {//视频
+    if (this.state.page === 0) { // 视频
       const ids = data2.map(item => item.video_id)
       if (!this.state.checkedStatus) {
         this.state.videoCollectList.forEach((item, index, arr) => {
@@ -251,7 +251,7 @@ class Collect extends Component {
           ids: '',
         })
       }
-    } else {//听书
+    } else { // 听书
       if (!this.state.checkedStatus) {
         this.state.bookCollectList.forEach((item, index, arr) => {
           data[index].isCheck = !checkedStatus
@@ -278,7 +278,7 @@ class Collect extends Component {
       }
     }
   }
-  //听书单选
+  // 听书单选
   selectOne = (e, index, item) => {
     const data = JSON.parse(JSON.stringify(this.state.bookCollectList))
     data[index].isCheck = e.target.checked
@@ -301,7 +301,7 @@ class Collect extends Component {
       this.setState({ count: this.state.count + 1 })
     }
   }
-  //视频单选
+  // 视频单选
   selectOne2 = (e, index, item) => {
     const data = JSON.parse(JSON.stringify(this.state.videoCollectList))
     data[index].isCheck = e.target.checked

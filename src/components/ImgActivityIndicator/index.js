@@ -62,7 +62,9 @@ class ImgLoad extends Component {
               opacity: this.state.imgLoad ? 0 : 1,
             }}
             src={
-              !this.state.imgErr ? (this.props.src ? this.props.src : '') : require('../../assets/images/error1_thumbnail_bg.png')
+              !this.state.imgErr
+                ? (this.props.src ? this.props.src : '')
+                : require('../../assets/images/error1_thumbnail_bg.png')
             }
             alt={
               this.props.src
@@ -105,7 +107,7 @@ ImgLoad.defaultProps = {
   left: 0,
   width: '3rem',
   height: '2rem',
-  onClick: () => console.log('暂未传入props'),
+  onClick: () => null,
   src: '',
 }
 export default ImgLoad
