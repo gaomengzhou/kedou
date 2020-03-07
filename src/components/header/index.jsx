@@ -2,7 +2,8 @@
  * @description  首页头部组件 包含 我的 搜索
  * @memberof Video
  * @memberof Book
- * @parameter rightCallBack={fn} 头像点击回调  detailShow={boolean} 显示隐藏
+ * @callback rightCallBack 头像点击回调  detailShow={boolean} 显示隐藏
+ * @param {rightCallBack} 
  * @time 2020/1/7
  * @author Aiden
  */
