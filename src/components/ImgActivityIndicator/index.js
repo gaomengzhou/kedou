@@ -68,7 +68,7 @@ class ImgLoad extends Component {
             }
             alt={
               this.props.src
-                ? ''
+                ? '图片'
                 : '暂无图片'
             }
             onError={() => {
@@ -108,6 +108,5 @@ ImgLoad.defaultProps = {
   width: '3rem',
   height: '2rem',
   onClick: () => null,
-  src: '',
 }
 export default ImgLoad

@@ -1,6 +1,7 @@
 /**
 * @description 登录|注册|忘记密码 头部
 * @memberof Login
+* @callback goBack 点击返回的回调函数
 * @param {str} title-标题
 * @param {function} goBack-点击返回的回调函数
 * @time 2020/2/3

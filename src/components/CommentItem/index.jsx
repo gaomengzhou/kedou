@@ -2,7 +2,7 @@
  * @description  视频|听书 评论项组件 基于ListView 需传入rowData 
  * @memberof Audio
  * @memberof VideoDetail/components/ViewList.js
- * @param type={str} video 区分详情页 
+ * @param {str} video 区分详情页 
  * @time 2020/1/31
  * @author Aiden <y1-aiden@ik8s.com>
  */

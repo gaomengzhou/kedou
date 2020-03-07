@@ -1,7 +1,6 @@
 /**
- * @description <猜你喜欢> 
+ * @description <猜你喜欢>  听书详情页猜你喜欢项
  * @memberof Audio
- * @parameter 听书详情页猜你喜欢项
  * @time 2020/1/23
  * @author Aiden
  */
